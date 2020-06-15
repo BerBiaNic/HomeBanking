@@ -11,8 +11,6 @@ import BerBiaNic.homebanking.database.Database;
 public class Main {
 	public static void main(String[] args) throws SQLException, IOException {
 		
-		
-		
 		Database db = new Database();
 		
 		Statement stmt = (Statement) db.getConnection().createStatement();
@@ -20,8 +18,5 @@ public class Main {
 		
 		while(rs.next())
 			System.out.println("nome: " + rs.getString("nome"));
-	
-
 	}
-
 }
