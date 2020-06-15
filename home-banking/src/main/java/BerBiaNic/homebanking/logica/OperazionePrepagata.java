@@ -56,8 +56,8 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	
 	@Override
 	public String toString() {
-		return tipologia + ", effettuato da " + cartaPrepagata.getAccount().getNome() + " " + cartaPrepagata.getAccount().getCognome() + 
-				"\nid: " + id + ", data: " + data + ", importo: " + importo + ", a " + destinatario.getNome() + " " + destinatario.getCognome();
+		return tipologia + ", effettuato da " + cartaPrepagata.getAccount().getNomeCognome() + 
+				"\nid: " + id + ", data: " + data + ", importo: " + importo + ", a " + destinatario.getNomeCognome();
 	}
 	@Override
 	public int compareTo(OperazionePrepagata o) {

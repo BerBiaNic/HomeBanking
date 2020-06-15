@@ -3,7 +3,7 @@ package BerBiaNic.homebanking.logica;
 import java.sql.Date;
 import java.util.TreeSet;
 
-public class CartaPrepagata<T extends OperazionePrepagata> extends TreeSet<T> {
+public class CartaPrepagata {
 
 	private final int numero;
 	private double saldoContabile;
@@ -11,6 +11,7 @@ public class CartaPrepagata<T extends OperazionePrepagata> extends TreeSet<T> {
 	private Date dataDiScadenza;
 	private final int cvv;
 	private final Account account;
+	private TreeSet<OperazionePrepagata> operazioniPrepagata = new TreeSet<>();
 	
 	public CartaPrepagata(int numero, double saldoContabile, double saldoDisponibile, Date dataDiScadenza, int cvv, Account account) {
 		this.numero = numero;
@@ -79,11 +80,21 @@ public class CartaPrepagata<T extends OperazionePrepagata> extends TreeSet<T> {
 	
 	@Override
 	public String toString() {
-		return "Carta prepagata di " + account.getNome() + " " + account.getCognome() + "\nnumero: " + numero + ", saldo contabile: " + saldoContabile + ", saldo disponibile: " +
+		return "Carta prepagata di " + account.getNomeCognome() + "\nnumero: " + numero + ", saldo contabile: " + saldoContabile + ", saldo disponibile: " +
 				"\ndata di scadenza: " + dataDiScadenza.toString() + ", cvv: " + cvv;
 	}
 
+	public boolean add(OperazionePrepagata o) {
+		return operazioniPrepagata.add(o);
+	}
 	
+	public TreeSet<OperazionePrepagata> getOperazioniPrepagata(){
+		return operazioniPrepagata;
+	}
+	
+	public boolean remove(OperazionePrepagata o) {
+		return operazioniPrepagata.remove(o);
+	}
 	
 	
 }
