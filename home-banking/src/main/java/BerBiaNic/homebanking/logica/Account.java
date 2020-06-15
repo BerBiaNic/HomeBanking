@@ -41,12 +41,12 @@ public class Account {
 		return id;
 	}
 
-	public AggiungiCarta(CartaPrepagata c) {
-		cartePrepagate.add(c);
+	public boolean AggiungiCarta(CartaPrepagata c) {
+		return cartePrepagate.add(c);
 	}
 
-	public RimuoviCarta(CartaPrepagata c) {
-		cartePrepagate.remove(c);
+	public boolean RimuoviCarta(CartaPrepagata c) {
+		return cartePrepagate.remove(c);
 	}
 
 	public String getUsername() {

@@ -11,7 +11,7 @@ public class CartaPrepagata {
 	private Date dataDiScadenza;
 	private final int cvv;
 	private final Account account;
-	private TreeSet<OperazionePrepagata> operazioniPrepagata = new TreeSet<>();
+	private TreeSet<OperazionePrepagata> operazioniPrepagata;
 	
 	public CartaPrepagata(int numero, double saldoContabile, double saldoDisponibile, Date dataDiScadenza, int cvv, Account account) {
 		this.numero = numero;
@@ -20,6 +20,7 @@ public class CartaPrepagata {
 		this.dataDiScadenza = dataDiScadenza;
 		this.cvv = cvv;
 		this.account = account;
+		operazioniPrepagata = new TreeSet<>();
 	}
 
 	public int getNumero() {

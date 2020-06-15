@@ -11,7 +11,6 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	private final Account destinatario;
 	private final CartaPrepagata cartaPrepagata;
 	
-	public OperazionePrepagata() {}
 	public OperazionePrepagata(int id, Date data, double importo,String tipologia, Account destinatario, CartaPrepagata cartaPrepagata) {
 		this.id = id;
 		this.data = data;
