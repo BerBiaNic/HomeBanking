@@ -47,3 +47,4 @@ local.properties
 .recommenders
 .project
 .classpath
+*.properties
