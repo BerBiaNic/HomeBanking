@@ -1,4 +1,4 @@
-package BerBiaNic.homebanking.logica;
+package BerBiaNic.homebanking.entity;
 
 import java.sql.Date;
 
