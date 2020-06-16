@@ -78,7 +78,7 @@ public class ContoCorrente{
 		this.insiemeOperazioni = insiemeOperazioni;
 	}
 	
-	public void setListaCarteDiDebito(List<CartaDiDebito> listaCarteDiDebito) {
+	public void setListaCarteDiDebito(Set<CartaDiDebito> listaCarteDiDebito) {
 		this.listaCarteDiDebito = listaCarteDiDebito;
 	}
 
