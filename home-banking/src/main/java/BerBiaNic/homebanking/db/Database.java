@@ -29,8 +29,6 @@ public class Database {
 		DB_HOST = p.getProperty("db.host");
 		DB_USER = p.getProperty("db.user");
 		DB_PASS = p.getProperty("db.password");
-		
-		System.out.println(DB_HOST + " " + DB_USER + " " + DB_PASS);
 	}
 	
 	public static Connection getConnection() {
