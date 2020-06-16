@@ -9,12 +9,12 @@ public class Cliente {
 	private final String nome;
 	private final String cittaDiNascita;
 	private final Date dataDinascita;
-	private final int numeroDiTelefono;
+	private final String numeroDiTelefono;
 	private final String indirizzoDiResidenza;
 	private final String cittaDiResidenza;
 
 	public Cliente(String codiceFiscale, String cognome, String nome, String cittaDiNascita, Date dataDinascita,
-			int numeroDiTelefono, String indirizzoDiResidenza, String cittaDiResidenza) {
+			String numeroDiTelefono, String indirizzoDiResidenza, String cittaDiResidenza) {
 		this.codiceFiscale = codiceFiscale;
 		this.cognome = cognome;
 		this.nome = nome;
@@ -45,7 +45,7 @@ public class Cliente {
 		return dataDinascita;
 	}
 
-	public int getNumeroDiTelefono() {
+	public String getNumeroDiTelefono() {
 		return numeroDiTelefono;
 	}
 
@@ -86,6 +86,6 @@ public class Cliente {
 	public String toString() {
 		return "\nCodice Fiscale: " + codiceFiscale + "\nCognome: " + cognome + "\nNome: " + nome + "\nCitta di nascita: " + cittaDiNascita + 
 				"\nData di nascita: " + dataDinascita + "\nNumero di telefono: " + numeroDiTelefono + "\nIndirizzo di residenza: " + indirizzoDiResidenza
-				+ "\nCitta di residenza" + cittaDiResidenza;
+				+ "\nCitta di residenza: " + cittaDiResidenza + "\n";
 	}
 }
