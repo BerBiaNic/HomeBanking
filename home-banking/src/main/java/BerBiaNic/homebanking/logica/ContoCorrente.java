@@ -62,7 +62,7 @@ public class ContoCorrente{
 		return insiemeOperazioni;
 	}
 	
-	public List<CartaDiDebito> getListaCarteDiDebito(){
+	public Set<CartaDiDebito> getListaCarteDiDebito(){
 		return listaCarteDiDebito;
 	}
 
