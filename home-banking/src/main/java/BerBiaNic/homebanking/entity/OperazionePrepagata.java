@@ -4,12 +4,12 @@ import java.sql.Date;
 
 public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 
-	private final int id;
-	private final Date data;
-	private final double importo;
-	private final String tipologia;
-	private final Account destinatario;
-	private final CartaPrepagata cartaPrepagata;
+	private int id;
+	private Date data;
+	private double importo;
+	private String tipologia;
+	private Account destinatario;
+	private CartaPrepagata cartaPrepagata;
 	
 	public OperazionePrepagata(int id, Date data, double importo,String tipologia, Account destinatario, CartaPrepagata cartaPrepagata) {
 		this.id = id;
@@ -19,6 +19,26 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 		this.destinatario = destinatario;
 		this.cartaPrepagata = cartaPrepagata;
 	}
+	
+	public void setTipologia(String tipologia) {
+		this.tipologia = tipologia;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public void setData(Date data) {
+		this.data = data;
+	}
+	public void setImporto(double importo) {
+		this.importo = importo;
+	}
+	public void setDestinatario(Account destinatario) {
+		this.destinatario = destinatario;
+	}
+	public void setCartaPrepagata(CartaPrepagata cartaPrepagata) {
+		this.cartaPrepagata = cartaPrepagata;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -34,6 +54,11 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	public CartaPrepagata getCartaPrepagata() {
 		return cartaPrepagata;
 	}
+	
+	public String getTipologia() {
+		return tipologia;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

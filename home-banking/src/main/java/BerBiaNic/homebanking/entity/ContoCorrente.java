@@ -1,16 +1,13 @@
 package BerBiaNic.homebanking.entity;
 
-import java.util.*;
 
 public class ContoCorrente{
 
-	private final int numero;
-	private final String iban;
+	private int numero;
+	private String iban;
 	private double saldo_disponibile;
 	private double saldo_contabile;
-	private final Account account;
-	private Set<CartaDiDebito> listaCarteDiDebito;
-	private Set<Operazione> insiemeOperazioni;
+	private Account account;
 
 	public ContoCorrente(int numero, String iban, double saldo_disponibile, double saldo_contabile, Account account) {
 		this.numero = numero;
@@ -18,24 +15,6 @@ public class ContoCorrente{
 		this.saldo_disponibile = saldo_disponibile;
 		this.saldo_contabile = saldo_contabile;
 		this.account = account;
-		this.listaCarteDiDebito = new HashSet<CartaDiDebito>();
-		this.insiemeOperazioni = new TreeSet<Operazione>();
-	}
-	
-	public boolean inserisciCartaDiDebito(CartaDiDebito cdd) {
-		return listaCarteDiDebito.add(cdd);
-	}
-	
-	public boolean rimuoviCartaDiDebito(CartaDiDebito cdd) {
-		return listaCarteDiDebito.remove(cdd);
-	}
-	
-	public boolean inserisciOperazione(Operazione op) {
-		return insiemeOperazioni.add(op);
-	}
-	
-	public boolean rimuoviOperazione(Operazione op) {
-		return insiemeOperazioni.remove(op);
 	}
 
 	public int getNumero() {
@@ -57,13 +36,13 @@ public class ContoCorrente{
 	public Account getAccount() {
 		return account;
 	}
-	
-	public Set<Operazione> getInsiemeOperazioni() {
-		return insiemeOperazioni;
+
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
-	
-	public Set<CartaDiDebito> getListaCarteDiDebito(){
-		return listaCarteDiDebito;
+
+	public void setIban(String iban) {
+		this.iban = iban;
 	}
 
 	public void setSaldo_disponibile(double saldo_disponibile) {
@@ -73,13 +52,9 @@ public class ContoCorrente{
 	public void setSaldo_contabile(double saldo_contabile) {
 		this.saldo_contabile = saldo_contabile;
 	}
-	
-	public void setInsiemeOperazioni(Set<Operazione> insiemeOperazioni) {
-		this.insiemeOperazioni = insiemeOperazioni;
-	}
-	
-	public void setListaCarteDiDebito(Set<CartaDiDebito> listaCarteDiDebito) {
-		this.listaCarteDiDebito = listaCarteDiDebito;
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	@Override

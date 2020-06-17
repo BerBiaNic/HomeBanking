@@ -1,17 +1,15 @@
 package BerBiaNic.homebanking.entity;
 
 import java.sql.Date;
-import java.util.TreeSet;
 
 public class CartaPrepagata {
 
-	private final int numero;
+	private int numero;
 	private double saldoContabile;
 	private double saldoDisponibile;
 	private Date dataDiScadenza;
-	private final int cvv;
-	private final Account account;
-	private TreeSet<OperazionePrepagata> operazioniPrepagata;
+	private int cvv;
+	private Account account;
 	
 	public CartaPrepagata(int numero, double saldoContabile, double saldoDisponibile, Date dataDiScadenza, int cvv, Account account) {
 		this.numero = numero;
@@ -20,7 +18,6 @@ public class CartaPrepagata {
 		this.dataDiScadenza = dataDiScadenza;
 		this.cvv = cvv;
 		this.account = account;
-		operazioniPrepagata = new TreeSet<>();
 	}
 
 	public int getNumero() {
@@ -47,6 +44,10 @@ public class CartaPrepagata {
 		return account;
 	}
 
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+
 	public void setSaldoContabile(double saldoContabile) {
 		this.saldoContabile = saldoContabile;
 	}
@@ -57,6 +58,14 @@ public class CartaPrepagata {
 
 	public void setDataDiScadenza(Date dataDiScadenza) {
 		this.dataDiScadenza = dataDiScadenza;
+	}
+
+	public void setCvv(int cvv) {
+		this.cvv = cvv;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	@Override
@@ -84,18 +93,4 @@ public class CartaPrepagata {
 		return "Carta prepagata di " + account.getNomeCognome() + "\nnumero: " + numero + ", saldo contabile: " + saldoContabile + ", saldo disponibile: " +
 				"\ndata di scadenza: " + dataDiScadenza.toString() + ", cvv: " + cvv;
 	}
-
-	public boolean add(OperazionePrepagata o) {
-		return operazioniPrepagata.add(o);
-	}
-	
-	public TreeSet<OperazionePrepagata> getOperazioniPrepagata(){
-		return operazioniPrepagata;
-	}
-	
-	public boolean remove(OperazionePrepagata o) {
-		return operazioniPrepagata.remove(o);
-	}
-	
-	
 }

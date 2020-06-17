@@ -4,12 +4,12 @@ import java.sql.Date;
 
 public class Operazione implements Comparable<Operazione> {
 
-	private final int id;
-	private final Date data;
-	private final double importo;
-	private final String tipologia;
-	private final ContoCorrente conto_corrente;
-	private final CartaDiDebito carta_di_debito;
+	private int id;
+	private Date data;
+	private double importo;
+	private String tipologia;
+	private ContoCorrente conto_corrente;
+	private CartaDiDebito carta_di_debito;
 	
 	public Operazione(int id, Date data, double importo, String tipologia, ContoCorrente conto_corrente,
 			CartaDiDebito carta_di_debito) {
@@ -45,6 +45,30 @@ public class Operazione implements Comparable<Operazione> {
 		return carta_di_debito;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public void setImporto(double importo) {
+		this.importo = importo;
+	}
+
+	public void setTipologia(String tipologia) {
+		this.tipologia = tipologia;
+	}
+
+	public void setConto_corrente(ContoCorrente conto_corrente) {
+		this.conto_corrente = conto_corrente;
+	}
+
+	public void setCarta_di_debito(CartaDiDebito carta_di_debito) {
+		this.carta_di_debito = carta_di_debito;
+	}
+
 	public int hashCode() {
 		int hash = 37;
 		hash = hash * 37 + id;

@@ -5,16 +5,14 @@ import java.util.Set;
 
 public class Account {
 
-	private final Cliente cliente;
-	private final int id;
+	private Cliente cliente;
+	private int id;
 	private String username;
 	private String password;
-	private final String email;
-	private final long improntaDigitale;
+	private String email;
+	private long improntaDigitale;
 	private String dispositiviAssociati;
-	private final String ibanContoCorrente;
-	
-	private Set<CartaPrepagata> cartePrepagate;
+	private String ibanContoCorrente;
 
 	public Account(Cliente cliente, int id, String username, String password, String email, long improntaDigitale,
 			String dispositiviAssociati, String ibanContoCorrente) {
@@ -26,7 +24,6 @@ public class Account {
 		this.improntaDigitale = improntaDigitale;
 		this.dispositiviAssociati = dispositiviAssociati;
 		this.ibanContoCorrente = ibanContoCorrente;
-		this.cartePrepagate = new HashSet<>();
 	}
 
 	public Cliente getCliente() {
@@ -39,14 +36,6 @@ public class Account {
 
 	public int getId() {
 		return id;
-	}
-
-	public boolean AggiungiCarta(CartaPrepagata c) {
-		return cartePrepagate.add(c);
-	}
-
-	public boolean RimuoviCarta(CartaPrepagata c) {
-		return cartePrepagate.remove(c);
 	}
 
 	public String getUsername() {
@@ -73,6 +62,14 @@ public class Account {
 		return ibanContoCorrente;
 	}
 
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -81,12 +78,20 @@ public class Account {
 		this.password = password;
 	}
 
-	public void setDispositiviAssociati(String dispositiviAssociati) {
-		this.dispositiviAssociati = dispositiviAssociati;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public void setCartePrepagate(Set<CartaPrepagata> cartePrepagate) {
-		this.cartePrepagate = cartePrepagate;
+	public void setImprontaDigitale(long improntaDigitale) {
+		this.improntaDigitale = improntaDigitale;
+	}
+
+	public void setIbanContoCorrente(String ibanContoCorrente) {
+		this.ibanContoCorrente = ibanContoCorrente;
+	}
+
+	public void setDispositiviAssociati(String dispositiviAssociati) {
+		this.dispositiviAssociati = dispositiviAssociati;
 	}
 
 	@Override

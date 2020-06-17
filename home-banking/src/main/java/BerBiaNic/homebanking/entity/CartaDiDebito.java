@@ -5,13 +5,12 @@ import java.util.*;
 
 public class CartaDiDebito {
 	
-	private final int numero;
-	private final String iban;
-	private final Date data_di_scadenza;
-	private final int cvv;
-	private final int pin;
-	private final ContoCorrente conto_corrente;
-	private Set<Operazione> insiemeOperazioni;
+	private int numero;
+	private String iban;
+	private Date data_di_scadenza;
+	private int cvv;
+	private int pin;
+	private ContoCorrente conto_corrente;
 	
 	public CartaDiDebito(int numero, String iban, Date data_di_scadenza, int cvv, int pin,
 			ContoCorrente conto_corrente) {
@@ -21,20 +20,6 @@ public class CartaDiDebito {
 		this.cvv = cvv;
 		this.pin = pin;
 		this.conto_corrente = conto_corrente;
-		this.insiemeOperazioni = new TreeSet<Operazione>();
-	}
-	
-	public boolean aggiungiOperazione(Operazione op) {
-		return insiemeOperazioni.add(op);
-	}
-	
-	public boolean rimuoviOperazione(Operazione op) {
-		return insiemeOperazioni.remove(op);
-	}
-
-
-	public Set<Operazione> getInsiemeOperazioni() {
-		return insiemeOperazioni;
 	}
 
 	public int getNumero() {
@@ -61,10 +46,30 @@ public class CartaDiDebito {
 		return conto_corrente;
 	}
 	
-	public void setInsiemeOperazioni(Set<Operazione> insiemeOperazioni) {
-		this.insiemeOperazioni = insiemeOperazioni;
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
-	
+
+	public void setIban(String iban) {
+		this.iban = iban;
+	}
+
+	public void setData_di_scadenza(Date data_di_scadenza) {
+		this.data_di_scadenza = data_di_scadenza;
+	}
+
+	public void setCvv(int cvv) {
+		this.cvv = cvv;
+	}
+
+	public void setPin(int pin) {
+		this.pin = pin;
+	}
+
+	public void setConto_corrente(ContoCorrente conto_corrente) {
+		this.conto_corrente = conto_corrente;
+	}
+
 	public int hashCode() {
 		int hash = 37;
 		hash = hash * 37 + numero;

@@ -4,14 +4,14 @@ import java.sql.Date;
 
 public class Cliente {
 
-	private final String codiceFiscale;
-	private final String cognome;
-	private final String nome;
-	private final String cittaDiNascita;
-	private final Date dataDinascita;
-	private final String numeroDiTelefono;
-	private final String indirizzoDiResidenza;
-	private final String cittaDiResidenza;
+	private String codiceFiscale;
+	private String cognome;
+	private String nome;
+	private String cittaDiNascita;
+	private Date dataDinascita;
+	private String numeroDiTelefono;
+	private String indirizzoDiResidenza;
+	private String cittaDiResidenza;
 
 	public Cliente(String codiceFiscale, String cognome, String nome, String cittaDiNascita, Date dataDinascita,
 			String numeroDiTelefono, String indirizzoDiResidenza, String cittaDiResidenza) {
@@ -55,6 +55,38 @@ public class Cliente {
 
 	public String getCittaDiResidenza() {
 		return cittaDiResidenza;
+	}
+
+	public void setCodiceFiscale(String codiceFiscale) {
+		this.codiceFiscale = codiceFiscale;
+	}
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setCittaDiNascita(String cittaDiNascita) {
+		this.cittaDiNascita = cittaDiNascita;
+	}
+
+	public void setDataDinascita(Date dataDinascita) {
+		this.dataDinascita = dataDinascita;
+	}
+
+	public void setNumeroDiTelefono(String numeroDiTelefono) {
+		this.numeroDiTelefono = numeroDiTelefono;
+	}
+
+	public void setIndirizzoDiResidenza(String indirizzoDiResidenza) {
+		this.indirizzoDiResidenza = indirizzoDiResidenza;
+	}
+
+	public void setCittaDiResidenza(String cittaDiResidenza) {
+		this.cittaDiResidenza = cittaDiResidenza;
 	}
 
 	@Override
