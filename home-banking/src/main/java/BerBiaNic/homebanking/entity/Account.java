@@ -1,8 +1,5 @@
 package BerBiaNic.homebanking.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Account {
 
 	private Cliente cliente;
@@ -13,9 +10,10 @@ public class Account {
 	private long improntaDigitale;
 	private String dispositiviAssociati;
 	private String ibanContoCorrente;
+	private String codiceFiscale;
 
 	public Account(Cliente cliente, int id, String username, String password, String email, long improntaDigitale,
-			String dispositiviAssociati, String ibanContoCorrente) {
+			String dispositiviAssociati, String ibanContoCorrente, String codiceFiscale) {
 		this.cliente = cliente;
 		this.id = id;
 		this.username = username;
@@ -24,6 +22,7 @@ public class Account {
 		this.improntaDigitale = improntaDigitale;
 		this.dispositiviAssociati = dispositiviAssociati;
 		this.ibanContoCorrente = ibanContoCorrente;
+		this.codiceFiscale = codiceFiscale;
 	}
 
 	public Cliente getCliente() {
@@ -62,6 +61,10 @@ public class Account {
 		return ibanContoCorrente;
 	}
 
+	public String getCodiceFiscale() {
+		return codiceFiscale;
+	}
+
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
@@ -92,6 +95,10 @@ public class Account {
 
 	public void setDispositiviAssociati(String dispositiviAssociati) {
 		this.dispositiviAssociati = dispositiviAssociati;
+	}
+
+	public void setCodiceFiscale(String codiceFiscale) {
+		this.codiceFiscale = codiceFiscale;
 	}
 
 	@Override

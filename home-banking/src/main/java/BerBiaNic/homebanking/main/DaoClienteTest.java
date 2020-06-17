@@ -16,7 +16,7 @@ import BerBiaNic.homebanking.dao.*;
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.*;
 
-public class Main {
+public class DaoClienteTest {
 	public static void main(String[] args) throws SQLException, IOException, InterruptedException, ExecutionException {
 		
 		Database db = new Database();
