@@ -1,37 +1,42 @@
 package BerBiaNic.homebanking.dao;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
-public class DaoCartaDiDebito implements Dao {
+import BerBiaNic.homebanking.entity.CartaDiDebito;
+
+public class DaoCartaDiDebito implements Dao<CartaDiDebito, Integer> {
 
 	@Override
-	public Future getOne(Object primaryKey) {
+	public Future<CartaDiDebito> getOne(Integer primaryKey) {
+		
+		return null;
+	}
+
+	@Override
+	public Future<List<CartaDiDebito>> getAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Future getAll() {
+	public Future<CartaDiDebito> insert(CartaDiDebito element) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Future insert(Object element) {
+	public Future<Integer> delete(Integer primaryKey) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Future delete(Object primaryKey) {
+	public Future<CartaDiDebito> update(CartaDiDebito element) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Future update(Object element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

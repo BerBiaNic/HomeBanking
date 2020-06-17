@@ -111,8 +111,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 			try {
 				PreparedStatement ps = Database.getConnection().prepareStatement(query);
 				ps.setString(1, primaryKey);
-				int res = ps.executeUpdate();
-				return res;
+				return ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return 0;
@@ -123,35 +122,35 @@ public class DaoCliente implements Dao <Cliente,String> {
 
 	@Override
 	public Future<Cliente> update(Cliente element) {
-//		String query = "UPDATE cliente"
-//				+ 	   "SET codice_fiscale = ?, cognome = ?, nome = ?, citta_di_nascita = ?, data_di_nascita = ?,"
-//				+      "numero_di_telefono = ?, indirizzo_di_residenza = ?, citta_di_residenza = ?"
-//				+ 	   "WHERE codice_fiscale = ?";
-//		CompletableFuture.runAsync(() -> {
-//			try {
-//				PreparedStatement ps = Database.getConnection().prepareStatement(query);
-//				String codiceF = element.getCodiceFiscale(); 
-//				String cognome = element.getCognome();
-//				String nome = element.getNome(); 
-//				String cittaN = element.getCittaDiNascita();
-//				Date dataN = element.getDataDinascita(); 
-//				String numeroT = element.getNumeroDiTelefono();
-//				String indirizzoR = element.getIndirizzoDiResidenza();
-//				String cittaR = element.getCittaDiResidenza();
-//				ps.setString(1, codiceF);
-//				ps.setString(2, cognome);
-//				ps.setString(3, nome);
-//				ps.setString(4, cittaN);
-//				ps.setDate(5, dataN);
-//				ps.setString(6, numeroT);
-//				ps.setString(7, indirizzoR);
-//				ps.setString(8, cittaR);
-//				ps.setString(9, codiceF);
-//				ps.executeUpdate();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		});
+		//		String query = "UPDATE cliente"
+		//				+ 	   "SET codice_fiscale = ?, cognome = ?, nome = ?, citta_di_nascita = ?, data_di_nascita = ?,"
+		//				+      "numero_di_telefono = ?, indirizzo_di_residenza = ?, citta_di_residenza = ?"
+		//				+ 	   "WHERE codice_fiscale = ?";
+		//		CompletableFuture.runAsync(() -> {
+		//			try {
+		//				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+		//				String codiceF = element.getCodiceFiscale(); 
+		//				String cognome = element.getCognome();
+		//				String nome = element.getNome(); 
+		//				String cittaN = element.getCittaDiNascita();
+		//				Date dataN = element.getDataDinascita(); 
+		//				String numeroT = element.getNumeroDiTelefono();
+		//				String indirizzoR = element.getIndirizzoDiResidenza();
+		//				String cittaR = element.getCittaDiResidenza();
+		//				ps.setString(1, codiceF);
+		//				ps.setString(2, cognome);
+		//				ps.setString(3, nome);
+		//				ps.setString(4, cittaN);
+		//				ps.setDate(5, dataN);
+		//				ps.setString(6, numeroT);
+		//				ps.setString(7, indirizzoR);
+		//				ps.setString(8, cittaR);
+		//				ps.setString(9, codiceF);
+		//				ps.executeUpdate();
+		//			} catch (SQLException e) {
+		//				e.printStackTrace();
+		//			}
+		//		});
 		return getOne(element.getCodiceFiscale());
 	}
 
