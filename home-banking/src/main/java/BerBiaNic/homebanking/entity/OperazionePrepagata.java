@@ -8,15 +8,15 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	private Date data;
 	private double importo;
 	private String tipologia;
-	private Account destinatario;
+	private String cartaDestinatario;
 	private CartaPrepagata cartaPrepagata;
 	
-	public OperazionePrepagata(int id, Date data, double importo,String tipologia, Account destinatario, CartaPrepagata cartaPrepagata) {
+	public OperazionePrepagata(int id, Date data, double importo,String tipologia, String destinatario, CartaPrepagata cartaPrepagata) {
 		this.id = id;
 		this.data = data;
 		this.importo = importo;
 		this.tipologia = tipologia;
-		this.destinatario = destinatario;
+		this.cartaDestinatario = destinatario;
 		this.cartaPrepagata = cartaPrepagata;
 	}
 	
@@ -32,8 +32,8 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	public void setImporto(double importo) {
 		this.importo = importo;
 	}
-	public void setDestinatario(Account destinatario) {
-		this.destinatario = destinatario;
+	public void setDestinatario(String destinatario) {
+		this.cartaDestinatario = destinatario;
 	}
 	public void setCartaPrepagata(CartaPrepagata cartaPrepagata) {
 		this.cartaPrepagata = cartaPrepagata;
@@ -48,8 +48,8 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	public double getImporto() {
 		return importo;
 	}
-	public Account getDestinatario() {
-		return destinatario;
+	public String getDestinatario() {
+		return cartaDestinatario;
 	}
 	public CartaPrepagata getCartaPrepagata() {
 		return cartaPrepagata;
@@ -81,7 +81,7 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	@Override
 	public String toString() {
 		return tipologia + ", effettuato da " + cartaPrepagata.getAccount().getNomeCognome() + 
-				"\nid: " + id + ", data: " + data + ", importo: " + importo + ", a " + destinatario.getNomeCognome();
+				"\nid: " + id + ", data: " + data + ", importo: " + importo + ", a " + cartaDestinatario;
 	}
 	@Override
 	public int compareTo(OperazionePrepagata o) {

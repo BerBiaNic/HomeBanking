@@ -15,7 +15,7 @@ public class Account {
 	private String ibanContoCorrente;
 
 	public Account(Cliente cliente, int id, String username, String password, String email, long improntaDigitale,
-			String dispositiviAssociati, String ibanContoCorrente) {
+			String dispositiviAssociati) {
 		this.cliente = cliente;
 		this.id = id;
 		this.username = username;
@@ -23,7 +23,7 @@ public class Account {
 		this.email = email;
 		this.improntaDigitale = improntaDigitale;
 		this.dispositiviAssociati = dispositiviAssociati;
-		this.ibanContoCorrente = ibanContoCorrente;
+
 	}
 
 	public Cliente getCliente() {
