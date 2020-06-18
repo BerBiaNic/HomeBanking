@@ -1,5 +1,6 @@
 package BerBiaNic.homebanking.dao;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,11 +21,13 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 	public Future<CartaDiDebito> getOne(String primaryKey) {
 		String query = "SELECT * FROM carta_di_debito WHERE numero = ?";
 		CompletableFuture<CartaDiDebito> futureCartaDebito = CompletableFuture.supplyAsync(() -> {
-
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
-				ResultSet rs = ps.executeQuery();
+				rs = ps.executeQuery();
 				rs.next();
 				String numero = rs.getString("numero"); 
 				String iban =  rs.getString("iban");
@@ -32,12 +35,32 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 				int cvv = rs.getInt("cvv");
 				int pin = rs.getInt("pin"); 
 				DaoContoCorrente daoCC = new DaoContoCorrente();
-				ContoCorrente cc = daoCC.getOne(rs.getInt("numero_conto_corrente")).get();
+				ContoCorrente cc = daoCC.getOne(rs.getString("numero_conto_corrente")).get();
 				CartaDiDebito c = new CartaDiDebito(numero, iban, dataS, cvv, pin, cc);
 				return c;
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
+			}finally {
+				if( conn != null ) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}if( ps != null ) {
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}if( rs != null ) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 		return futureCartaDebito;
@@ -48,9 +71,12 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 		String query = "SELECT * FROM carta_di_debito";
 		CompletableFuture<List<CartaDiDebito>> cards = CompletableFuture.supplyAsync(() -> {
 			List<CartaDiDebito> result = new ArrayList<CartaDiDebito>();
+			Connection conn = Database.getConnection();
+			Statement s = null;
+			ResultSet rs = null;
 			try {
-				Statement s = Database.getConnection().createStatement();
-				ResultSet rs = s.executeQuery(query);
+				s = conn.createStatement();
+				rs = s.executeQuery(query);
 				while( rs.next() ) {
 					CartaDiDebito c = getOne(rs.getString("numero")).get();
 					result.add(c);
@@ -59,6 +85,26 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
+			}finally {
+				if( conn != null ) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}if( s != null ) {
+					try {
+						s.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}if( rs != null ) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 		return cards;
@@ -69,10 +115,12 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 		String query = "insert into carta_di_debito(numero, iban, data_di_scadenza, cvv, pin, numero_conto_corrente)" + 
 				"values (?,?,?,?,?,?)";
 		CompletableFuture.runAsync(() -> {
-
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
-				ResultSet rs = ps.executeQuery();
+				ps = conn.prepareStatement(query);
+				rs = ps.executeQuery();
 				rs.next();
 				String numero = rs.getString("numero"); 
 				String iban =  rs.getString("iban");
@@ -80,7 +128,7 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 				int cvv = rs.getInt("cvv");
 				int pin = rs.getInt("pin"); 
 				DaoContoCorrente daoCC = new DaoContoCorrente();
-				ContoCorrente cc = daoCC.getOne(rs.getInt("numero_conto_corrente")).get();
+				ContoCorrente cc = daoCC.getOne(rs.getString("numero_conto_corrente")).get();
 				ps.setString(1, numero);
 				ps.setString(2, iban);
 				ps.setDate(3, dataS);
@@ -90,6 +138,26 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 				ps.executeUpdate();
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
+			}finally {
+				if( conn != null ) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}if( ps != null ) {
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}if( rs != null ) {
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 		return getOne(element.getNumero());
@@ -97,15 +165,31 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 
 	@Override
 	public Future<Integer> delete(String primaryKey) {
-		String query = "DELETE FROM carta_di_credito WHERE numero = ?";
+		String query = "DELETE FROM carta_di_debito WHERE numero = ?";
 		CompletableFuture<Integer> del = CompletableFuture.supplyAsync(() -> {
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				return ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return 0;
+			}finally{
+				if( conn != null ) {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}if( ps != null ) {
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 		return del;
@@ -121,11 +205,8 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 				e.printStackTrace();
 				return null;
 			}
-			
+
 		});
 		return res;
 	}
-
-
-
 }
