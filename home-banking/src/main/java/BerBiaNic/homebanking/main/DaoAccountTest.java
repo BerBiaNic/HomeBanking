@@ -10,13 +10,10 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
-import BerBiaNic.homebanking.dao.Dao;
-import BerBiaNic.homebanking.dao.DaoAccount;
+import BerBiaNic.homebanking.dao.*;
 import BerBiaNic.homebanking.db.Database;
-import BerBiaNic.homebanking.entity.Account;
-import BerBiaNic.homebanking.entity.Cliente;
+import BerBiaNic.homebanking.entity.*;
 
 public class DaoAccountTest {
 	public static void main(String[] args) throws SQLException, IOException, InterruptedException, ExecutionException {
@@ -32,14 +29,18 @@ public class DaoAccountTest {
 
 		Dao<Account,Integer> daoAccount = new DaoAccount();
 
+		Dao<Cliente,String> dc = new DaoCliente();
+		Cliente cliente = dc.getOne("SSSDRA50A13C842B").get();
+		Account a = new Account(cliente,  2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac");
+		System.out.println("Inserimento account:\n" + daoAccount.insert(a).get());
 
-		System.out.println("------------------------------- L I S T A		A C C O U N T S -------------------------------\n");
-		Future<List<Account>> futureClients = daoAccount.getAll();
-		List<Account> accounts = futureClients.get();
-		for(Account a: accounts) {
-			System.out.println(a);
-			System.out.println();
-		}
+//		System.out.println("------------------------------- L I S T A		A C C O U N T S -------------------------------\n");
+//		Future<List<Account>> futureClients = daoAccount.getAll();
+//		List<Account> accounts = futureClients.get();
+//		for(Account a: accounts) {
+//			System.out.println(a);
+//			System.out.println();
+//		}
 
 		//		System.out.println("------------------------------- S I N G O L O		A C C O U N T -------------------------------\n");
 		//		Future<Account> futureCliente = daoAccount.getOne(1);
@@ -54,17 +55,23 @@ public class DaoAccountTest {
 		//		Future<Cliente> futureAddClient = daoAccount.insert(clienteAdd);
 		//		System.out.println("Cliente " + futureAddClient.get().getNome() + " - " + futureAddClient.get().getCognome() + " aggiunto!");
 
-		System.out.println("------------------------------- A G G I U N G I		A C C O U N T -------------------------------\n");
-		Cliente clienteAdd = new Cliente("SSSDRA50A13C842B", "Sossini", "Dario", "COLLALTO", Date.valueOf(LocalDate.of(1950, 01, 13)), "393778254710", "Via Salita Truglio, 9", "SALERNO");
-		Account accountAdd2 = new Account(clienteAdd, 2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac");
-
-		((CompletableFuture<Account>)daoAccount.insert(accountAdd2)).thenApply( value ->{
-			System.out.println(value);
-			return daoAccount.delete(accountAdd2.getId());
-		}).thenAccept( a ->{
-			System.out.println("return");
-			System.out.println(a);
-		});
+//		System.out.println("------------------------------- A G G I U N G I		A C C O U N T -------------------------------\n");
+//		DaoCliente daoCliente = new DaoCliente();
+//		
+//		Cliente clienteAdd = new Cliente("SSSDRA50A13C842B", "Sossini", "Dario", "COLLALTO", Date.valueOf(LocalDate.of(1950, 01, 13)), "393778254710", "Via Salita Truglio, 9", "SALERNO");
+////		daoCliente.insert(clienteAdd);
+//		
+//		Account accountAdd2 = new Account(clienteAdd, 2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac");
+//		Future<Account> fa = daoAccount.insert(accountAdd2);
+//		System.out.println(fa.get());
+		
+//		((CompletableFuture<Account>)daoAccount.insert(accountAdd2)).thenApply( value ->{
+//			System.out.println(value);
+//			return daoAccount.delete(accountAdd2.getId());
+//		}).thenAccept( a ->{
+//			System.out.println("return");
+//			System.out.println(a);
+//		});
 		
 //		System.out.println("Account " + accountAdd2.getId() + " aggiunto!");
 	

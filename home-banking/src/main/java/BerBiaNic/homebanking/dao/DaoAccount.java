@@ -19,7 +19,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 
 	@Override
 	public Future<Account> getOne(Integer primaryKey) {
-		String query = "SELECT * FROM account WHERE  id = ?";
+		String query = "SELECT * FROM account WHERE id = ?";
 		CompletableFuture<Account> account = CompletableFuture.supplyAsync(() -> {
 			Connection conn = Database.getConnection();
 			PreparedStatement ps = null;
