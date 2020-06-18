@@ -122,8 +122,8 @@ public class DaoAccount implements Dao<Account,Integer > {
 
 	@Override
 	public Future<Account> insert(Account element) {
-		String query = "insert into cliente(id, username, password, email, impronta_digitale, dispositivi_associati)" + 
-				"values (?,?,?,?,?,?)";
+		String query = "insert into account(id, username, password, email, impronta_digitale, dispositivi_associati, codice_fiscale_cliente)" + 
+				"values (?,?,?,?,?,?,?)";
 
 		CompletableFuture.runAsync(() -> {
 			Connection conn = Database.getConnection();
@@ -138,6 +138,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 				String email = element.getEmail();
 				long improntaDigitale = element.getImprontaDigitale();
 				String dispositiviAssociati = element.getDispositiviAssociati();
+				String codiceFiscaleC = element.getCliente().getCodiceFiscale();
 
 				ps.setInt(1, id);
 				ps.setString(2, username);
@@ -145,6 +146,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 				ps.setString(4, email);
 				ps.setLong(5, improntaDigitale);
 				ps.setString(6, dispositiviAssociati);
+				ps.setString(7, codiceFiscaleC);
 
 				ps.executeUpdate();
 			} catch (SQLException e) {
