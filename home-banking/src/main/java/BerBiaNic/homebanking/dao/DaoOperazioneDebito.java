@@ -14,7 +14,6 @@ import java.util.concurrent.Future;
 
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.CartaDiDebito;
-import BerBiaNic.homebanking.entity.CartaPrepagata;
 import BerBiaNic.homebanking.entity.OperazioneCartaDebito;
 
 public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
