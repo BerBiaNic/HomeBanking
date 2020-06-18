@@ -18,6 +18,7 @@ public class CartaPrepagata {
 		this.saldoDisponibile = saldoDisponibile;
 		this.dataDiScadenza = dataDiScadenza;
 		this.cvv = cvv;
+		this.pin = pin;
 		this.account = account;
 	}
 
@@ -80,7 +81,7 @@ public class CartaPrepagata {
 	@Override
 	public String toString() {
 		return "Carta prepagata di " + account.getNomeCognome() + "\nnumero: " + numero + ", saldo contabile: " + saldoContabile + ", saldo disponibile: " +
-				saldoDisponibile + "\ndata di scadenza: " + dataDiScadenza.toString() + ", cvv: " + cvv + "PIN: " + pin;
+				"\ndata di scadenza: " + dataDiScadenza.toString() + ", cvv: " + cvv;
 	}
 
 	@Override
