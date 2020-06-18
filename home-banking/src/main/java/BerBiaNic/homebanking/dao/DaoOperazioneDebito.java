@@ -1,18 +1,12 @@
 package BerBiaNic.homebanking.dao;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import BerBiaNic.homebanking.db.Database;
+
 import BerBiaNic.homebanking.entity.*;
 
-public class DaoOperazione implements Dao<OperazioneCartaDebito, Integer> {
+public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito, Integer> {
 
 	@Override
 	public Future<OperazioneCartaDebito> getOne(Integer primaryKey) {
