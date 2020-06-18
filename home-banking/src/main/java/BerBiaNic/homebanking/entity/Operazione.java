@@ -9,7 +9,9 @@ public class Operazione implements Comparable<Operazione> {
 	private double importo;
 	private String tipologia;
 	private ContoCorrente conto_corrente;
+	private String iban_destinatario;
 	private CartaDiDebito carta_di_debito;
+	private String numero_carta_destinatario;
 	
 	public Operazione(int id, Date data, double importo, String tipologia, ContoCorrente conto_corrente,
 			CartaDiDebito carta_di_debito) {
