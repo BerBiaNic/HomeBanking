@@ -1,5 +1,6 @@
 package BerBiaNic.homebanking.dao;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,31 +20,55 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 
 	@Override
 	public Future<CartaPrepagata> getOne(String primaryKey) {
+
+
 		String query = "SELECT * FROM carta_prepagata WHERE numero = ?";
 		CompletableFuture<CartaPrepagata> carta = CompletableFuture.supplyAsync(() -> {
-
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+
+				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
-				ResultSet rs = ps.executeQuery();
+				rs = ps.executeQuery();
 				rs.next();
-				
+
 				DaoAccount daoAccount = new DaoAccount();
-				
+
 				Account a = daoAccount.getOne(rs.getInt("id")).get();
-				
+
 				String numero = rs.getString("numero");
 				double saldoContabile = rs.getDouble("saldo_contabile");
 				double saldoDisponibile = rs.getDouble("saldo_disponibile");
 				Date dataScadenza = rs.getDate("data_di_scadenza");
 				int cvv = rs.getInt("cvv");
 				int pin = rs.getInt("pin");
-				
+
 				CartaPrepagata c = new CartaPrepagata(numero,saldoContabile,saldoDisponibile,dataScadenza,cvv,pin,a);
 				return c;
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
+			} finally {
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(ps != null)
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(rs != null)
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		return carta;
@@ -54,9 +79,12 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 		String query = "SELECT * FROM carta_prepagata";
 		CompletableFuture<List<CartaPrepagata>> carte = CompletableFuture.supplyAsync(() -> {
 			List<CartaPrepagata> result = new ArrayList<CartaPrepagata>();
+			ResultSet rs = null;
+			Statement s = null;
+			Connection conn = Database.getConnection();
 			try {
-				Statement s = Database.getConnection().createStatement();
-				ResultSet rs = s.executeQuery(query);	
+				s = conn.createStatement();
+				rs = s.executeQuery(query);	
 				while(rs.next()) {
 					CartaPrepagata carta = getOne(rs.getString("numero")).get();
 					result.add(carta);
@@ -65,6 +93,26 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
+			}finally {
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				
+				if(s != null)
+					try {
+						s.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(rs != null)
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		return carte;
@@ -75,8 +123,10 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 		String query = "INSERT INTO carta_prepagata(numero, saldo_contabile, saldo_disponibile, data_di_scadenza, cvv, pin, id)" +
 				"VALUES(?,?,?,?,?,?,?)";
 		CompletableFuture.runAsync(() -> {
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setString(1, element.getNumero());
 				ps.setDouble(2, element.getSaldoContabile());
 				ps.setDouble(3, element.getSaldoDisponibile());
@@ -87,6 +137,19 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}finally {
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(ps != null)
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		return getOne(element.getNumero());
@@ -96,14 +159,28 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 	public Future<Integer> delete(String primaryKey) {
 		String query = "DELETE FROM carta_prepagata WHERE numero = ?";
 		CompletableFuture<Integer> del= CompletableFuture.supplyAsync(() -> {
-
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				return ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return 0;
+			}finally {
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(ps != null)
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		return del;
@@ -112,17 +189,17 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 	@Override
 	public Future<CartaPrepagata> update(CartaPrepagata element) {
 		CompletableFuture<CartaPrepagata> res = CompletableFuture.supplyAsync(() ->{
+			return delete(element.getNumero());
+		}).thenApply(value ->{
 			try {
-				delete(element.getNumero());
 				return insert(element).get();
-			} catch (Exception e) {
+			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
 			}
 		});
-		
 		return res;
 	}
 
-	
+
 }
