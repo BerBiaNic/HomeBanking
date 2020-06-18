@@ -3,12 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>BerBiaNic</groupId>
+	<packaging>war</packaging>
 	<artifactId>home-banking</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
+		<jetty-version>9.4.29.v20200521</jetty-version>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
 
 	<dependencies>
@@ -35,6 +38,27 @@
 			<version>1.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-annotations</artifactId>
+			<version>${jetty-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.bundles</groupId>
+			<artifactId>jaxrs-ri</artifactId>
+			<version>2.31</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<version>2.31</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -50,6 +74,11 @@
 						</manifest>
 					</archive>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty-version}</version>
 			</plugin>
 		</plugins>
 	</build>
