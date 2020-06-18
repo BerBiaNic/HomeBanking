@@ -5,14 +5,14 @@ import java.util.*;
 
 public class CartaDiDebito {
 	
-	private int numero;
+	private String numero;
 	private String iban;
 	private Date data_di_scadenza;
 	private int cvv;
 	private int pin;
 	private ContoCorrente conto_corrente;
 	
-	public CartaDiDebito(int numero, String iban, Date data_di_scadenza, int cvv, int pin,
+	public CartaDiDebito(String numero, String iban, Date data_di_scadenza, int cvv, int pin,
 			ContoCorrente conto_corrente) {
 		this.numero = numero;
 		this.iban = iban;
@@ -22,7 +22,7 @@ public class CartaDiDebito {
 		this.conto_corrente = conto_corrente;
 	}
 
-	public int getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
@@ -46,7 +46,7 @@ public class CartaDiDebito {
 		return conto_corrente;
 	}
 	
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 
@@ -70,10 +70,12 @@ public class CartaDiDebito {
 		this.conto_corrente = conto_corrente;
 	}
 
+	@Override
 	public int hashCode() {
-		int hash = 37;
-		hash = hash * 37 + numero;
-		return hash;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		return result;
 	}
 	
 	@Override
@@ -82,12 +84,16 @@ public class CartaDiDebito {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof CartaDiDebito))
+		if (getClass() != obj.getClass())
 			return false;
 		CartaDiDebito other = (CartaDiDebito) obj;
-		return numero==other.numero;
+		if (numero == null) {
+			if (other.numero != null)
+				return false;
+		}
+		return numero.equals(other.numero);
 	}
-	
+
 	@Override
 	public String toString() {
 		return " --------------------- CARTA DI DEBITO ---------------------\n "

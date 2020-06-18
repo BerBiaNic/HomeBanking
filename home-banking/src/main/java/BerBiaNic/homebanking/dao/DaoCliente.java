@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import BerBiaNic.homebanking.db.Database;
@@ -51,19 +52,11 @@ public class DaoCliente implements Dao <Cliente,String> {
 				Statement s = Database.getConnection().createStatement();
 				ResultSet rs = s.executeQuery(query);
 				while( rs.next() ) {
-					String codiceF = rs.getString("codice_fiscale"); 
-					String cognome =  rs.getString("cognome");
-					String nome = rs.getString("nome"); 
-					String cittaN = rs.getString("citta_di_nascita");
-					Date dataN = rs.getDate("data_di_nascita"); 
-					String numeroT = rs.getString("numero_di_telefono");
-					String indirizzoR =  rs.getString("indirizzo_di_residenza");
-					String cittaR = rs.getString("citta_di_residenza");
-					Cliente c = new Cliente(codiceF, cognome, nome, cittaN, dataN, numeroT, indirizzoR, cittaR);
+					Cliente c = getOne(rs.getString("codice_fiscale")).get();
 					result.add(c);
 				}
 				return result;
-			} catch (SQLException e) {
+			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
 			}
@@ -107,7 +100,6 @@ public class DaoCliente implements Dao <Cliente,String> {
 	public Future<Integer> delete(String primaryKey) {
 		String query = "DELETE FROM cliente WHERE codice_fiscale = ?";
 		CompletableFuture<Integer> del= CompletableFuture.supplyAsync(() -> {
-
 			try {
 				PreparedStatement ps = Database.getConnection().prepareStatement(query);
 				ps.setString(1, primaryKey);
