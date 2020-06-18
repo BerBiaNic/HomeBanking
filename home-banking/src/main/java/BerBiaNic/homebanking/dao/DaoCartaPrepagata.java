@@ -8,12 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.CartaPrepagata;
-import BerBiaNic.homebanking.entity.Cliente;
 
 public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 
@@ -41,7 +41,7 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 				
 				CartaPrepagata c = new CartaPrepagata(numero,saldoContabile,saldoDisponibile,dataScadenza,cvv,pin,a);
 				return c;
-			} catch (SQLException e) {
+			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
 			}
@@ -62,7 +62,7 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 					result.add(carta);
 				}		
 				return result;
-			} catch (SQLException e) {
+			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
 			}

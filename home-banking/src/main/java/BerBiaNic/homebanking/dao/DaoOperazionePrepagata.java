@@ -12,7 +12,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import BerBiaNic.homebanking.db.Database;
-import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.CartaPrepagata;
 import BerBiaNic.homebanking.entity.OperazionePrepagata;
 
@@ -82,7 +81,7 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 				ps.setString(4, element.getTipologia());
 				ps.setString(5, element.getDestinatario());
 				ps.setString(6, element.getCartaPrepagata().getNumero());
-				
+
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -122,8 +121,4 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 
 		return res;
 	}
-}
-
-
-
 }

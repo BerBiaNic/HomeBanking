@@ -36,10 +36,8 @@ public class DaoAccount implements Dao<Account,Integer > {
 				String email = rs.getString("email");
 				long improntaDigitale = rs.getLong("impronta_digitale"); 
 				String dispositiviAssociati = rs.getString("dispositivi_associati");
-				String ibanContoCorrente =  rs.getString("iban_conto_corrente");
-				String codiceFiscale = rs.getString("codice_fiscale");
 
-				Account a = new Account(c, id, username, password, email, improntaDigitale, dispositiviAssociati, ibanContoCorrente, codiceFiscale);
+				Account a = new Account(c, id, username, password, email, improntaDigitale, dispositiviAssociati);
 				return a;
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
@@ -73,8 +71,8 @@ public class DaoAccount implements Dao<Account,Integer > {
 
 	@Override
 	public Future<Account> insert(Account element) {
-		String query = "insert into cliente(id, username, password, email, impronta_digitale, dispositivi_associati, iban_conto_corrente, codice_fiscale)" + 
-				"values (?,?,?,?,?,?,?,?)";
+		String query = "insert into cliente(id, username, password, email, impronta_digitale, dispositivi_associati)" + 
+				"values (?,?,?,?,?,?)";
 		CompletableFuture.runAsync(() -> {
 
 			try {
@@ -86,17 +84,13 @@ public class DaoAccount implements Dao<Account,Integer > {
 				String email = element.getEmail();
 				long improntaDigitale = element.getImprontaDigitale();
 				String dispositiviAssociati = element.getDispositiviAssociati();
-				String ibanContoCorrente =  element.getIbanContoCorrente();
-				String codiceFiscale = element.getCodiceFiscale();
-
+				
 				ps.setInt(1, id);
 				ps.setString(2, username);
 				ps.setString(3, password);
 				ps.setString(4, email);
 				ps.setLong(5, improntaDigitale);
 				ps.setString(6, dispositiviAssociati);
-				ps.setString(7, ibanContoCorrente);
-				ps.setString(8, codiceFiscale);
 
 				ps.executeUpdate();
 			} catch (SQLException e) {
@@ -135,6 +129,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 				e.printStackTrace();
 				return null;
 			}
+			
 		});
 		return res;
 	}

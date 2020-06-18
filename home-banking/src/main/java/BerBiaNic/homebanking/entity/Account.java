@@ -1,18 +1,16 @@
 package BerBiaNic.homebanking.entity;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class Account {
 
-	private Cliente cliente;
+	
 	private int id;
 	private String username;
 	private String password;
 	private String email;
 	private long improntaDigitale;
 	private String dispositiviAssociati;
-	private String ibanContoCorrente;
+	private Cliente cliente;
 
 	public Account(Cliente cliente, int id, String username, String password, String email, long improntaDigitale,
 			String dispositiviAssociati) {
@@ -58,10 +56,6 @@ public class Account {
 		return dispositiviAssociati;
 	}
 
-	public String getIbanContoCorrente() {
-		return ibanContoCorrente;
-	}
-
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
@@ -84,10 +78,6 @@ public class Account {
 
 	public void setImprontaDigitale(long improntaDigitale) {
 		this.improntaDigitale = improntaDigitale;
-	}
-
-	public void setIbanContoCorrente(String ibanContoCorrente) {
-		this.ibanContoCorrente = ibanContoCorrente;
 	}
 
 	public void setDispositiviAssociati(String dispositiviAssociati) {
@@ -119,6 +109,6 @@ public class Account {
 	@Override
 	public String toString() {
 		return "\nCliente: " + cliente + "\nID: " + id + "\nUsername: " + username + "\nPassword: " + password + "\nE-mail: " + email 
-				+ "\nImpronta digitale: " + improntaDigitale + "\nDispositivi associati: " + dispositiviAssociati + "\nIBAN: " + ibanContoCorrente;
+				+ "\nImpronta digitale: " + improntaDigitale + "\nDispositivi associati: " + dispositiviAssociati + "\n";
 	}
 }

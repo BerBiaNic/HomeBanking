@@ -2,25 +2,24 @@ package BerBiaNic.homebanking.entity;
 
 import java.sql.Date;
 
-public class Operazione implements Comparable<Operazione> {
+public class OperazioneContoCorrente implements Comparable<OperazioneContoCorrente> {
 
 	private int id;
 	private Date data;
 	private double importo;
 	private String tipologia;
-	private ContoCorrente conto_corrente;
-	private String iban_destinatario;
-	private CartaDiDebito carta_di_debito;
-	private String numero_carta_destinatario;
+	private ContoCorrente conto_corrente_proprietario;
+	private String conto_corrente_destinatario;
 	
-	public Operazione(int id, Date data, double importo, String tipologia, ContoCorrente conto_corrente,
-			CartaDiDebito carta_di_debito) {
+	
+	public OperazioneContoCorrente(int id, Date data, double importo, String tipologia, ContoCorrente conto_corrente_proprietario,
+			String conto_corrente_destinatario) {
 		this.id = id;
 		this.data = data;
 		this.importo = importo;
 		this.tipologia = tipologia;
-		this.conto_corrente = conto_corrente;
-		this.carta_di_debito = carta_di_debito;
+		this.conto_corrente_proprietario = conto_corrente_proprietario;
+		this.conto_corrente_destinatario = conto_corrente_destinatario;
 	}
 
 	public int getId() {
@@ -38,15 +37,23 @@ public class Operazione implements Comparable<Operazione> {
 	public String getTipologia() {
 		return tipologia;
 	}
-
-	public ContoCorrente getConto_corrente() {
-		return conto_corrente;
-	}
-
-	public CartaDiDebito getCarta_di_debito() {
-		return carta_di_debito;
-	}
 	
+	public ContoCorrente getConto_corrente_proprietario() {
+		return conto_corrente_proprietario;
+	}
+
+	public String getConto_corrente_destinatario() {
+		return conto_corrente_destinatario;
+	}
+
+	public void setConto_corrente_proprietario(ContoCorrente conto_corrente_proprietario) {
+		this.conto_corrente_proprietario = conto_corrente_proprietario;
+	}
+
+	public void setConto_corrente_destinatario(String conto_corrente_destinatario) {
+		this.conto_corrente_destinatario = conto_corrente_destinatario;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -63,14 +70,6 @@ public class Operazione implements Comparable<Operazione> {
 		this.tipologia = tipologia;
 	}
 
-	public void setConto_corrente(ContoCorrente conto_corrente) {
-		this.conto_corrente = conto_corrente;
-	}
-
-	public void setCarta_di_debito(CartaDiDebito carta_di_debito) {
-		this.carta_di_debito = carta_di_debito;
-	}
-
 	public int hashCode() {
 		int hash = 37;
 		hash = hash * 37 + id;
@@ -82,9 +81,9 @@ public class Operazione implements Comparable<Operazione> {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Operazione))
+		if (!(obj instanceof OperazioneContoCorrente))
 			return false;
-		Operazione other = (Operazione) obj;
+		OperazioneContoCorrente other = (OperazioneContoCorrente) obj;
 		return id==other.id;
 	}
 	
@@ -94,10 +93,8 @@ public class Operazione implements Comparable<Operazione> {
 				+ "id = " + id + ", \tdata = " + data + ", \ttipologia = " + tipologia + "\n";
 	}
 	
-	public int compareTo(Operazione o) {
+	public int compareTo(OperazioneContoCorrente o) {
 		return this.data.compareTo(data);
 	}
-	
-	
 	
 }
