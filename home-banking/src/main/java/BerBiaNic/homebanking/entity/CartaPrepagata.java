@@ -18,6 +18,7 @@ public class CartaPrepagata {
 		this.saldoDisponibile = saldoDisponibile;
 		this.dataDiScadenza = dataDiScadenza;
 		this.cvv = cvv;
+		this.pin = pin;
 		this.account = account;
 	}
 

@@ -36,7 +36,7 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 
 				DaoAccount daoAccount = new DaoAccount();
 
-				Account a = daoAccount.getOne(rs.getInt("id")).get();
+				Account a = daoAccount.getOne(rs.getInt("id_account")).get();
 
 				String numero = rs.getString("numero");
 				double saldoContabile = rs.getDouble("saldo_contabile");
@@ -120,7 +120,7 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 
 	@Override
 	public Future<CartaPrepagata> insert(CartaPrepagata element) {
-		String query = "INSERT INTO carta_prepagata(numero, saldo_contabile, saldo_disponibile, data_di_scadenza, cvv, pin, id)" +
+		String query = "INSERT INTO carta_prepagata(numero, saldo_contabile, saldo_disponibile, data_di_scadenza, cvv, pin, id_account)" +
 				"VALUES(?,?,?,?,?,?,?)";
 		CompletableFuture.runAsync(() -> {
 			Connection conn = Database.getConnection();

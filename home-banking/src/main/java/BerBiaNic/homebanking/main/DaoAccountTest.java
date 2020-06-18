@@ -59,7 +59,7 @@ public class DaoAccountTest {
 //		DaoCliente daoCliente = new DaoCliente();
 //		
 //		Cliente clienteAdd = new Cliente("SSSDRA50A13C842B", "Sossini", "Dario", "COLLALTO", Date.valueOf(LocalDate.of(1950, 01, 13)), "393778254710", "Via Salita Truglio, 9", "SALERNO");
-////		daoCliente.insert(clienteAdd);
+//		daoCliente.insert(clienteAdd);
 //		
 //		Account accountAdd2 = new Account(clienteAdd, 2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac");
 //		Future<Account> fa = daoAccount.insert(accountAdd2);
