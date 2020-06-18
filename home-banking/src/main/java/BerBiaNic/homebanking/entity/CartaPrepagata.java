@@ -80,7 +80,7 @@ public class CartaPrepagata {
 	@Override
 	public String toString() {
 		return "Carta prepagata di " + account.getNomeCognome() + "\nnumero: " + numero + ", saldo contabile: " + saldoContabile + ", saldo disponibile: " +
-				"\ndata di scadenza: " + dataDiScadenza.toString() + ", cvv: " + cvv;
+				saldoDisponibile + "\ndata di scadenza: " + dataDiScadenza.toString() + ", cvv: " + cvv + "PIN: " + pin;
 	}
 
 	@Override

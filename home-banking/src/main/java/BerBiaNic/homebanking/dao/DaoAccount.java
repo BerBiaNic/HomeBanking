@@ -32,7 +32,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 				rs.next();
 
 				DaoCliente cliente = new DaoCliente();
-				Cliente c = cliente.getOne(rs.getString("codice_fiscale")).get();
+				Cliente c = cliente.getOne(rs.getString("codice_fiscale_cliente")).get();
 
 				int id = rs.getInt("id"); 
 				String username =  rs.getString("username");
