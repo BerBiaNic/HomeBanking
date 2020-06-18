@@ -28,7 +28,7 @@ public class Main {
 //			System.out.println("nome: " + rs.getString("nome"));
 //			System.out.println("numero: " + rs.getString("codice_fiscale"));
 //		}
-		
+		/*
 		Dao<Cliente,String> daoAccount = new DaoCliente();
 		
 	
@@ -65,7 +65,7 @@ public class Main {
 //		Cliente clienteAdd = new Cliente("SSSDRA50A13C842B", "Sossini", "Dario", "COLLALTO", Date.valueOf(LocalDate.of(1950, 01, 13)), "393778254710", "Via Salita Truglio, 9", "SALERNO");
 //		Future<Cliente> futureAddClient = daoAccount.insert(clienteAdd);
 //		System.out.println("Cliente " + futureAddClient.get().getNome() + ", " + futureAddClient.get().getCognome() + " aggiunto!");
-				
+		*/	
 		
 		
 	}

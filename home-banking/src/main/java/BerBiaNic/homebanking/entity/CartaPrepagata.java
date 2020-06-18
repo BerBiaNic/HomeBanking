@@ -4,14 +4,15 @@ import java.sql.Date;
 
 public class CartaPrepagata {
 
-	private int numero;
+	private String numero;
 	private double saldoContabile;
 	private double saldoDisponibile;
 	private Date dataDiScadenza;
 	private int cvv;
+	private int pin;
 	private Account account;
 	
-	public CartaPrepagata(int numero, double saldoContabile, double saldoDisponibile, Date dataDiScadenza, int cvv, Account account) {
+	public CartaPrepagata(String numero, double saldoContabile, double saldoDisponibile, Date dataDiScadenza, int cvv, int pin, Account account) {
 		this.numero = numero;
 		this.saldoContabile = saldoContabile;
 		this.saldoDisponibile = saldoDisponibile;
@@ -20,7 +21,7 @@ public class CartaPrepagata {
 		this.account = account;
 	}
 
-	public int getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
@@ -40,11 +41,19 @@ public class CartaPrepagata {
 		return cvv;
 	}
 
+	public int getPin() {
+		return pin;
+	}
+
+	public void setPin(int pin) {
+		this.pin = pin;
+	}
+
 	public Account getAccount() {
 		return account;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 
@@ -69,10 +78,16 @@ public class CartaPrepagata {
 	}
 
 	@Override
+	public String toString() {
+		return "Carta prepagata di " + account.getNomeCognome() + "\nnumero: " + numero + ", saldo contabile: " + saldoContabile + ", saldo disponibile: " +
+				"\ndata di scadenza: " + dataDiScadenza.toString() + ", cvv: " + cvv;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + numero;
+		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		return result;
 	}
 
@@ -83,14 +98,11 @@ public class CartaPrepagata {
 		if (!(obj instanceof CartaPrepagata))
 			return false;
 		CartaPrepagata other = (CartaPrepagata) obj;
-		if (numero != other.numero)
+		if (numero == null) {
+			if (other.numero != null)
+				return false;
+		} else if (!numero.equals(other.numero))
 			return false;
 		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return "Carta prepagata di " + account.getNomeCognome() + "\nnumero: " + numero + ", saldo contabile: " + saldoContabile + ", saldo disponibile: " +
-				"\ndata di scadenza: " + dataDiScadenza.toString() + ", cvv: " + cvv;
 	}
 }
