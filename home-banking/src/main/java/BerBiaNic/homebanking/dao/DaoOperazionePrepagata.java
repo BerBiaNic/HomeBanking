@@ -1,5 +1,6 @@
 package BerBiaNic.homebanking.dao;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,10 +22,13 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 	public Future<OperazionePrepagata> getOne(Integer primaryKey) {
 		String query = "SELECT * FROM operazione_prepagata WHERE id = ?";
 		CompletableFuture<OperazionePrepagata> operazione = CompletableFuture.supplyAsync(() -> {
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			Connection conn = Database.getConnection();
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
-				ResultSet rs = ps.executeQuery();
+				rs = ps.executeQuery();
 				rs.next();			
 
 				DaoCartaPrepagata daoPrepagata = new DaoCartaPrepagata();
@@ -42,6 +46,25 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
+			}finally {
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(ps != null)
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(rs != null)
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		return operazione;
@@ -52,9 +75,12 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 		String query = "SELECT * FROM operazione_prepagata";
 		CompletableFuture<List<OperazionePrepagata>> operazioni = CompletableFuture.supplyAsync(() -> {
 			List<OperazionePrepagata> result = new ArrayList<OperazionePrepagata>();
+			Statement s = null;
+			ResultSet rs = null;
+			Connection conn = Database.getConnection();
 			try {
-				Statement s = Database.getConnection().createStatement();
-				ResultSet rs = s.executeQuery(query);	
+				s = conn.createStatement();
+				rs = s.executeQuery(query);	
 				while(rs.next()) {
 					OperazionePrepagata op = getOne(rs.getInt("id")).get();
 					result.add(op);
@@ -63,6 +89,26 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
+			}finally {
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				
+				if(s != null)
+					try {
+						s.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(rs != null)
+					try {
+						rs.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		return operazioni;
@@ -73,8 +119,10 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 		String query = "INSERT INTO operazione_prepagata(id,data,importo,tipologia,destinatario,numero_carta)" +
 				"VALUES (?,?,?,?,?,?)";
 		CompletableFuture.runAsync(() -> {
+			PreparedStatement ps = null;
+			Connection conn = Database.getConnection();
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setInt(1, element.getId());
 				ps.setDate(2, element.getData());
 				ps.setDouble(3, element.getImporto());
@@ -85,6 +133,19 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}finally {
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(ps != null)
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		return getOne(element.getId());
@@ -94,14 +155,28 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 	public Future<Integer> delete(Integer primaryKey) {
 		String query = "DELETE FROM operazione_prepagata WHERE id = ?";
 		CompletableFuture<Integer> del= CompletableFuture.supplyAsync(() -> {
-
+			PreparedStatement ps = null;
+			Connection conn = Database.getConnection();
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				return ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return 0;
+			}finally {
+				if(conn != null)
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				if(ps != null)
+					try {
+						ps.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 			}
 		});
 		return del;
@@ -110,10 +185,11 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 	@Override
 	public Future<OperazionePrepagata> update(OperazionePrepagata element) {
 		CompletableFuture<OperazionePrepagata> res = CompletableFuture.supplyAsync(() ->{
+			return delete(element.getId());
+		}).thenApply(value ->{
 			try {
-				delete(element.getId());
 				return insert(element).get();
-			} catch (Exception e) {
+			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
 			}
