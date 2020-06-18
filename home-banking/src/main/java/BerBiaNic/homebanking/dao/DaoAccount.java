@@ -1,5 +1,6 @@
 package BerBiaNic.homebanking.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,11 +21,14 @@ public class DaoAccount implements Dao<Account,Integer > {
 	public Future<Account> getOne(Integer primaryKey) {
 		String query = "SELECT * FROM account WHERE  id = ?";
 		CompletableFuture<Account> account = CompletableFuture.supplyAsync(() -> {
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
 
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
-				ResultSet rs = ps.executeQuery();
+				rs = ps.executeQuery();
 				rs.next();
 
 				DaoCliente cliente = new DaoCliente();
@@ -42,6 +46,27 @@ public class DaoAccount implements Dao<Account,Integer > {
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
+			} finally {
+				try {
+					if(conn!=null)
+						conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(ps!=null)
+						ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(rs!=null)
+						rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		return account;
@@ -52,9 +77,14 @@ public class DaoAccount implements Dao<Account,Integer > {
 		String query = "SELECT * FROM account";
 		CompletableFuture<List<Account>> accounts = CompletableFuture.supplyAsync(() -> {
 			List<Account> result = new ArrayList<>();
+
+			Connection conn = Database.getConnection();
+			Statement s = null;
+			ResultSet rs = null;
+
 			try {
-				Statement s = Database.getConnection().createStatement();
-				ResultSet rs = s.executeQuery(query);
+				s = conn.createStatement();
+				rs = s.executeQuery(query);
 
 				while(rs.next()) {
 					Account a = getOne(rs.getInt("id")).get();
@@ -64,6 +94,27 @@ public class DaoAccount implements Dao<Account,Integer > {
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 				return null;
+			} finally {
+				try {
+					if(conn!=null)
+						conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(s!=null)
+						s.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(rs!=null)
+						rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		return accounts;
@@ -73,10 +124,13 @@ public class DaoAccount implements Dao<Account,Integer > {
 	public Future<Account> insert(Account element) {
 		String query = "insert into cliente(id, username, password, email, impronta_digitale, dispositivi_associati)" + 
 				"values (?,?,?,?,?,?)";
+
 		CompletableFuture.runAsync(() -> {
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
 
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 
 				int id = element.getId(); 
 				String username = element.getUsername();
@@ -95,6 +149,20 @@ public class DaoAccount implements Dao<Account,Integer > {
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally {
+				try {
+					if(conn!=null)
+						conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(ps!=null)
+						ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		return getOne(element.getId());
@@ -102,17 +170,34 @@ public class DaoAccount implements Dao<Account,Integer > {
 
 	@Override
 	public Future<Integer> delete(Integer primaryKey) {
-		String query = "DELETE FROM Account WHERE id = ?";
+		String query = "DELETE FROM account WHERE id = ?";
 
 		CompletableFuture<Integer> del= CompletableFuture.supplyAsync(() -> {
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
 
 			try {
-				PreparedStatement ps = Database.getConnection().prepareStatement(query);
+				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				return ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return 0;
+				
+			} finally {
+				try {
+					if(conn!=null)
+						conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(ps!=null)
+						ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		return del;
@@ -128,7 +213,6 @@ public class DaoAccount implements Dao<Account,Integer > {
 				try {
 					return insert(element).get();
 				} catch (InterruptedException | ExecutionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return null;
 				}
