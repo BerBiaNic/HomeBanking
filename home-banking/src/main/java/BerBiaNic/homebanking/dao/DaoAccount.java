@@ -84,7 +84,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 				String email = element.getEmail();
 				long improntaDigitale = element.getImprontaDigitale();
 				String dispositiviAssociati = element.getDispositiviAssociati();
-				
+
 				ps.setInt(1, id);
 				ps.setString(2, username);
 				ps.setString(3, password);
@@ -120,17 +120,23 @@ public class DaoAccount implements Dao<Account,Integer > {
 
 	@Override
 	public Future<Account> update(Account element) {
+		try {
+			CompletableFuture<Account> res = CompletableFuture.supplyAsync(() -> {
+				return delete(element.getId());
 
-		CompletableFuture<Account> res = CompletableFuture.supplyAsync(() -> {
-			try {
-				delete(element.getId());
-				return insert(element).get();
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-				return null;
-			}
-			
-		});
-		return res;
+			}).thenApply(value->{
+				try {
+					return insert(element).get();
+				} catch (InterruptedException | ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return null;
+				}
+			});
+			return res;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

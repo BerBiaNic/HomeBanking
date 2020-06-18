@@ -58,8 +58,15 @@ public class DaoAccountTest {
 		Cliente clienteAdd = new Cliente("SSSDRA50A13C842B", "Sossini", "Dario", "COLLALTO", Date.valueOf(LocalDate.of(1950, 01, 13)), "393778254710", "Via Salita Truglio, 9", "SALERNO");
 		Account accountAdd2 = new Account(clienteAdd, 2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac");
 
-		CompletableFuture<Account> account = ((CompletableFuture<Account>)daoAccount.insert(accountAdd2)).thenAccept( daoAccount.delete(accountAdd2.getId()) );
-		System.out.println("Account " + accountAdd2.getId() + " aggiunto!");
+		((CompletableFuture<Account>)daoAccount.insert(accountAdd2)).thenApply( value ->{
+			System.out.println(value);
+			return daoAccount.delete(accountAdd2.getId());
+		}).thenAccept( a ->{
+			System.out.println("return");
+			System.out.println(a);
+		});
+		
+//		System.out.println("Account " + accountAdd2.getId() + " aggiunto!");
 	
 
 //		System.out.println("------------------------------- E L I M I N A		A C C O U N T -------------------------------\n");
