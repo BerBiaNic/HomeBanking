@@ -13,12 +13,12 @@ import javax.ws.rs.core.Response;
 import BerBiaNic.homebanking.dao.*;
 import BerBiaNic.homebanking.entity.Account;
 
-@Path("homeBanking/login")
+@Path("homeBanking/account")
 public class Accesso {
 	private DaoAccount daoA = new DaoAccount();
 
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/signup")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createAccount(Account account) {
 		try {
@@ -26,35 +26,33 @@ public class Accesso {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		return Response.ok().build();		
+		return Response.ok().build();	
 	}
 	
-	@GET
-	@Path("/UserPass")
+	@POST
+	@Path("/login/userpass")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginUsernamePassword(Credenziali dati) {
 		DaoAccount daoA = new DaoAccount();
-		Account a = null;
 		try {
-			a = daoA.getOne(dati.getUsername(), dati.getPassword()).get();
+			daoA.getOne(dati.getUsername(), dati.getPassword()).get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		return Response.ok(a).build();
+		return Response.ok().build();
 	}
 	
-	@GET
-	@Path("/loginFingerprint")
+	@POST
+	@Path("/login/fingerprint")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginFingerprint(Impronta impronta) {
 		DaoAccount daoA = new DaoAccount();
-		Account a = null;
 		try {
-			a = daoA.getOne(impronta.getImpronta()).get();
+			daoA.getOne(impronta.getImpronta()).get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		return Response.ok(a).build();
+		return Response.ok().build();
 	}
 	
 }

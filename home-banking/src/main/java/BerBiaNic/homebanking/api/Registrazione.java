@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import BerBiaNic.homebanking.dao.DaoCliente;
 import BerBiaNic.homebanking.entity.*;
 
-@Path("homeBanking/signup")
+@Path("homeBanking/cliente/signup")
 public class Registrazione {
 	private DaoCliente daoC = new DaoCliente();
 
