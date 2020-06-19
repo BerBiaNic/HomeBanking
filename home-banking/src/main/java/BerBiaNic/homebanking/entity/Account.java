@@ -1,5 +1,13 @@
 package BerBiaNic.homebanking.entity;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+import javax.json.bind.JsonbBuilder;
+import javax.json.bind.JsonbConfig;
+import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.config.PropertyVisibilityStrategy;
 
 public class Account {
 
@@ -12,8 +20,10 @@ public class Account {
 	private String dispositiviAssociati;
 	private Cliente cliente;
 
-	public Account(Cliente cliente, int id, String username, String password, String email, long improntaDigitale,
-			String dispositiviAssociati) {
+	@JsonbCreator
+	public Account(@JsonbProperty ("cliente") Cliente cliente, @JsonbProperty("id") int id, @JsonbProperty ("username") String username, 
+				   @JsonbProperty ("password") String password, @JsonbProperty("email") String email, @JsonbProperty("impronta_digitale") long improntaDigitale,
+				   @JsonbProperty ("dispositivi_associati") String dispositiviAssociati) {
 		this.cliente = cliente;
 		this.id = id;
 		this.username = username;
@@ -21,7 +31,6 @@ public class Account {
 		this.email = email;
 		this.improntaDigitale = improntaDigitale;
 		this.dispositiviAssociati = dispositiviAssociati;
-
 	}
 
 	public Cliente getCliente() {
@@ -110,5 +119,19 @@ public class Account {
 	public String toString() {
 		return "\nCliente: " + cliente + "\nID: " + id + "\nUsername: " + username + "\nPassword: " + password + "\nE-mail: " + email 
 				+ "\nImpronta digitale: " + improntaDigitale + "\nDispositivi associati: " + dispositiviAssociati + "\n";
+	}
+	
+	public String toJson() {
+		JsonbConfig config = new JsonbConfig().withPropertyVisibilityStrategy(new PropertyVisibilityStrategy() {
+			@Override
+			public boolean isVisible(Method arg0) {
+				return false;
+			}
+			@Override
+			public boolean isVisible(Field arg0) {
+				return true;
+			}
+		});
+		return JsonbBuilder.newBuilder().withConfig(config).build().toJson(this);
 	}
 }

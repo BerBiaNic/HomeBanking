@@ -1,6 +1,14 @@
 package BerBiaNic.homebanking.entity;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.Date;
+
+import javax.json.bind.JsonbBuilder;
+import javax.json.bind.JsonbConfig;
+import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
+import javax.json.bind.config.PropertyVisibilityStrategy;
 
 public class Cliente {
 
@@ -13,8 +21,11 @@ public class Cliente {
 	private String indirizzoDiResidenza;
 	private String cittaDiResidenza;
 
-	public Cliente(String codiceFiscale, String cognome, String nome, String cittaDiNascita, Date dataDinascita,
-			String numeroDiTelefono, String indirizzoDiResidenza, String cittaDiResidenza) {
+	@JsonbCreator
+	public Cliente(@JsonbProperty("codice_fiscale") String codiceFiscale, @JsonbProperty("cognome") String cognome, @JsonbProperty("nome") String nome, 
+			@JsonbProperty("citta_di_nascita") String cittaDiNascita, @JsonbProperty("data_di_nascita") Date dataDinascita,
+			@JsonbProperty("numero_di_telefono") String numeroDiTelefono, @JsonbProperty("indirizzo_di_residenza") String indirizzoDiResidenza, 
+			@JsonbProperty("citta_di_residenza") String cittaDiResidenza) {
 		this.codiceFiscale = codiceFiscale;
 		this.cognome = cognome;
 		this.nome = nome;
@@ -120,4 +131,19 @@ public class Cliente {
 				"\nData di nascita: " + dataDinascita + "\nNumero di telefono: " + numeroDiTelefono + "\nIndirizzo di residenza: " + indirizzoDiResidenza
 				+ "\nCitta di residenza: " + cittaDiResidenza + "\n";
 	}
+
+	public String toJson() {
+		JsonbConfig config = new JsonbConfig().withPropertyVisibilityStrategy(new PropertyVisibilityStrategy() {
+			@Override
+			public boolean isVisible(Method arg0) {
+				return false;
+			}
+			@Override
+			public boolean isVisible(Field arg0) {
+				return true;
+			}
+		});
+		return JsonbBuilder.newBuilder().withConfig(config).build().toJson(this);
+	}
+
 }
