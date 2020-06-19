@@ -12,28 +12,18 @@ import javax.ws.rs.core.Response;
 import BerBiaNic.homebanking.dao.DaoCliente;
 import BerBiaNic.homebanking.entity.*;
 
-@Path("homeBanking/logup")
+@Path("homeBanking/signup")
 public class Registrazione {
 	private DaoCliente daoC = new DaoCliente();
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response printClient(String codiceFiscale) {
-		Cliente client = (Cliente) daoC.getOne(codiceFiscale);
-		return Response.ok(client).build();
-	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createClient(Cliente cliente) {
-		Cliente c = null;
 		try {
-			c = daoC.insert(cliente).get();
+			daoC.insert(cliente).get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		return Response.ok("Il cliente \n " + c + "\nè stato inserito nel sistema!").build();
-	}	
-	
+		return Response.ok().build();
+	}
 }
