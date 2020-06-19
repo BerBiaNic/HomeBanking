@@ -1,7 +1,5 @@
 package BerBiaNic.homebanking.api;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 import javax.ws.rs.*;
@@ -17,10 +15,8 @@ import BerBiaNic.homebanking.entity.*;
 @Path("homeBanking/logup")
 public class Registrazione {
 	private DaoCliente daoC = new DaoCliente();
-	private final Map<String, Cliente> clientsStore = new ConcurrentHashMap<>();
 	
 	@GET
-	@Path("/printClient")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response printClient(String codiceFiscale) {
 		Cliente client = (Cliente) daoC.getOne(codiceFiscale);
@@ -28,12 +24,10 @@ public class Registrazione {
 	}
 
 	@POST
-	@Path("/createClient")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createClient(Cliente cliente) {
 		Cliente c = null;
-		clientsStore.put(cliente.getCodiceFiscale(), cliente);
 		try {
 			c = daoC.insert(cliente).get();
 		} catch (InterruptedException | ExecutionException e) {

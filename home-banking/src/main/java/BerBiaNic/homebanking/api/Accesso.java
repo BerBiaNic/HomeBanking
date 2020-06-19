@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -24,7 +25,6 @@ public class Accesso {
 	private final Map<Integer, Account> accountsStore = new ConcurrentHashMap<>();
 
 	@POST
-	@Path("/createAccount")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createAccount(Account account) {
@@ -39,9 +39,9 @@ public class Accesso {
 	}
 	
 	@GET
-	@Path("/loginUserPass")
+	@Path("/UserPass")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response loginUsernamePassword(String username, String password) {
+	public Response loginUsernamePassword(@QueryParam("username") String username, @QueryParam("password") String password) {
 		DaoCliente daoC = new DaoCliente();
 		for( Entry<Integer, Account> elem : accountsStore.entrySet() ) {
 			Account acc = elem.getValue();
@@ -49,7 +49,7 @@ public class Accesso {
 			if( username.equals(user) && password.equals(pass) ) {
 				Cliente c = null;
 				try {
-					c = daoC.getOne(acc.getCliente().getCodiceFiscale()).get();
+					c =  daoC.getOne(acc.getCliente().getCodiceFiscale()).get();
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}

@@ -71,6 +71,117 @@ public class DaoAccount implements Dao<Account,Integer > {
 		});
 		return account;
 	}
+	
+	public Future<Account> getOne(String username, String password) {
+		String query = "SELECT * FROM account WHERE username = ? AND password = ?";
+		CompletableFuture<Account> account = CompletableFuture.supplyAsync(() -> {
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+
+			try {
+				ps = conn.prepareStatement(query);
+				ps.setString(1, username);
+				ps.setString(2, password);
+				
+				rs = ps.executeQuery();
+				rs.next();
+
+				DaoCliente cliente = new DaoCliente();
+				Cliente c = cliente.getOne(rs.getString("codice_fiscale_cliente")).get();
+
+				int id = rs.getInt("id"); 
+				String user =  rs.getString("username");
+				String pass = rs.getString("password"); 
+				String email = rs.getString("email");
+				long improntaD = rs.getLong("impronta_digitale"); 
+				String dispositiviAssociati = rs.getString("dispositivi_associati");
+
+				Account a = new Account(c, id, user, pass, email, improntaD, dispositiviAssociati);
+				return a;
+			} catch (SQLException | InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+				return null;
+			} finally {
+				try {
+					if(conn!=null)
+						conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(ps!=null)
+						ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(rs!=null)
+						rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		return account;
+	}
+	
+	public Future<Account> getOne(long improntaDigitale) {
+		String query = "SELECT * FROM account WHERE username = ? AND password = ?";
+		CompletableFuture<Account> account = CompletableFuture.supplyAsync(() -> {
+			Connection conn = Database.getConnection();
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+
+			try {
+				ps = conn.prepareStatement(query);
+				ps.setLong(1, improntaDigitale);
+				
+				rs = ps.executeQuery();
+				rs.next();
+
+				DaoCliente cliente = new DaoCliente();
+				Cliente c = cliente.getOne(rs.getString("codice_fiscale_cliente")).get();
+
+				int id = rs.getInt("id"); 
+				String user =  rs.getString("username");
+				String pass = rs.getString("password"); 
+				String email = rs.getString("email");
+				long improntaD = rs.getLong("impronta_digitale"); 
+				String dispositiviAssociati = rs.getString("dispositivi_associati");
+
+				Account a = new Account(c, id, user, pass, email, improntaD, dispositiviAssociati);
+				return a;
+			} catch (SQLException | InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+				return null;
+			} finally {
+				try {
+					if(conn!=null)
+						conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(ps!=null)
+						ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					if(rs!=null)
+						rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		return account;
+	}
 
 	@Override
 	public Future<List<Account>> getAll() {
