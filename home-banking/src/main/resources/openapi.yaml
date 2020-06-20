@@ -1,0 +1,328 @@
+openapi: 3.0.0
+info:
+  title: Swagger admin
+  description: >-
+    This is a sample server admin server.  You can find out more about    
+    Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net,
+    #swagger](http://swagger.io/irc/).      For this sample, you can use the api
+    key `special-key` to test the authorization     filters.
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+servers:
+  - url: 'https://admin.swagger.io/v2'
+  - url: 'http://admin.swagger.io/v2'
+tags:
+  - name: user
+    description: Everything about your users
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+paths:
+  /homeBanking/cliente/signup:
+    post:
+      tags:
+        - cliente
+      summary: Aggiunta di un nuovo cliente
+      operationId: creazione account
+      requestBody:
+        description: cliente che vuole registrarsi alla piattaforma
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+        required: true
+      responses:
+        '200':
+          description: registrazione effettuata
+        '400':
+          description: dati non validi
+          content: {}
+        '403':
+          description: utente già esistente
+  /homeBanking/account/signup:
+    post:
+      tags:
+        - Account
+      summary: account da registrare
+      operationId: registra account
+      requestBody:
+        description: >-
+          dati dell account da registrare, che fa riferimento ai dati di un
+          cliente precedentemente
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+        required: true
+      responses:
+        '200':
+          description: registrazione account effettuata
+        '400':
+          description: dati non validi
+          content: {}
+        '403':
+          description: account già esistente
+  /homeBanking/account/login/userpass:
+    post:
+      tags:
+        - Account
+      summary: Accedi all'account tramite username e password
+      operationId: loginAccountUP
+      requestBody:
+        description: 'Credenziali per l''accesso: username e password'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credenziali'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: user not found
+          content: {}
+  /homeBanking/account/login/fingerprint:
+    post:
+      tags:
+        - Account
+      summary: Accedi all'account tramite username e password
+      operationId: loginAccountF
+      requestBody:
+        description: Accesso tramite impronta digitale
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Impronta'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: user not found
+          content: {}
+  "/homeBanking/account/cartaprepagata":
+    post:
+      tags:
+        - Carta Prepagata
+      summary: Aggiungi una nuova carta prepagata
+      operationId: newCartaPre
+      requestBody:
+        description: Associa una nuova carta prepagata all'account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartaPrepagata'
+        required: true
+      responses:
+        '200':
+          description: Carta associata con successo
+        '400':
+          description: Errore
+    get:
+      tags:
+        - "Carta Prepagata"
+      summary: "Cerca una carta prepagata"
+      description: "Ricerca di una carta prepagata a partire dal suo numero"
+      operationId: "srchCartaPre"
+      parameters:
+        - name: "numero"
+          in: "header"
+          description: "Il numero della carta da cercare"
+          schema:
+            type: "string"
+          required: true
+      responses:
+        '200':
+          description: "Ricerca eseguita correttamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartaPrepagata'
+        '400':
+          description: "Carta non trovata"
+  "/homeBanking/account/cartaprepagata/all":
+    get:
+      tags: 
+      - "Carta Prepagata"
+      summary: "Visualizza tutte le carte prepagate"
+      description: "Restituisce tutte le carte prepagate associate all'account"
+      operationId: "srchAllCartePre"
+      responses:
+        '200':
+          description: "Operazione corretta"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CartaPrepagata'
+                
+components:
+  schemas:
+    Cliente:
+      type: object
+      properties:
+        codice fiscale:
+          type: string
+        nome:
+          type: string
+        cognome:
+          type: string
+        città di nascita:
+          type: string
+        data di nascita:
+          type: string
+          format: date
+        numero di telefono:
+          type: string
+        indirizzo di resizenza:
+          type: string
+        città di residenza:
+          type: string
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        imponta digitale:
+          type: integer
+        dispositivi associati:
+          type: string
+        cliente:
+          $ref: '#/components/schemas/Cliente'
+    CartaPrepagata:
+      type: object
+      properties:
+        numero:
+          type: number
+          format: double
+        saldo contabile:
+          type: number
+          format: double
+        saldo disponibile:
+          type: number
+          format: double
+        data di scadenza:
+          type: string
+          format: date
+        cvv:
+          type: integer
+        pin:
+          type: integer
+        account:
+          $ref: '#/components/schemas/Account'
+    OperazioneCartaPrepagata:
+      type: object
+      properties:
+        id:
+          type: integer
+        data:
+          type: string
+          format: date
+        importo:
+          type: number
+          format: double
+        tipologia:
+          type: string
+        destinatario:
+          type: string
+        carta prepagata:
+          $ref: '#/components/schemas/CartaPrepagata'
+    ContoCorrente:
+      type: object
+      properties:
+        numero:
+          type: integer
+        iban:
+          type: string
+        saldo contabile:
+          type: number
+          format: double
+        saldo disponibile:
+          type: number
+          format: double
+        id account:
+          $ref: '#/components/schemas/Account'
+    OperazioneContoCorrente:
+      type: object
+      properties:
+        id:
+          type: integer
+        data:
+          type: string
+          format: date
+        importo:
+          type: number
+          format: double
+        tipologia:
+          type: string
+        iban destinatario:
+          type: string
+        iban conto corrente:
+          $ref: '#/components/schemas/ContoCorrente'
+    CartaDiDebito:
+      type: object
+      properties:
+        numero:
+          type: string
+        iban:
+          type: string
+        data di scadenza:
+          type: string
+          format: date
+        cvv:
+          type: integer
+        pin:
+          type: integer
+        numero conto corrente:
+          $ref: '#/components/schemas/ContoCorrente'
+    OperazioneCartaDebito:
+      type: object
+      properties:
+        id:
+          type: integer
+        data:
+          type: string
+          format: date
+        importo:
+          type: number
+          format: double
+        tipologia:
+          type: string
+        numero carta proprietario:
+          $ref: '#/components/schemas/CartaDiDebito'
+        numero carta beneficiario:
+          type: string
+    Impronta:
+      type: object
+      properties:
+        impronta:
+          type: number
+          format: long
+    Credenziali:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
