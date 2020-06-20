@@ -19,11 +19,7 @@ public class Registrazione {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createClient(Cliente cliente) {
-		try {
-			daoC.insert(cliente).get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
+		daoC.insert(cliente);
 		return Response.ok().build();
 	}
 }

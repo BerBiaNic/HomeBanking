@@ -1,5 +1,6 @@
 package BerBiaNic.homebanking.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -122,10 +123,9 @@ public class DaoCliente implements Dao <Cliente,String> {
 	public Future<Cliente> insert(Cliente element) {
 		String query = "insert into cliente(codice_fiscale, cognome, nome, citta_di_nascita, data_di_nascita, numero_di_telefono, indirizzo_di_residenza, citta_di_residenza)" + 
 				"values (?,?,?,?,?,?,?,?)";
+		Connection conn = Database.getConnection();
 		CompletableFuture.runAsync(() -> {
-			Connection conn = Database.getConnection();
 			PreparedStatement ps = null;
-
 			try {
 				ps = conn.prepareStatement(query);
 				
@@ -148,6 +148,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 				ps.setString(8, cittaR);
 				
 				ps.executeUpdate();
+				System.out.println("Registrato");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {

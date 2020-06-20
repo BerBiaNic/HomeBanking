@@ -41,7 +41,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 				long improntaDigitale = rs.getLong("impronta_digitale"); 
 				String dispositiviAssociati = rs.getString("dispositivi_associati");
 
-				Account a = new Account(c, id, username, password, email, improntaDigitale, dispositiviAssociati);
+				Account a = new Account(id, username, password, email, improntaDigitale, dispositiviAssociati, c);
 				return a;
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
@@ -97,7 +97,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 				long improntaD = rs.getLong("impronta_digitale"); 
 				String dispositiviAssociati = rs.getString("dispositivi_associati");
 
-				Account a = new Account(c, id, user, pass, email, improntaD, dispositiviAssociati);
+				Account a = new Account(id, user, pass, email, improntaD, dispositiviAssociati, c);
 				return a;
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();
@@ -152,7 +152,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 				long improntaD = rs.getLong("impronta_digitale"); 
 				String dispositiviAssociati = rs.getString("dispositivi_associati");
 
-				Account a = new Account(c, id, user, pass, email, improntaD, dispositiviAssociati);
+				Account a = new Account(id, user, pass, email, improntaD, dispositiviAssociati, c);
 				return a;
 			} catch (SQLException | InterruptedException | ExecutionException e) {
 				e.printStackTrace();

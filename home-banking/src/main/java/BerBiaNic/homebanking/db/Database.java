@@ -1,8 +1,6 @@
 package BerBiaNic.homebanking.db;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.rmi.server.LoaderHandler;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,20 +18,27 @@ public class Database {
 	
 	
 	public Database() throws IOException {
-		Properties p;
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		InputStream input = loader.getResourceAsStream("config.properties");
-		p = new Properties();
-		p.load(input);
-		
-		DB_HOST = p.getProperty("db.host");
-		DB_USER = p.getProperty("db.user");
-		DB_PASS = p.getProperty("db.password");
+//		Properties p;
+//		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+//		InputStream input = loader.getResourceAsStream("config.properties");
+//		p = new Properties();
+//		try {
+//			p.load(input);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		DB_HOST = p.getProperty("db.host");
+//		DB_USER = p.getProperty("db.user");
+//		DB_PASS = p.getProperty("db.password");
 	}
 	
 	public static Connection getConnection() {
+		
+		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://" + Database.DB_HOST + ":3306/sql7347775", Database.DB_USER, Database.DB_PASS);
+//			conn = DriverManager.getConnection("jdbc:mysql://" + Database.DB_HOST + ":3306/sql7347775", Database.DB_USER, Database.DB_PASS);
+			conn = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7347775?user=sql7347775&password=Pp6ZDM3sQi");
 			return conn;
 		}catch (SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());

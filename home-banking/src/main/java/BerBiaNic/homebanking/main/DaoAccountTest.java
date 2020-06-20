@@ -31,7 +31,7 @@ public class DaoAccountTest {
 
 		Dao<Cliente,String> dc = new DaoCliente();
 		Cliente cliente = dc.getOne("SSSDRA50A13C842B").get();
-		Account a = new Account(cliente,  2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac");
+		Account a = new Account(2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac", cliente);
 		System.out.println("Inserimento account:\n" + daoAccount.insert(a).get());
 
 //		System.out.println("------------------------------- L I S T A		A C C O U N T S -------------------------------\n");

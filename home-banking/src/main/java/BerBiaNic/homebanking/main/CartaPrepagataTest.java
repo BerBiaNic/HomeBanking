@@ -29,7 +29,7 @@ public class CartaPrepagataTest {
 
 		DaoCliente dc = new DaoCliente();
 		Cliente cliente = dc.getOne("SSSDRA50A13C842B").get();
-		Account a = new Account(cliente,  2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac");
+		Account a = new Account(2, "sossininoad", "Sss456", "sossinidario@libero.it", 2991537, "hp-13664ds, asusZenfone-9965ac", cliente);
 
 		System.out.println("------------------------------- A G G I U N G I		C A R T A -------------------------------\n");
 		CartaPrepagata cartaTmp = new CartaPrepagata("1234512412653633", 100d, 100d, Date.valueOf(LocalDate.of(2019, 06, 23)), 000, 12456,a);

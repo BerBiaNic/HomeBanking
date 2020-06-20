@@ -21,9 +21,9 @@ public class Account {
 	private Cliente cliente;
 
 	@JsonbCreator
-	public Account(@JsonbProperty ("cliente") Cliente cliente, @JsonbProperty("id") int id, @JsonbProperty ("username") String username, 
+	public Account(@JsonbProperty("id") int id, @JsonbProperty ("username") String username, 
 				   @JsonbProperty ("password") String password, @JsonbProperty("email") String email, @JsonbProperty("impronta_digitale") long improntaDigitale,
-				   @JsonbProperty ("dispositivi_associati") String dispositiviAssociati) {
+				   @JsonbProperty ("dispositivi_associati") String dispositiviAssociati, @JsonbProperty ("cliente") Cliente cliente) {
 		this.cliente = cliente;
 		this.id = id;
 		this.username = username;
