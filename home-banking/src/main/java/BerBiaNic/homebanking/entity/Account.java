@@ -26,36 +26,7 @@ public class Account {
 			@JsonbProperty("email") String email, @JsonbProperty("impronta_digitale") long improntaDigitale,
 			@JsonbProperty ("dispositivi_associati") String dispositiviAssociati, @JsonbProperty ("cliente") Cliente cliente) throws InputValidationException {
 
-		if(id <= 0)
-			throw new InputValidationException("Id account");
-
-		if(username == null || username.isBlank())
-			throw new InputValidationException("Username");
-		if (!username.matches("[\\w_-]{3,45}"))
-			throw new InputValidationException("Formato username (caratteri speciali consentiti _-)");
-
-		if(password == null || password.isBlank())
-			throw new InputValidationException("Password");
-		if(!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}")) 
-			throw new InputValidationException("La password deve contenere un numero, un carattere minuscolo, "
-					+ "uno maiuscolo, un carattere speciale tra @#$% e deve avere lunghezza min 8 e max 20");
-
-		if(email == null || email.isBlank())
-			throw new InputValidationException("Email account");
-		if(!email.matches("[\\w_-]{5,35}+@[\\w]{2,11}+\\.[\\w]{2,4}"))
-			throw new InputValidationException("Formato email account (caratteri speciali consentiti _-)");
-		
-		if(improntaDigitale <= 0)
-			throw new InputValidationException("Impronta digitale");
-		
-		if(dispositiviAssociati == null || dispositiviAssociati.isBlank())
-			throw new InputValidationException("Dispositivi associati");
-		if(!dispositiviAssociati.matches("[\\w_-]{3,100}"))
-			throw new InputValidationException("Formato dispositivi associati (caratteri speciali consentiti _-)");
-		
-		if(cliente == null)
-			throw new InputValidationException("Cliente");
-		
+		validazioneParametri(id, username, password, email, improntaDigitale, dispositiviAssociati, cliente);
 		this.cliente = cliente;
 		this.id = id;
 		this.username = username;
@@ -123,6 +94,38 @@ public class Account {
 
 	public void setDispositiviAssociati(String dispositiviAssociati) {
 		this.dispositiviAssociati = dispositiviAssociati;
+	}
+	
+	private void validazioneParametri(int id, String username, String password, String email, long improntaDigitale, String dispositiviAssociati, Cliente cliente) throws InputValidationException {
+		if(id <= 0)
+			throw new InputValidationException("Id account");
+
+		if(username == null || username.isBlank())
+			throw new InputValidationException("Username");
+		if (!username.matches("[\\w_-]{3,45}"))
+			throw new InputValidationException("Formato username (caratteri speciali consentiti _-)");
+
+		if(password == null || password.isBlank())
+			throw new InputValidationException("Password");
+		if(!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}")) 
+			throw new InputValidationException("La password deve contenere un numero, un carattere minuscolo, "
+					+ "uno maiuscolo, un carattere speciale tra @#$% e deve avere lunghezza min 8 e max 20");
+
+		if(email == null || email.isBlank())
+			throw new InputValidationException("Email account");
+		if(!email.matches("[\\w_-]{5,35}+@[\\w]{2,11}+\\.[\\w]{2,4}"))
+			throw new InputValidationException("Formato email account (caratteri speciali consentiti _-)");
+		
+		if(improntaDigitale <= 0)
+			throw new InputValidationException("Impronta digitale");
+		
+		if(dispositiviAssociati == null || dispositiviAssociati.isBlank())
+			throw new InputValidationException("Dispositivi associati");
+		if(!dispositiviAssociati.matches("[\\w_-]{3,100}"))
+			throw new InputValidationException("Formato dispositivi associati (caratteri speciali consentiti _-)");
+		
+		if(cliente == null)
+			throw new InputValidationException("Cliente");		
 	}
 
 	@Override

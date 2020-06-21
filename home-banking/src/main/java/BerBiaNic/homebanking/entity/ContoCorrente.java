@@ -23,25 +23,7 @@ public class ContoCorrente{
 	public ContoCorrente(@JsonbProperty("numero") int numero, @JsonbProperty("iban") String iban, @JsonbProperty("saldo_disponibile") double saldo_disponibile, 
 			@JsonbProperty("saldo_contabile") double saldo_contabile, @JsonbProperty("account") Account account) throws InputValidationException {
 
-		if(numero < 100000)
-			throw new InputValidationException("Numero conto corrente");
-
-		if (iban == null || iban.isBlank())
-			throw new InputValidationException("IBAN conto corrente");
-		if(iban.length() != 31)
-			throw new InputValidationException("IBAN conto corrente non valido. Caratteri richiesti 27, inseriti: ", iban.length());
-		if(!iban.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
-			throw new InputValidationException("Formato IBAN conto corrente (esempio inserimento  IT28W8000000292100645211151)");
-
-		if(saldo_contabile < 0)
-			throw new InputValidationException("Saldo contabile");
-
-		if(saldo_disponibile < 0)
-			throw new InputValidationException("Saldo disponibile");
-
-		if (account == null)
-			throw new InputValidationException("Account associato al conto corrente");
-
+		validazioneParametri(numero, iban, saldo_disponibile, saldo_contabile, account);
 		this.numero = numero;
 		this.iban = iban;
 		this.saldo_disponibile = saldo_disponibile;
@@ -87,6 +69,27 @@ public class ContoCorrente{
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+	
+	private void validazioneParametri(int numero, String iban, double saldo_disponibile, double saldo_contabile, Account account) throws InputValidationException {
+		if(numero < 100000)
+			throw new InputValidationException("Numero conto corrente");
+
+		if (iban == null || iban.isBlank())
+			throw new InputValidationException("IBAN conto corrente");
+		if(iban.length() != 31)
+			throw new InputValidationException("IBAN conto corrente non valido. Caratteri richiesti 27, inseriti: ", iban.length());
+		if(!iban.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
+			throw new InputValidationException("Formato IBAN conto corrente (esempio inserimento IT28W8000000292100645211151)");
+
+		if(saldo_contabile < 0)
+			throw new InputValidationException("Saldo contabile");
+
+		if(saldo_disponibile < 0)
+			throw new InputValidationException("Saldo disponibile");
+
+		if (account == null)
+			throw new InputValidationException("Account associato al conto corrente");
 	}
 
 	@Override

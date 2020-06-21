@@ -28,47 +28,8 @@ public class Cliente {
 			@JsonbProperty("citta_di_nascita") String cittaDiNascita, @JsonbProperty("data_di_nascita") Date dataDinascita,
 			@JsonbProperty("numero_di_telefono") String numeroDiTelefono, @JsonbProperty("indirizzo_di_residenza") String indirizzoDiResidenza, 
 			@JsonbProperty("citta_di_residenza") String cittaDiResidenza) throws InputValidationException {
-		
-		if(codiceFiscale == null || codiceFiscale.isBlank())
-			throw new InputValidationException("Codice fiscale");
-		if(codiceFiscale.length() != 16)
-			throw new InputValidationException("Codice fiscale non valido. Caratteri richiesti 16, inseriti: ", codiceFiscale.length());
-		if(!codiceFiscale.matches("[a-zA-Z]{6}\\d{2}[a-zA-Z]\\d{2}[a-zA-Z]\\d{3}[a-zA-Z]"))  
-			throw new InputValidationException("Formato codice fiscale (esempio inserimento CTTLMN86B09T0659X)");
 
-		if(cognome == null || cognome.isBlank())
-			throw new InputValidationException("Cognome");
-		if (!cognome.matches("[a-zA-Z‡ËÚ, ]{2,45}")) 
-			throw new InputValidationException("Cognome errato, caratteri consentiti da 2 a 45, inseriti: ", cognome.length());
-		
-		if(nome == null || nome.isBlank())
-			throw new InputValidationException("Nome");
-		if (!nome.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
-			throw new InputValidationException("Nome errato, caratteri richiesti da 2 a 45, inseriti: ", nome.length());
-		
-		if(cittaDiNascita == null || cittaDiNascita.isBlank())
-			throw new InputValidationException("Citt‡ di nascita");
-		if (!cittaDiNascita.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
-			throw new InputValidationException("Citt‡ di nascita errata, caratteri massimi consentiti 45, inseriti: ", cittaDiNascita.length());
-		
-		if(dataDinascita == null)
-			throw new InputValidationException("Data di nascita (aaaa-mm-gg)");
-		
-		if(numeroDiTelefono == null || numeroDiTelefono.isBlank())
-			throw new InputValidationException("Numero di Telefono");
-		if(!numeroDiTelefono.matches("[0-9]{8,15}")) 
-			throw new InputValidationException("Numero di Telefono, formato errato");
-		
-		if(indirizzoDiResidenza == null || indirizzoDiResidenza.isBlank())
-			throw new InputValidationException("Indirizzo di residenza");
-		if(!indirizzoDiResidenza.matches("[\\w‡ËÚ, ]{5,100}"))
-			throw new InputValidationException("Indirizzo di residenza");
-		
-		if(cittaDiResidenza == null || cittaDiResidenza.isBlank())
-			throw new InputValidationException("Indirizzo di residenza");
-		if(!cittaDiResidenza.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
-			throw new InputValidationException("Indirizzo di residenza errato, caratteri massimi consentiti 100, inseriti: ", cittaDiResidenza.length());
-		
+		validazioneParametri(codiceFiscale, cognome, nome, cittaDiNascita, dataDinascita, numeroDiTelefono, indirizzoDiResidenza, cittaDiResidenza);
 		this.codiceFiscale = codiceFiscale;
 		this.cognome = cognome;
 		this.nome = nome;
@@ -141,6 +102,49 @@ public class Cliente {
 
 	public void setCittaDiResidenza(String cittaDiResidenza) {
 		this.cittaDiResidenza = cittaDiResidenza;
+	}
+
+	private void validazioneParametri(String codiceFiscale, String cognome, String nome, String cittaDiNascita, 
+			Date dataDinascita, String numeroDiTelefono, String indirizzoDiResidenza, String cittaDiResidenza) throws InputValidationException {
+		if(codiceFiscale == null || codiceFiscale.isBlank())
+			throw new InputValidationException("Codice fiscale");
+		if(codiceFiscale.length() != 16)
+			throw new InputValidationException("Codice fiscale non valido. Caratteri richiesti 16, inseriti: ", codiceFiscale.length());
+		if(!codiceFiscale.matches("[a-zA-Z]{6}\\d{2}[a-zA-Z]\\d{2}[a-zA-Z]\\d{3}[a-zA-Z]"))  
+			throw new InputValidationException("Formato codice fiscale (esempio inserimento CTTLMN86B09T0659X)");
+
+		if(cognome == null || cognome.isBlank())
+			throw new InputValidationException("Cognome");
+		if (!cognome.matches("[a-zA-Z‡ËÚ, ]{2,45}")) 
+			throw new InputValidationException("Cognome errato, caratteri consentiti da 2 a 45, inseriti: ", cognome.length());
+
+		if(nome == null || nome.isBlank())
+			throw new InputValidationException("Nome");
+		if (!nome.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
+			throw new InputValidationException("Nome errato, caratteri richiesti da 2 a 45, inseriti: ", nome.length());
+
+		if(cittaDiNascita == null || cittaDiNascita.isBlank())
+			throw new InputValidationException("Citt‡ di nascita");
+		if (!cittaDiNascita.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
+			throw new InputValidationException("Citt‡ di nascita errata, caratteri massimi consentiti 45, inseriti: ", cittaDiNascita.length());
+
+		if(dataDinascita == null)
+			throw new InputValidationException("Data di nascita (aaaa-mm-gg)");
+
+		if(numeroDiTelefono == null || numeroDiTelefono.isBlank())
+			throw new InputValidationException("Numero di Telefono");
+		if(!numeroDiTelefono.matches("[0-9]{8,15}")) 
+			throw new InputValidationException("Numero di Telefono, formato errato");
+
+		if(indirizzoDiResidenza == null || indirizzoDiResidenza.isBlank())
+			throw new InputValidationException("Indirizzo di residenza");
+		if(!indirizzoDiResidenza.matches("[\\w‡ËÚ, ]{5,100}"))
+			throw new InputValidationException("Indirizzo di residenza");
+
+		if(cittaDiResidenza == null || cittaDiResidenza.isBlank())
+			throw new InputValidationException("Indirizzo di residenza");
+		if(!cittaDiResidenza.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
+			throw new InputValidationException("Indirizzo di residenza errato, caratteri massimi consentiti 100, inseriti: ", cittaDiResidenza.length());
 	}
 
 	@Override

@@ -24,34 +24,9 @@ public class OperazioneContoCorrente implements Comparable<OperazioneContoCorren
 	@JsonbCreator
 	public OperazioneContoCorrente(@JsonbProperty("id") int id, @JsonbProperty("data") Date data, @JsonbProperty("importo") double importo, 
 			@JsonbProperty("tipologia") String tipologia, @JsonbProperty("conto_corrente") ContoCorrente conto_corrente_proprietario,
-			String conto_corrente_destinatario) throws InputValidationException {
-		
-		if(id < 0)
-			throw new InputValidationException("Id operazione conto corrente");
-		
-		if (data == null)
-			throw new InputValidationException("Data operazione conto corrente");
+			@JsonbProperty("conto_corrente_destinatario") String conto_corrente_destinatario) throws InputValidationException {
 
-		if(importo < 0)
-			throw new InputValidationException("Importo operazione conto corrente");
-		
-		if(tipologia == null || tipologia.isBlank())
-			throw new InputValidationException("Tipologia conto corrente");
-		if(tipologia.length() > 45)
-			throw new InputValidationException("Tipologia conto corrente non valida. Numero massimi caratteri consentiti 45, inseriti: ", tipologia.length());
-		if(!tipologia.matches("[\\w,: ]{2,45}")) 
-			throw new InputValidationException("Tipologia conto corrente. Caratteri speciali consentiti (,:)");
-		
-		if(conto_corrente_proprietario == null)
-			throw new InputValidationException("Conto corrente proprietario");
-		
-		if (conto_corrente_destinatario == null || conto_corrente_destinatario.isBlank())
-			throw new InputValidationException("Conto corrente destinatario");
-		if(conto_corrente_destinatario.length() != 27)
-			throw new InputValidationException("Conto corrente destinatario non valido. Caratteri richiesti 27, inseriti: ", conto_corrente_destinatario.length());
-		if(!conto_corrente_destinatario.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
-			throw new InputValidationException("Formato conto corrente destinatario (esempio inserimento  IT28W8000000292100645211151)");
-		
+		validazioneParametri(id, data, importo, tipologia, conto_corrente_proprietario, conto_corrente_destinatario);
 		this.id = id;
 		this.data = data;
 		this.importo = importo;
@@ -108,12 +83,42 @@ public class OperazioneContoCorrente implements Comparable<OperazioneContoCorren
 		this.tipologia = tipologia;
 	}
 
+	private void validazioneParametri(int id, Date data, double importo, String tipologia, ContoCorrente conto_corrente_proprietario, String conto_corrente_destinatario) throws InputValidationException {
+		if(id < 0)
+			throw new InputValidationException("Id operazione conto corrente");
+
+		if (data == null)
+			throw new InputValidationException("Data operazione conto corrente");
+
+		if(importo < 0)
+			throw new InputValidationException("Importo operazione conto corrente");
+
+		if(tipologia == null || tipologia.isBlank())
+			throw new InputValidationException("Tipologia conto corrente");
+		if(tipologia.length() > 45)
+			throw new InputValidationException("Tipologia conto corrente non valida. Numero massimi caratteri consentiti 45, inseriti: ", tipologia.length());
+		if(!tipologia.matches("[\\w,: ]{2,45}")) 
+			throw new InputValidationException("Tipologia conto corrente. Caratteri speciali consentiti (,:)");
+
+		if(conto_corrente_proprietario == null)
+			throw new InputValidationException("Conto corrente proprietario");
+
+		if (conto_corrente_destinatario == null || conto_corrente_destinatario.isBlank())
+			throw new InputValidationException("Conto corrente destinatario");
+		if(conto_corrente_destinatario.length() != 27)
+			throw new InputValidationException("Conto corrente destinatario non valido. Caratteri richiesti 27, inseriti: ", conto_corrente_destinatario.length());
+		if(!conto_corrente_destinatario.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
+			throw new InputValidationException("Formato conto corrente destinatario (esempio inserimento  IT28W8000000292100645211151)");
+	}
+
+	@Override
 	public int hashCode() {
 		int hash = 37;
 		hash = hash * 37 + id;
 		return hash;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -131,10 +136,11 @@ public class OperazioneContoCorrente implements Comparable<OperazioneContoCorren
 				+ "id = " + id + ", \tdata = " + data + ", \ttipologia = " + tipologia + "\n";
 	}
 
+	@Override
 	public int compareTo(OperazioneContoCorrente o) {
 		return this.data.compareTo(data);
 	}
-	
+
 	public String toJson() {
 		JsonbConfig config = new JsonbConfig().withPropertyVisibilityStrategy(new PropertyVisibilityStrategy() {
 			@Override
