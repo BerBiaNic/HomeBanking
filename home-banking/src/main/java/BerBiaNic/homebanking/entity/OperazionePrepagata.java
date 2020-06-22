@@ -11,7 +11,11 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 
 	private int id;
@@ -21,6 +25,23 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	private String cartaDestinatario;
 	private CartaPrepagata cartaPrepagata;
 	
+	/**
+	 * 
+	 * 
+	 * @param id							,  numero identificativo dell'oggetto. Unico per tutte istanze di tipo OperazionePrepagata;
+	 * 
+	 * @param data							, data dell'operazione associata alla carta prepagata;
+	 * 
+	 * @param importo						, importo dell'operazione associata alla carta prepagata;
+	 * 
+	 * @param tipologia						, tipologia dell'operazione associata alla carta prepagata;
+	 * 
+	 * @param destinatario					, numero per l'identificazione del beneficiario dell'operazione;
+	 * 
+	 * @param cartaPrepagata				, oggetto di tipo carta prepagata del cliente che effettua l'operazione;
+	 * 
+	 * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo Account.
+	 */
 	@JsonbCreator 
 	public OperazionePrepagata(@JsonbProperty("id") int id, @JsonbProperty("data") Date data, @JsonbProperty("importo") double importo, 
 			@JsonbProperty("tipologia") String tipologia, @JsonbProperty("destinatario") String destinatario, 

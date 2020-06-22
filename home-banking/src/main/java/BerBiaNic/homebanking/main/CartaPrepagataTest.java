@@ -16,12 +16,13 @@ import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.CartaPrepagata;
 import BerBiaNic.homebanking.entity.Cliente;
+import BerBiaNic.homebanking.exceptions.InputValidationException;
 
 public class CartaPrepagataTest {
 
 	public CartaPrepagataTest() {}
 
-	public static void main(String[] args) throws InterruptedException, ExecutionException, IOException, SQLException {
+	public static void main(String[] args) throws InterruptedException, ExecutionException, IOException, SQLException, InputValidationException {
 
 		Database db = new Database();
 

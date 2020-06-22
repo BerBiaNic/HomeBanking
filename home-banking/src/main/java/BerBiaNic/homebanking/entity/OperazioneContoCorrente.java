@@ -11,7 +11,11 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class OperazioneContoCorrente implements Comparable<OperazioneContoCorrente> {
 
 	private int id;
@@ -21,6 +25,23 @@ public class OperazioneContoCorrente implements Comparable<OperazioneContoCorren
 	private ContoCorrente conto_corrente_proprietario;
 	private String conto_corrente_destinatario;
 
+	/**
+	 * Crea un oggetto di tipo OperazioneContoCorrente.
+	 * 
+	 * @param id							, numero identificativo dell'oggetto. Unico per tutte istanze di tipo OperazioneContoCorrente;
+	 * 
+	 * @param data							, data dell'operazione associata al conto corrente;
+	 * 
+	 * @param importo						, importo dell'operazione associata al conto corrente;
+	 * 
+	 * @param tipologia						, tipologia dell'operazione associata al conto corrente;
+	 * 
+	 * @param conto_corrente_destinatario	, codice iban per l'identificazione del conto corrente beneficiario dell'operazione;
+	 * 
+	 * @param conto_corrente_proprietario   , oggetto di tipo conto corrente del cliente che effettua l'operazione;
+	 * 
+	 * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo Account.
+	 */
 	@JsonbCreator
 	public OperazioneContoCorrente(@JsonbProperty("id") int id, @JsonbProperty("data") Date data, @JsonbProperty("importo") double importo, 
 			@JsonbProperty("tipologia") String tipologia, @JsonbProperty("conto_corrente") ContoCorrente conto_corrente_proprietario,

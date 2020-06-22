@@ -11,7 +11,11 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class CartaPrepagata {
 
 	private String numero;
@@ -22,13 +26,34 @@ public class CartaPrepagata {
 	private int pin;
 	private Account account;
 
+	/**
+	 * Crea un oggetto di tipo CartaPrepagata.
+	 * 
+	 * @param numero						,  numero identificativo dell'oggetto. Unico per tutte istanze di tipo CartaPrepagata;
+	 * 
+	 * @param saldoContabile				, Somma algebrica tra le entrate e le uscite registrate sull’estratto conto in una data specifica. 
+	 * 										  Si utilizza il termine “contabile” per specificare che le operazioni effettuate sono state contabilizzate 
+	 * 										  sul conto corrente ma non sono ancora effettive per il proprietario della carta.
+	 * 
+	 * @param saldoDisponibile				, somma effettivamente a disposizione del proprietario della carta;
+	 * 
+	 * @param dataDiScadenza				, data di scadenza della carta prepagata;
+	 * 
+	 * @param cvv							, codice di sicurezza composto da 3 cifre;
+	 * 
+	 * @param pin							, codice di sicurezza composto da 6 cifre;
+	 * 
+	 * @param account						, ogetto di tipo account associato al cliente proprietario della carta prepagata;
+	 * 
+	 * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo Account.
+	 */
 	@JsonbCreator
 	public CartaPrepagata(@JsonbProperty("numero") String numero, @JsonbProperty("saldo_contabile") double saldoContabile, 
 			@JsonbProperty("saldo_disponibile") double saldoDisponibile, @JsonbProperty("data_di_sadenza") Date dataDiScadenza, 
 			@JsonbProperty("cvv") int cvv, @JsonbProperty("pin") int pin, @JsonbProperty("account")Account account) throws InputValidationException {
 
 		validazioneParametri(numero, saldoContabile, saldoDisponibile, dataDiScadenza, cvv, pin, account);
-		this.numero = numero;
+		this.numero = numero.trim();
 		this.saldoContabile = saldoContabile;
 		this.saldoDisponibile = saldoDisponibile;
 		this.dataDiScadenza = dataDiScadenza;
@@ -114,7 +139,7 @@ public class CartaPrepagata {
 		if(cvv < 100 || cvv > 999)
 			throw new InputValidationException("Codice cvv carta prepagata");
 		
-		if(pin < 100000)
+		if(pin < 100000 || pin > 999999)
 			throw new InputValidationException("Codice PIN carta prepagata");
 			
 		if(account == null)

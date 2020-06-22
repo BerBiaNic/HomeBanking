@@ -15,6 +15,7 @@ import java.util.concurrent.Future;
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.CartaPrepagata;
+import BerBiaNic.homebanking.exceptions.InputValidationException;
 
 public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 

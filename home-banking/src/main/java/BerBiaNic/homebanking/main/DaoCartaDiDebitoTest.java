@@ -5,6 +5,7 @@ import java.util.concurrent.*;
 
 import BerBiaNic.homebanking.dao.*;
 import BerBiaNic.homebanking.entity.*;
+import BerBiaNic.homebanking.exceptions.InputValidationException;
 
 public class DaoCartaDiDebitoTest {
 	public static void main(String[] args) {
@@ -17,7 +18,7 @@ public class DaoCartaDiDebitoTest {
 			Future<CartaDiDebito> futureCartaD = daoCartaDebito.insert(cdd);
 			System.out.println("Carta inserita");
 			System.out.println(futureCartaD.get());
-		} catch (InterruptedException | ExecutionException e) {
+		} catch (InterruptedException | ExecutionException | InputValidationException e) {
 			e.printStackTrace();
 		}
 		

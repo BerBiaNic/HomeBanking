@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.Cliente;
+import BerBiaNic.homebanking.exceptions.InputValidationException;
 
 public class DaoAccount implements Dao<Account,Integer > {
 
@@ -99,7 +100,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 
 				Account a = new Account(id, user, pass, email, improntaD, dispositiviAssociati, c);
 				return a;
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | InputValidationException e) {
 				e.printStackTrace();
 				return null;
 			} finally {
@@ -154,7 +155,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 
 				Account a = new Account(id, user, pass, email, improntaD, dispositiviAssociati, c);
 				return a;
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | InputValidationException e) {
 				e.printStackTrace();
 				return null;
 			} finally {

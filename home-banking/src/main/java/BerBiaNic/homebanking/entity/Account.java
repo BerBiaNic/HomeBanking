@@ -10,7 +10,11 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class Account {
 
 	private int id;
@@ -21,19 +25,41 @@ public class Account {
 	private String dispositiviAssociati;
 	private Cliente cliente;
 
+	/**
+	 * Crea un oggetto di tipo Account.
+	 * 
+	 * @param id							, numero identificativo dell'oggetto. Unico per tutte istanze di tipo Account;
+	 * 
+	 * @param username						, nome scelto dal cliente e utilizzato per far riconoscere il cliente dal sistema; 
+	 * 										  Può essere composto da caratteri alfanumerici e i caratteri speciali "-" e "_";
+	 * 
+	 * @param password						, La password deve contenere un numero, un carattere minuscolo, uno maiuscolo, 
+	 * 										  un carattere speciale tra @#$% e deve avere una lunghezza minima di 8 caratteri e massima di 20;
+	 * 
+	 * @param email							, indirizzo email associato all'account, può essere composto da massimo 35 caratteri alfanumerici a sinistra del carattere "@";
+	 * 
+	 * @param improntaDigitale				, impronta digitale del cliente associata all'account in modo da poter accedere al proprio account senza effettuare il login con username e password;
+	 * 
+	 * 
+	 * @param dispositiviAssociati			, dispositivi associati all'account tramite i quali il cliente può accedere all'account;
+	 * 
+	 * @param cliente						, oggetto di tipo cliente associato all'account;
+	 * 
+	 * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo Account.
+	 */
 	@JsonbCreator
 	public Account(@JsonbProperty("id") int id, @JsonbProperty ("username") String username, @JsonbProperty ("password") String password, 
 			@JsonbProperty("email") String email, @JsonbProperty("impronta_digitale") long improntaDigitale,
 			@JsonbProperty ("dispositivi_associati") String dispositiviAssociati, @JsonbProperty ("cliente") Cliente cliente) throws InputValidationException {
 
 		validazioneParametri(id, username, password, email, improntaDigitale, dispositiviAssociati, cliente);
-		this.cliente = cliente;
 		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.email = email;
+		this.username = username.trim();
+		this.password = password.trim();
+		this.email = email.trim();
 		this.improntaDigitale = improntaDigitale;
-		this.dispositiviAssociati = dispositiviAssociati;
+		this.dispositiviAssociati = dispositiviAssociati.trim();
+		this.cliente = cliente;
 	}
 
 	public Cliente getCliente() {
