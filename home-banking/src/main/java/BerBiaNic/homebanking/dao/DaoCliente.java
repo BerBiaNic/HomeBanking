@@ -1,6 +1,5 @@
 package BerBiaNic.homebanking.dao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,12 +12,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import BerBiaNic.homebanking.db.Database;
-import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.Cliente;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class DaoCliente implements Dao <Cliente,String> {
 
+	/**
+	 * Cerca tramite codice fiscale un cliente presente all'interno del database. Ritorna un oggetto di tipo Future<Cliente>. 
+	 */
 	@Override
 	public Future<Cliente> getOne(String primaryKey) {
 		String query = "SELECT * FROM cliente WHERE codice_fiscale = ?";
@@ -44,7 +49,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 				
 				Cliente c = new Cliente(codiceF, cognome, nome, cittaN, dataN, numeroT, indirizzoR, cittaR);
 				return c;
-			} catch (SQLException | InputValidationException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 				return null;
 			} 			finally {
@@ -73,6 +78,9 @@ public class DaoCliente implements Dao <Cliente,String> {
 		return cliente;
 	}
 
+	/**
+	 * Ritorna un oggetto di tipo Future<List<Cliente>> contenente tutti i clienti presenti nel database.
+	 */
 	@Override
 	public Future<List<Cliente>> getAll() {
 		String query = "SELECT * FROM cliente";
@@ -120,6 +128,9 @@ public class DaoCliente implements Dao <Cliente,String> {
 		return clients;
 	}
 
+	/**
+	 * Inserisce all'interno del database un cliente. Ritorna un oggetto di tipo Future<Cliente>.
+	 */
 	@Override
 	public Future<Cliente> insert(Cliente element) {
 		String query = "insert into cliente(codice_fiscale, cognome, nome, citta_di_nascita, data_di_nascita, numero_di_telefono, indirizzo_di_residenza, citta_di_residenza)" + 
@@ -171,6 +182,9 @@ public class DaoCliente implements Dao <Cliente,String> {
 		return getOne(element.getCodiceFiscale());
 	}
 
+	/**
+	 * Elimina dal database un cliente cercandolo tramite codice fiscale. Ritorna un oggetto di tipo Future<Integer>.
+	 */
 	@Override
 	public Future<Integer> delete(String primaryKey) {
 		String query = "DELETE FROM cliente WHERE codice_fiscale = ?";
@@ -206,6 +220,9 @@ public class DaoCliente implements Dao <Cliente,String> {
 		return del;
 	}
 
+	/**
+	 * Modifica un cliente presente all'interno del database. Ritorna un oggetto di tipo Future<Cliente>.
+	 */
 	@Override
 	public Future<Cliente> update(Cliente element) {
 		try {

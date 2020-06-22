@@ -14,10 +14,16 @@ import java.util.concurrent.Future;
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.ContoCorrente;
-import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class DaoContoCorrente implements Dao<ContoCorrente, String> {
-
+	
+	/**
+	 * Cerca tramite iban un conto corrente presente all'interno del database. Ritorna un oggetto di tipo Future<ContoCorrente>. 
+	 */
 	@Override
 	public Future<ContoCorrente> getOne(String primaryKey) {
 		String query = "SELECT * FROM conto_corrente WHERE iban = ?";
@@ -67,7 +73,10 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 		});
 		return futureContoCorrente;
 	}
-
+	
+	/**
+	 * Ritorna un oggetto di tipo Future<List<ContoCorrente>> contenente tutti i conti correnti presenti nel database.
+	 */
 	@Override
 	public Future<List<ContoCorrente>> getAll() {
 		String query = "SELECT * FROM conto_corrente";
@@ -107,6 +116,9 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 		return futureAccounts;
 	}
 
+	/**
+	 * Inserisce all'interno del database un conto corrente. Ritorna un oggetto di tipo Future<ContoCorrente>.
+	 */
 	@Override
 	public Future<ContoCorrente> insert(ContoCorrente element) {
 		String query = "insert into conto_corrente(numero,iban,saldo_disponibile,saldo_contabile,id_account)" + 
@@ -152,6 +164,9 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 		return getOne(element.getIban());
 	}
 
+	/**
+	 * Elimina dal database un conto corrente cercandolo tramite iban. Ritorna un oggetto di tipo Future<Integer>.
+	 */
 	@Override
 	public Future<Integer> delete(String primaryKey) {
 		String query = "DELETE FROM conto_corrente WHERE iban = ?";
@@ -186,6 +201,9 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 		return del;
 	}
 
+	/**
+	 * Modifica un conto corrente presente all'interno del database. Ritorna un oggetto di tipo Future<ContoCorrente>.
+	 */
 	@Override
 	public Future<ContoCorrente> update(ContoCorrente element) {
 		try {
