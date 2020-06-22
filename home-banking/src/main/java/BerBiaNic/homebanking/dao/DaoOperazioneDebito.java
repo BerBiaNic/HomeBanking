@@ -15,9 +15,16 @@ import java.util.concurrent.Future;
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.CartaDiDebito;
 import BerBiaNic.homebanking.entity.OperazioneCartaDebito;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 
+	/**
+	 * Cerca tramite id un'operazione eseguita con la carta di debito presente all'interno del database. Ritorna un oggetto di tipo Future<OperazioneCartaDebito>. 
+	 */
 	@Override
 	public Future<OperazioneCartaDebito> getOne(Integer primaryKey) {
 		String query ="SELECT * FROM operazione_carta_debito WHERE id = ?";
@@ -30,16 +37,16 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 				ps.setInt(1, primaryKey);
 				rs = ps.executeQuery();
 				rs.next();
-				
+
 				DaoCartaDiDebito daoCarta = new DaoCartaDiDebito();
 				CartaDiDebito carta = daoCarta.getOne(rs.getString("numero_carta_proprietario")).get();
-				
+
 				int id = rs.getInt("id");
 				Date data = rs.getDate("data");
 				double importo = rs.getDouble("importo");
 				String tipologia = rs.getString("tipologia");
 				String numeroCartaBeneficiario = rs.getString("numero_carta_beneficiario");
-				
+
 				OperazioneCartaDebito op = new OperazioneCartaDebito(id, data, importo, tipologia, carta, numeroCartaBeneficiario);
 				return op;
 			} catch (Exception e) {
@@ -69,6 +76,9 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 		return operazione;
 	}
 
+	/**
+	 * Ritorna un oggetto di tipo Future<List<OperazioneCartaDebito>> contenente tutte le operazioni associate ad una carta di debito.
+	 */
 	@Override
 	public Future<List<OperazioneCartaDebito>> getAll() {
 		String query = "SELECT * FROM operazione_carta_debito";
@@ -95,7 +105,7 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
-				
+
 				if(s != null)
 					try {
 						s.close();
@@ -113,6 +123,9 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 		return operazioni;
 	}
 
+	/**
+	 * Inserisce all'interno del database un'operazione eseguita con la carta di debito. Ritorna un oggetto di tipo Future<OperazioneCartaDebito>.
+	 */
 	@Override
 	public Future<OperazioneCartaDebito> insert(OperazioneCartaDebito element) {
 		String query = "INSERT INTO operazione_carta_debito(id, data, importo, tipologia, numero_carta_proprietario, numero_carta_beneficiario)" +
@@ -149,6 +162,9 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 		return getOne(element.getId());
 	}
 
+	/**
+	 * Elimina dal database un'operazione eseguita con la carta di debito cercandola tramite id. Ritorna un oggetto di tipo Future<Integer>.
+	 */
 	@Override
 	public Future<Integer> delete(Integer primaryKey) {
 		String query = "DELETE FROM operazione_carta_debito WHERE id = ?";
@@ -180,6 +196,9 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 		return del;
 	}
 
+	/**
+	 * Modifica un'operazione carta di debito presente all'interno del database. Ritorna un oggetto di tipo Future<OperazioneCartaDebito>.
+	 */
 	@Override
 	public Future<OperazioneCartaDebito> update(OperazioneCartaDebito element) {
 		CompletableFuture<OperazioneCartaDebito> res = CompletableFuture.supplyAsync(() ->{

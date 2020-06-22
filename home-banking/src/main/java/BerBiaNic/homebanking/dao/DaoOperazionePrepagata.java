@@ -16,9 +16,16 @@ import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.CartaPrepagata;
 import BerBiaNic.homebanking.entity.OperazionePrepagata;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> {
 
+	/**
+	 * Cerca tramite id un'operazione eseguita con la carta prepagata presente all'interno del database. Ritorna un oggetto di tipo Future<OperazionePrepagata>. 
+	 */
 	@Override
 	public Future<OperazionePrepagata> getOne(Integer primaryKey) {
 		String query = "SELECT * FROM operazione_prepagata WHERE id = ?";
@@ -71,6 +78,9 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 		return operazione;
 	}
 
+	/**
+	 * Ritorna un oggetto di tipo Future<List<OperazionePrepagata>> contenente tutte le operazioniassociate ad una carta prepagata.
+	 */
 	@Override
 	public Future<List<OperazionePrepagata>> getAll() {
 		String query = "SELECT * FROM operazione_prepagata";
@@ -97,7 +107,7 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
-				
+
 				if(s != null)
 					try {
 						s.close();
@@ -115,6 +125,9 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 		return operazioni;
 	}
 
+	/**
+	 * Inserisce all'interno del database un'operazione eseguita con la carta prepagata. Ritorna un oggetto di tipo Future<OperazionePrepagata>.
+	 */
 	@Override
 	public Future<OperazionePrepagata> insert(OperazionePrepagata element) {
 		String query = "INSERT INTO operazione_prepagata(id,data,importo,tipologia,destinatario,numero_carta)" +
@@ -152,6 +165,9 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 		return getOne(element.getId());
 	}
 
+	/**
+	 * Elimina dal database un'operazione eseguita con la carta prepagata cercandola tramite id. Ritorna un oggetto di tipo Future<Integer>.
+	 */
 	@Override
 	public Future<Integer> delete(Integer primaryKey) {
 		String query = "DELETE FROM operazione_prepagata WHERE id = ?";
@@ -183,6 +199,9 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 		return del;
 	}
 
+	/**
+	 * Modifica un'operazione prepagata presente all'interno del database. Ritorna un oggetto di tipo Future<OperazionePrepagata>.
+	 */
 	@Override
 	public Future<OperazionePrepagata> update(OperazionePrepagata element) {
 		CompletableFuture<OperazionePrepagata> res = CompletableFuture.supplyAsync(() ->{

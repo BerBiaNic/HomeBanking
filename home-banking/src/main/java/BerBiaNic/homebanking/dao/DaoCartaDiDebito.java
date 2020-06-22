@@ -15,9 +15,16 @@ import java.util.concurrent.Future;
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.*;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 
+	/**
+	 * Cerca tramite id una carta di debito presente all'interno del database. Ritorna un oggetto di tipo Future<CartaDiDebito>. 
+	 */
 	@Override
 	public Future<CartaDiDebito> getOne(String primaryKey) {
 		String query = "SELECT * FROM carta_di_debito WHERE numero = ?";
@@ -67,6 +74,9 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 		return futureCartaDebito;
 	}
 
+	/**
+	 * Ritorna un oggetto di tipo Future<List<CaratDiDebito>> contenente tutte le carte di debito associate ad un conto corrente.
+	 */
 	@Override
 	public Future<List<CartaDiDebito>> getAll() {
 		String query = "SELECT * FROM carta_di_debito";
@@ -111,6 +121,9 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 		return cards;
 	}
 
+	/**
+	 * Inserisce all'interno del database una carta di debito. Ritorna un oggetto di tipo Future<CartaDiDebito>.
+	 */
 	@Override
 	public Future<CartaDiDebito> insert(CartaDiDebito element) {
 		String query = "insert into carta_di_debito(numero, iban, data_di_scadenza, cvv, pin, numero_conto_corrente)" + 
@@ -164,6 +177,9 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 		return getOne(element.getNumero());
 	}
 
+	/**
+	 * Elimina dal database una carta di debito cercandola tramite il numero. Ritorna un oggetto di tipo Future<Integer>.
+	 */
 	@Override
 	public Future<Integer> delete(String primaryKey) {
 		String query = "DELETE FROM carta_di_debito WHERE numero = ?";
@@ -196,6 +212,9 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 		return del;
 	}
 
+	/**
+	 * Modifica una carta di debito presente all'interno del database. Ritorna un oggetto di tipo Future<CartaDiDebito>.
+	 */
 	@Override
 	public Future<CartaDiDebito> update(CartaDiDebito element) {
 		CompletableFuture<CartaDiDebito> res = CompletableFuture.supplyAsync(() -> {

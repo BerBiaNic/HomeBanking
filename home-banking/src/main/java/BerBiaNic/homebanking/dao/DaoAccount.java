@@ -15,9 +15,16 @@ import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.Cliente;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class DaoAccount implements Dao<Account,Integer > {
 
+	/**
+	 * Cerca tramite id un account presente all'interno del database. Ritorna un oggetto di tipo Future<Account>. 
+	 */
 	@Override
 	public Future<Account> getOne(Integer primaryKey) {
 		String query = "SELECT * FROM account WHERE id = ?";
@@ -73,6 +80,9 @@ public class DaoAccount implements Dao<Account,Integer > {
 		return account;
 	}
 	
+	/**
+	 * Cerca tramite username e password un account presente all'interno del database. Ritorna un oggetto di tipo Future<Account>. 
+	 */
 	public Future<Account> getOne(String username, String password) {
 		String query = "SELECT * FROM account WHERE username = ? AND password = ?";
 		CompletableFuture<Account> account = CompletableFuture.supplyAsync(() -> {
@@ -129,6 +139,9 @@ public class DaoAccount implements Dao<Account,Integer > {
 		return account;
 	}
 	
+	/**
+	 * Cerca tramite impronta digitale un account presente all'interno del database. Ritorna un oggetto di tipo Future<Account>. 
+	 */
 	public Future<Account> getOne(long improntaDigitale) {
 		String query = "SELECT * FROM account WHERE username = ? AND password = ?";
 		CompletableFuture<Account> account = CompletableFuture.supplyAsync(() -> {
@@ -184,6 +197,9 @@ public class DaoAccount implements Dao<Account,Integer > {
 		return account;
 	}
 
+	/**
+	 * Ritorna un oggetto di tipo Future<List<Account>> contenente tutti gli account presenti nel database.
+	 */
 	@Override
 	public Future<List<Account>> getAll() {
 		String query = "SELECT * FROM account";
@@ -232,6 +248,9 @@ public class DaoAccount implements Dao<Account,Integer > {
 		return accounts;
 	}
 
+	/**
+	 * Inserisce all'interno del database un'accoun. Ritorna un oggetto di tipo Future<Account>.
+	 */
 	@Override
 	public Future<Account> insert(Account element) {
 		String query = "insert into account(id, username, password, email, impronta_digitale, dispositivi_associati, codice_fiscale_cliente)" + 
@@ -282,6 +301,9 @@ public class DaoAccount implements Dao<Account,Integer > {
 		return getOne(element.getId());
 	}
 
+	/**
+	 * Elimina dal database un account cercandolo tramite id. Ritorna un oggetto di tipo Future<Account>.
+	 */
 	@Override
 	public Future<Integer> delete(Integer primaryKey) {
 		String query = "DELETE FROM account WHERE id = ?";
@@ -317,6 +339,9 @@ public class DaoAccount implements Dao<Account,Integer > {
 		return del;
 	}
 
+	/**
+	 * Modifica un account presente all'interno del database. Ritorna un oggetto di tipo Future<Account>.
+	 */
 	@Override
 	public Future<Account> update(Account element) {
 		try {

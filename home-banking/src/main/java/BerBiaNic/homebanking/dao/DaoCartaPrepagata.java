@@ -16,13 +16,18 @@ import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.CartaPrepagata;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 
+	/**
+	 * Cerca tramite numero una carta prepagata presente all'interno del database. Ritorna un oggetto di tipo Future<CartaPrepagata>. 
+	 */
 	@Override
 	public Future<CartaPrepagata> getOne(String primaryKey) {
-
-
 		String query = "SELECT * FROM carta_prepagata WHERE numero = ?";
 		CompletableFuture<CartaPrepagata> carta = CompletableFuture.supplyAsync(() -> {
 			Connection conn = Database.getConnection();
@@ -75,6 +80,9 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 		return carta;
 	}
 
+	/**
+	 * Ritorna un oggetto di tipo Future<List<CartaPrepagata>> contenente tutte le carte prepagate associate ad un account.
+	 */
 	@Override
 	public Future<List<CartaPrepagata>> getAll() {
 		String query = "SELECT * FROM carta_prepagata";
@@ -101,7 +109,7 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
-				
+
 				if(s != null)
 					try {
 						s.close();
@@ -119,6 +127,9 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 		return carte;
 	}
 
+	/**
+	 * Inserisce all'interno del database una carta prepagata. Ritorna un oggetto di tipo Future<CartaPrepagata>.
+	 */
 	@Override
 	public Future<CartaPrepagata> insert(CartaPrepagata element) {
 		String query = "INSERT INTO carta_prepagata(numero, saldo_contabile, saldo_disponibile, data_di_scadenza, cvv, pin, id_account)" +
@@ -156,6 +167,9 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 		return getOne(element.getNumero());
 	}
 
+	/**
+	 * Elimina dal database una carta di debito cercandola tramite il numero. Ritorna un oggetto di tipo Future<Integer>.
+	 */
 	@Override
 	public Future<Integer> delete(String primaryKey) {
 		String query = "DELETE FROM carta_prepagata WHERE numero = ?";
@@ -187,6 +201,9 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 		return del;
 	}
 
+	/**
+	 * Modifica una carta prepagata presente all'interno del database. Ritorna un oggetto di tipo Future<CartaPrepagata>.
+	 */
 	@Override
 	public Future<CartaPrepagata> update(CartaPrepagata element) {
 		CompletableFuture<CartaPrepagata> res = CompletableFuture.supplyAsync(() ->{
