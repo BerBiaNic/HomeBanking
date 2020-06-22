@@ -10,7 +10,11 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class ContoCorrente{
 
 	private int numero;
@@ -19,6 +23,23 @@ public class ContoCorrente{
 	private double saldo_contabile;
 	private Account account;
 
+	/**
+	 * Crea un oggetto di tipo ContoCorrente.
+	 * 
+	 * @param numero						, numero identificativo dell'oggetto. Unico per tutte istanze di tipo ContoCorrente;
+	 * 
+	 * @param iban							, codice per l'identificazione del conto corrente, necessario per eseguire tutte le operazioni;
+	 * 
+	 * @param saldo_disponibile				, Somma algebrica tra le entrate e le uscite registrate sull’estratto conto in una data specifica. 
+	 * 										  Si utilizza il termine “contabile” per specificare che le operazioni effettuate sono state contabilizzate 
+	 * 										  sul conto corrente ma non sono ancora effettive per il correntista.
+	 * 
+	 * @param saldo_contabile				, somma effettivamente a disposizione del correntista;
+	 * 
+	 * @param account						, oggetto di tipo account associato al conto corrente;
+	 * 
+	 * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo Account.
+	 */
 	@JsonbCreator
 	public ContoCorrente(@JsonbProperty("numero") int numero, @JsonbProperty("iban") String iban, @JsonbProperty("saldo_disponibile") double saldo_disponibile, 
 			@JsonbProperty("saldo_contabile") double saldo_contabile, @JsonbProperty("account") Account account) throws InputValidationException {

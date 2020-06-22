@@ -11,7 +11,11 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class CartaDiDebito {
 	
 	private String numero;
@@ -20,14 +24,31 @@ public class CartaDiDebito {
 	private int cvv;
 	private int pin;
 	private ContoCorrente conto_corrente;
-	
+
+/**
+ * Crea un oggetto di tipo CartaDiDebito.
+ * 
+ * @param numero						, numero identificativo dell'oggetto. Unico per tutte istanze di tipo CartaDiDebito;
+ * 
+ * @param iban							, codice per l'identificazione del conto corrente, necessario per eseguire tutte le operazioni;
+ * 
+ * @param data_di_scadenza				, data di scadenza della carta di debito;
+ * 
+ * @param cvv							, codice di sicurezza composto da 3 cifre;
+ * 
+ * @param pin							, codice di sicurezza composto da 6 cifre;
+ * 
+ * @param conto_corrente				, oggetto  di tipo conto corrente collegato alla carta di debito;
+ * 
+ * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo CartaDiDebito.
+ */
 	@JsonbCreator
 	public CartaDiDebito(@JsonbProperty("numero") String numero, @JsonbProperty("iban") String iban, @JsonbProperty("data_di_scadenza") Date data_di_scadenza, 
 			@JsonbProperty("cvv") int cvv, @JsonbProperty("pin") int pin, @JsonbProperty("conto_corrente") ContoCorrente conto_corrente) throws InputValidationException {
 		
 		validazioneParametri(numero, iban, data_di_scadenza, cvv, pin, conto_corrente);
-		this.numero = numero;
-		this.iban = iban;
+		this.numero = numero.trim();
+		this.iban = iban.trim();
 		this.data_di_scadenza = data_di_scadenza;
 		this.cvv = cvv;
 		this.pin = pin;
@@ -103,7 +124,7 @@ public class CartaDiDebito {
 		if(cvv < 100 || cvv > 999)
 			throw new InputValidationException("Codice cvv carta di debito");
 		
-		if(pin < 100000)
+		if(pin < 100000 || pin > 999999)
 			throw new InputValidationException("Codice PIN carta di debito");
 		
 		if(conto_corrente == null)

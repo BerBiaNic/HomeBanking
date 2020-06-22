@@ -11,7 +11,11 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class OperazioneCartaDebito implements Comparable<OperazioneCartaDebito> {
 
 	private int id;
@@ -21,6 +25,23 @@ public class OperazioneCartaDebito implements Comparable<OperazioneCartaDebito> 
 	private CartaDiDebito carta_proprietario;
 	private String carta_beneficiario;
 
+	/**
+	 * Crea un oggetto di tipo OperazioneCartaDebito.
+	 * 
+	 * @param id							, numero identificativo dell'oggetto. Unico per tutte istanze di tipo OperazioneCartaDebito;
+	 * 
+	 * @param data							, data dell'operazione associata alla carta di debito;
+	 * 
+	 * @param importo						, importo dell'operazione associata alla carta di debito;
+	 * 
+	 * @param tipologia						, tipologia dell'operazione associata alla carta di debito;
+	 * 
+	 * @param carta_proprietario			, oggetto di tipo carta di debito del cliente che effettua l'operazione;
+	 * 
+	 * @param carta_beneficiario			, codice iban per l'identificazione del conto corrente beneficiario dell'operazione;
+	 * 
+	 * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo Account.
+	 */
 	@JsonbCreator
 	public OperazioneCartaDebito(@JsonbProperty("id") int id, @JsonbProperty("data") Date data, @JsonbProperty("importo") double importo, 
 			@JsonbProperty("tipologia") String tipologia, @JsonbProperty("carta_proprietario") CartaDiDebito carta_proprietario,

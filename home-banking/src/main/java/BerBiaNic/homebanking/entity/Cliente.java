@@ -11,7 +11,11 @@ import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-
+/**
+ * 
+ * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
+ *
+ */
 public class Cliente {
 
 	private String codiceFiscale;
@@ -23,6 +27,27 @@ public class Cliente {
 	private String indirizzoDiResidenza;
 	private String cittaDiResidenza;
 
+	/**
+	 * Crea un oggetto di tipo Cliente.
+	 * 
+	 * @param codiceFiscale					, codice fiscale del cliente;
+	 * 
+	 * @param cognome						, cognome del cliente;
+	 *
+	 * @param nome							, nome del cliente;
+	 * 
+	 * @param cittaDiNascita				, città di nascita del cliente;
+	 * 
+	 * @param dataDinascita					, data di nascita del cliente;
+	 * 
+	 * @param numeroDiTelefono				, numero di telefono del cliente;
+	 * 
+	 * @param indirizzoDiResidenza			, indirizzo di residenza del cliente;
+	 * 
+	 * @param cittaDiResidenza				, città di residenza del cliente;
+	 * 
+	 * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo Account.
+	 */
 	@JsonbCreator
 	public Cliente(@JsonbProperty("codice_fiscale") String codiceFiscale, @JsonbProperty("cognome") String cognome, @JsonbProperty("nome") String nome, 
 			@JsonbProperty("citta_di_nascita") String cittaDiNascita, @JsonbProperty("data_di_nascita") Date dataDinascita,
@@ -31,13 +56,13 @@ public class Cliente {
 
 		validazioneParametri(codiceFiscale, cognome, nome, cittaDiNascita, dataDinascita, numeroDiTelefono, indirizzoDiResidenza, cittaDiResidenza);
 		this.codiceFiscale = codiceFiscale;
-		this.cognome = cognome;
-		this.nome = nome;
-		this.cittaDiNascita = cittaDiNascita;
+		this.cognome = cognome.trim();
+		this.nome = nome.trim();
+		this.cittaDiNascita = cittaDiNascita.trim();
 		this.dataDinascita = dataDinascita;
-		this.numeroDiTelefono = numeroDiTelefono;
-		this.indirizzoDiResidenza = indirizzoDiResidenza;
-		this.cittaDiResidenza = cittaDiResidenza;
+		this.numeroDiTelefono = numeroDiTelefono.trim();
+		this.indirizzoDiResidenza = indirizzoDiResidenza.trim();
+		this.cittaDiResidenza = cittaDiResidenza.trim();
 	}
 
 	public String getCodiceFiscale() {

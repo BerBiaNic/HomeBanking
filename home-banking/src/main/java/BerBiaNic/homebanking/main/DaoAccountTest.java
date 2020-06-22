@@ -14,9 +14,10 @@ import java.util.concurrent.Future;
 import BerBiaNic.homebanking.dao.*;
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.*;
+import BerBiaNic.homebanking.exceptions.InputValidationException;
 
 public class DaoAccountTest {
-	public static void main(String[] args) throws SQLException, IOException, InterruptedException, ExecutionException {
+	public static void main(String[] args) throws SQLException, IOException, InterruptedException, ExecutionException, InputValidationException {
 
 		Database db = new Database();
 		Statement stmt = (Statement) db.getConnection().createStatement();

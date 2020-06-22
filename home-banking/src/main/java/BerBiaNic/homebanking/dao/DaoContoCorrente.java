@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.ContoCorrente;
+import BerBiaNic.homebanking.exceptions.InputValidationException;
 
 public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 
