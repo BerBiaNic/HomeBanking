@@ -98,7 +98,7 @@ public class ContoCorrente{
 
 		if (iban == null || iban.isBlank())
 			throw new InputValidationException("IBAN conto corrente");
-		if(iban.length() != 31)
+		if(iban.length() != 27)
 			throw new InputValidationException("IBAN conto corrente non valido. Caratteri richiesti 27, inseriti: ", iban.length());
 		if(!iban.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
 			throw new InputValidationException("Formato IBAN conto corrente (esempio inserimento IT28W8000000292100645211151)");

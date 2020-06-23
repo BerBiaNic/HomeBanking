@@ -123,7 +123,7 @@ public class CartaPrepagata {
 		if(numero == null || numero.isBlank())
 			throw new InputValidationException("Numero carta prepagata");
 		if(numero.length() != 16)
-			throw new InputValidationException("Numero carta prepagata. Caratteri richiesti 16, inseriti: ", numero.length());
+			throw new InputValidationException("Numero carta prepagata non valido. Caratteri richiesti 16, inseriti: ", numero.length());
 		if(!numero.matches("[\\d]{16}"))  
 			throw new InputValidationException("Formato numero carta prepagata (esempio inserimento 1234569874521456).");
 

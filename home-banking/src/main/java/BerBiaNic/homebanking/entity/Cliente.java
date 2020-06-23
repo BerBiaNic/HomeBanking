@@ -55,7 +55,7 @@ public class Cliente {
 			@JsonbProperty("citta_di_residenza") String cittaDiResidenza) throws InputValidationException {
 
 		validazioneParametri(codiceFiscale, cognome, nome, cittaDiNascita, dataDinascita, numeroDiTelefono, indirizzoDiResidenza, cittaDiResidenza);
-		this.codiceFiscale = codiceFiscale;
+		this.codiceFiscale = codiceFiscale.trim();
 		this.cognome = cognome.trim();
 		this.nome = nome.trim();
 		this.cittaDiNascita = cittaDiNascita.trim();
@@ -163,8 +163,8 @@ public class Cliente {
 
 		if(indirizzoDiResidenza == null || indirizzoDiResidenza.isBlank())
 			throw new InputValidationException("Indirizzo di residenza");
-		if(!indirizzoDiResidenza.matches("[\\wаит, ]{5,100}"))
-			throw new InputValidationException("Indirizzo di residenza");
+		if(!indirizzoDiResidenza.matches("[\\wаит',() ]{5,100}"))
+			throw new InputValidationException("Indirizzo di residenza, caratteri non consentiti");
 
 		if(cittaDiResidenza == null || cittaDiResidenza.isBlank())
 			throw new InputValidationException("Indirizzo di residenza");

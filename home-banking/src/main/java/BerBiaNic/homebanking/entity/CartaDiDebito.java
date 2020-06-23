@@ -106,14 +106,14 @@ public class CartaDiDebito {
 	private void validazioneParametri(String numero, String iban, Date data_di_scadenza, int cvv, int pin, ContoCorrente conto_corrente) throws InputValidationException {
 		if(numero == null || numero.isBlank())
 			throw new InputValidationException("Numero carta di debito");
-		if(numero.length() != 16)
+		if(numero.length() > 10)
 			throw new InputValidationException("Numero carta di debito non valido. Caratteri richiesti 16, inseriti: ", numero.length());
 		if(!numero.matches("[\\d]*")) 
 			throw new InputValidationException("Formato numero carta di debito errato.");
 		
 		if (iban == null || iban.isBlank())
 			throw new InputValidationException("IBAN carta di debito");
-		if(iban.length() != 31)
+		if(iban.length() != 27)
 			throw new InputValidationException("IBAN carta di debito non valido. Caratteri richiesti 27, inseriti: ", iban.length());
 		if(!iban.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
 			throw new InputValidationException("Formato IBAN carta di debito (esempio inserimento IT28W8000000292100645211151) .");
