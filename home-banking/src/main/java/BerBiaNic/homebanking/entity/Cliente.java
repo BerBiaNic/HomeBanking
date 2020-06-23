@@ -163,14 +163,13 @@ public class Cliente {
 			throw new InputValidationException("Numero di Telefono, formato errato", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(indirizzoDiResidenza == null || indirizzoDiResidenza.isBlank())
-
 			throw new InputValidationException("Indirizzo di residenza", Response.Status.METHOD_NOT_ALLOWED);
-		if(!indirizzoDiResidenza.matches("[\\w√†√®√≤, ]{5,100}"))
+		if(!indirizzoDiResidenza.matches("[\\w()‡ËÚ', ]{5,100}"))
 			throw new InputValidationException("Indirizzo di residenza", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(cittaDiResidenza == null || cittaDiResidenza.isBlank())
 			throw new InputValidationException("Indirizzo di residenza", Response.Status.METHOD_NOT_ALLOWED);
-		if(!cittaDiResidenza.matches("[a-zA-Z√†√®√≤, ]{2,45}"))
+		if(!cittaDiResidenza.matches("[\\w()‡ËÚ', ]{5,100}"))
 			throw new InputValidationException("Indirizzo di residenza errato, caratteri massimi consentiti 100, inseriti: " + cittaDiResidenza.length(), Response.Status.METHOD_NOT_ALLOWED);
 	}
 
