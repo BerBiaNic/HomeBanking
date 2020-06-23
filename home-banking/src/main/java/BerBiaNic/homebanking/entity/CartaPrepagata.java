@@ -32,8 +32,8 @@ public class CartaPrepagata {
 	 * 
 	 * @param numero						,  numero identificativo dell'oggetto. Unico per tutte istanze di tipo CartaPrepagata;
 	 * 
-	 * @param saldoContabile				, Somma algebrica tra le entrate e le uscite registrate sullíestratto conto in una data specifica. 
-	 * 										  Si utilizza il termine ìcontabileî per specificare che le operazioni effettuate sono state contabilizzate 
+	 * @param saldoContabile				, Somma algebrica tra le entrate e le uscite registrate sull‚Äôestratto conto in una data specifica. 
+	 * 										  Si utilizza il termine ‚Äúcontabile‚Äù per specificare che le operazioni effettuate sono state contabilizzate 
 	 * 										  sul conto corrente ma non sono ancora effettive per il proprietario della carta.
 	 * 
 	 * @param saldoDisponibile				, somma effettivamente a disposizione del proprietario della carta;
@@ -124,7 +124,7 @@ public class CartaPrepagata {
 		if(numero == null || numero.isBlank())
 			throw new InputValidationException("Numero carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 		if(numero.length() != 16)
-			throw new InputValidationException("Numero carta prepagata. Caratteri richiesti 16, inseriti: " + numero.length(), Response.Status.METHOD_NOT_ALLOWED);
+
 		if(!numero.matches("[\\d]{16}"))  
 			throw new InputValidationException("Formato numero carta prepagata (esempio inserimento 1234569874521456).", Response.Status.METHOD_NOT_ALLOWED);
 

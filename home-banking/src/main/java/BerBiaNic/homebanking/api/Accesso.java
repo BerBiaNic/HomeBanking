@@ -37,5 +37,4 @@ public class Accesso {
 		daoA.getOne(impronta.getImpronta());
 		return Response.ok().build();
 	}
-	
 }

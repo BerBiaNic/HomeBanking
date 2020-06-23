@@ -37,7 +37,7 @@ public class Cliente {
 	 *
 	 * @param nome							, nome del cliente;
 	 * 
-	 * @param cittaDiNascita				, citt‡ di nascita del cliente;
+	 * @param cittaDiNascita				, citt√† di nascita del cliente;
 	 * 
 	 * @param dataDinascita					, data di nascita del cliente;
 	 * 
@@ -45,7 +45,7 @@ public class Cliente {
 	 * 
 	 * @param indirizzoDiResidenza			, indirizzo di residenza del cliente;
 	 * 
-	 * @param cittaDiResidenza				, citt‡ di residenza del cliente;
+	 * @param cittaDiResidenza				, citt√† di residenza del cliente;
 	 * 
 	 * @throws InputValidationException		, eccezione lanciata dal sistema in caso di errore nell'inserimento dei parametri per la creazione di un oggetto di tipo Account.
 	 */
@@ -56,7 +56,7 @@ public class Cliente {
 			@JsonbProperty("citta_di_residenza") String cittaDiResidenza) throws InputValidationException {
 
 		validazioneParametri(codiceFiscale, cognome, nome, cittaDiNascita, dataDinascita, numeroDiTelefono, indirizzoDiResidenza, cittaDiResidenza);
-		this.codiceFiscale = codiceFiscale;
+		this.codiceFiscale = codiceFiscale.trim();
 		this.cognome = cognome.trim();
 		this.nome = nome.trim();
 		this.cittaDiNascita = cittaDiNascita.trim();
@@ -141,18 +141,18 @@ public class Cliente {
 
 		if(cognome == null || cognome.isBlank())
 			throw new InputValidationException("Cognome", Response.Status.METHOD_NOT_ALLOWED);
-		if (!cognome.matches("[a-zA-Z‡ËÚ, ]{2,45}")) 
+		if (!cognome.matches("[a-zA-Z√†√®√≤, ]{2,45}")) 
 			throw new InputValidationException("Cognome errato, caratteri consentiti da 2 a 45, inseriti: " + cognome.length(), Response.Status.METHOD_NOT_ALLOWED);
 
 		if(nome == null || nome.isBlank())
 			throw new InputValidationException("Nome", Response.Status.METHOD_NOT_ALLOWED);
-		if (!nome.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
+		if (!nome.matches("[a-zA-Z√†√®√≤, ]{2,45}"))
 			throw new InputValidationException("Nome errato, caratteri richiesti da 2 a 45, inseriti: " + nome.length(), Response.Status.METHOD_NOT_ALLOWED);
 
 		if(cittaDiNascita == null || cittaDiNascita.isBlank())
-			throw new InputValidationException("Citt‡ di nascita", Response.Status.METHOD_NOT_ALLOWED);
-		if (!cittaDiNascita.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
-			throw new InputValidationException("Citt‡ di nascita errata, caratteri massimi consentiti 45, inseriti: " + cittaDiNascita.length(), Response.Status.METHOD_NOT_ALLOWED);
+			throw new InputValidationException("Citt√† di nascita", Response.Status.METHOD_NOT_ALLOWED);
+		if (!cittaDiNascita.matches("[a-zA-Z√†√®√≤, ]{2,45}"))
+			throw new InputValidationException("Citt√† di nascita errata, caratteri massimi consentiti 45, inseriti: " + cittaDiNascita.length(), Response.Status.METHOD_NOT_ALLOWED);
 
 		if(dataDinascita == null)
 			throw new InputValidationException("Data di nascita (aaaa-mm-gg)", Response.Status.METHOD_NOT_ALLOWED);
@@ -163,13 +163,14 @@ public class Cliente {
 			throw new InputValidationException("Numero di Telefono, formato errato", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(indirizzoDiResidenza == null || indirizzoDiResidenza.isBlank())
+
 			throw new InputValidationException("Indirizzo di residenza", Response.Status.METHOD_NOT_ALLOWED);
-		if(!indirizzoDiResidenza.matches("[\\w‡ËÚ, ]{5,100}"))
+		if(!indirizzoDiResidenza.matches("[\\w√†√®√≤, ]{5,100}"))
 			throw new InputValidationException("Indirizzo di residenza", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(cittaDiResidenza == null || cittaDiResidenza.isBlank())
 			throw new InputValidationException("Indirizzo di residenza", Response.Status.METHOD_NOT_ALLOWED);
-		if(!cittaDiResidenza.matches("[a-zA-Z‡ËÚ, ]{2,45}"))
+		if(!cittaDiResidenza.matches("[a-zA-Z√†√®√≤, ]{2,45}"))
 			throw new InputValidationException("Indirizzo di residenza errato, caratteri massimi consentiti 100, inseriti: " + cittaDiResidenza.length(), Response.Status.METHOD_NOT_ALLOWED);
 	}
 

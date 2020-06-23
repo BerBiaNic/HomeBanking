@@ -31,8 +31,8 @@ public class ContoCorrente{
 	 * 
 	 * @param iban							, codice per l'identificazione del conto corrente, necessario per eseguire tutte le operazioni;
 	 * 
-	 * @param saldo_disponibile				, Somma algebrica tra le entrate e le uscite registrate sullíestratto conto in una data specifica. 
-	 * 										  Si utilizza il termine ìcontabileî per specificare che le operazioni effettuate sono state contabilizzate 
+	 * @param saldo_disponibile				, Somma algebrica tra le entrate e le uscite registrate sull‚Äôestratto conto in una data specifica. 
+	 * 										  Si utilizza il termine ‚Äúcontabile‚Äù per specificare che le operazioni effettuate sono state contabilizzate 
 	 * 										  sul conto corrente ma non sono ancora effettive per il correntista.
 	 * 
 	 * @param saldo_contabile				, somma effettivamente a disposizione del correntista;
@@ -101,6 +101,7 @@ public class ContoCorrente{
 			throw new InputValidationException("IBAN conto corrente", Response.Status.METHOD_NOT_ALLOWED);
 		if(iban.length() != 31)
 			throw new InputValidationException("IBAN conto corrente non valido. Caratteri richiesti 27, inseriti: " + iban.length(), Response.Status.METHOD_NOT_ALLOWED);
+
 		if(!iban.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
 			throw new InputValidationException("Formato IBAN conto corrente (esempio inserimento IT28W8000000292100645211151)", Response.Status.METHOD_NOT_ALLOWED);
 
