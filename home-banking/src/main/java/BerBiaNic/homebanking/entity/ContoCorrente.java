@@ -31,16 +31,11 @@ public class ContoCorrente{
 	 * 
 	 * @param iban							, codice per l'identificazione del conto corrente, necessario per eseguire tutte le operazioni;
 	 * 
-<<<<<<< HEAD
-	 * @param saldo_disponibile				, Somma algebrica tra le entrate e le uscite registrate sull’estratto conto in una data specifica. 
+	 * @param saldo_contabile 				, Somma algebrica tra le entrate e le uscite registrate sull'estratto conto in una data specifica. 
 	 * 										  Si utilizza il termine contabile per specificare che le operazioni effettuate sono state contabilizzate 
-=======
-	 * @param saldo_disponibile				, Somma algebrica tra le entrate e le uscite registrate sullâ€™estratto conto in una data specifica. 
-	 * 										  Si utilizza il termine per specificare che le operazioni effettuate sono state contabilizzate 
->>>>>>> cec29f743b21320a434aac6d54946e900f34396f
 	 * 										  sul conto corrente ma non sono ancora effettive per il correntista.
 	 * 
-	 * @param saldo_contabile				, somma effettivamente a disposizione del correntista;
+	 * @param saldo_disponibile				, somma effettivamente a disposizione del correntista;
 	 * 
 	 * @param account						, oggetto di tipo account associato al conto corrente;
 	 * 
