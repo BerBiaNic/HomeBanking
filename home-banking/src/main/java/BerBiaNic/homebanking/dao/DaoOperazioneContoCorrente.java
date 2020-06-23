@@ -16,23 +16,18 @@ import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.CartaDiDebito;
+import BerBiaNic.homebanking.entity.ContoCorrente;
 import BerBiaNic.homebanking.entity.OperazioneCartaDebito;
+import BerBiaNic.homebanking.entity.OperazioneContoCorrente;
 import BerBiaNic.homebanking.exceptions.EmptyResultSet;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
-/**
- * 
- * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
- *
- */
-public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 
-	/**
-	 * Cerca tramite id un'operazione eseguita con la carta di debito presente all'interno del database. Ritorna un oggetto di tipo Future<OperazioneCartaDebito>. 
-	 */
+public class DaoOperazioneContoCorrente implements Dao<OperazioneContoCorrente,Integer>{
+
 	@Override
-	public Future<OperazioneCartaDebito> getOne(Integer primaryKey) {
-		String query ="SELECT * FROM operazione_carta_debito WHERE id = ?";
-		CompletableFuture<OperazioneCartaDebito> operazione = CompletableFuture.supplyAsync(() ->{
+	public Future<OperazioneContoCorrente> getOne(Integer primaryKey) {
+		String query ="SELECT * FROM operazione_conto_corrente WHERE id = ?";
+		CompletableFuture<OperazioneContoCorrente> operazione = CompletableFuture.supplyAsync(() ->{
 			Connection conn = Database.getConnection();
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -45,16 +40,16 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 				rs.next();
 				if(rs == null)
 					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
-				DaoCartaDiDebito daoCarta = new DaoCartaDiDebito();
-				CartaDiDebito carta = daoCarta.getOne(rs.getString("numero_carta_proprietario")).get();
+				DaoContoCorrente daoContoCorrente = new DaoContoCorrente();
+				ContoCorrente conto = daoContoCorrente.getOne(rs.getString("iban_proprietario")).get();
 
 				int id = rs.getInt("id");
 				Date data = rs.getDate("data");
 				double importo = rs.getDouble("importo");
 				String tipologia = rs.getString("tipologia");
-				String numeroCartaBeneficiario = rs.getString("numero_carta_beneficiario");
+				String ibanBeneficiario = rs.getString("iban_beneficiario");
 
-				OperazioneCartaDebito op = new OperazioneCartaDebito(id, data, importo, tipologia, carta, numeroCartaBeneficiario);
+				OperazioneContoCorrente op = new OperazioneContoCorrente(id, data, importo, tipologia, conto, ibanBeneficiario);
 				return op;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -83,14 +78,11 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 		return operazione;
 	}
 
-	/**
-	 * Ritorna un oggetto di tipo Future<List<OperazioneCartaDebito>> contenente tutte le operazioni associate ad una carta di debito.
-	 */
 	@Override
-	public Future<List<OperazioneCartaDebito>> getAll() {
+	public Future<List<OperazioneContoCorrente>> getAll() {
 		String query = "SELECT * FROM operazione_carta_debito";
-		CompletableFuture<List<OperazioneCartaDebito>> operazioni = CompletableFuture.supplyAsync(() -> {
-			List<OperazioneCartaDebito> result = new ArrayList<>();
+		CompletableFuture<List<OperazioneContoCorrente>> operazioni = CompletableFuture.supplyAsync(() -> {
+			List<OperazioneContoCorrente> result = new ArrayList<>();
 			ResultSet rs = null;
 			Statement s = null;
 			Connection conn = Database.getConnection();
@@ -100,7 +92,7 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 				while(rs.next()) {
 					if(rs == null)
 						throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
-					OperazioneCartaDebito op = getOne(rs.getInt("id")).get();
+					OperazioneContoCorrente op = getOne(rs.getInt("id")).get();
 					result.add(op);
 				}		
 				return result;
@@ -132,12 +124,9 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 		return operazioni;
 	}
 
-	/**
-	 * Inserisce all'interno del database un'operazione eseguita con la carta di debito. Ritorna un oggetto di tipo Future<OperazioneCartaDebito>.
-	 */
 	@Override
-	public Future<OperazioneCartaDebito> insert(OperazioneCartaDebito element) {
-		String query = "INSERT INTO operazione_carta_debito(id, data, importo, tipologia, numero_carta_proprietario, numero_carta_beneficiario)" +
+	public Future<OperazioneContoCorrente> insert(OperazioneContoCorrente element) {
+		String query = "INSERT INTO operazione_conto_corrente(id, data, importo, tipologia, iban_proprietario, iban_beneficiario)" +
 				"VALUES(?,?,?,?,?,?)";
 		CompletableFuture.runAsync(() -> {
 			Connection conn = Database.getConnection();
@@ -150,8 +139,8 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 				ps.setDate(2, element.getData());
 				ps.setDouble(3, element.getImporto());
 				ps.setString(4, element.getTipologia());
-				ps.setString(5, element.getCarta_proprietario().getNumero());
-				ps.setString(6, element.getCarta_beneficiario());
+				ps.setString(5, element.getConto_corrente_proprietario().getIban());
+				ps.setString(6, element.getConto_corrente_destinatario());
 				ps.executeUpdate();
 			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
@@ -173,12 +162,9 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 		return getOne(element.getId());
 	}
 
-	/**
-	 * Elimina dal database un'operazione eseguita con la carta di debito cercandola tramite id. Ritorna un oggetto di tipo Future<Integer>.
-	 */
 	@Override
 	public Future<Integer> delete(Integer primaryKey) {
-		String query = "DELETE FROM operazione_carta_debito WHERE id = ?";
+		String query = "DELETE FROM operazione_conto_corrente WHERE id = ?";
 		CompletableFuture<Integer> del= CompletableFuture.supplyAsync(() -> {
 			Connection conn = Database.getConnection();
 			PreparedStatement ps = null;
@@ -209,15 +195,12 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 		return del;
 	}
 
-	/**
-	 * Modifica un'operazione carta di debito presente all'interno del database. Ritorna un oggetto di tipo Future<OperazioneCartaDebito>.
-	 */
 	@Override
-	public Future<OperazioneCartaDebito> update(OperazioneCartaDebito element) {
+	public Future<OperazioneContoCorrente> update(OperazioneContoCorrente element) {
 		try {
 			if(element == null)
 				throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
-			CompletableFuture<OperazioneCartaDebito> res = CompletableFuture.supplyAsync(() ->{
+			CompletableFuture<OperazioneContoCorrente> res = CompletableFuture.supplyAsync(() ->{
 				return delete(element.getId());
 			}).thenApply(value ->{
 				try {
@@ -233,6 +216,6 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 			return null;
 		}
 	}
-
 }
+
 

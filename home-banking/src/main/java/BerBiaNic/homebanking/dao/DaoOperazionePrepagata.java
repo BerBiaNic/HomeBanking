@@ -12,9 +12,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.ws.rs.core.Response;
+
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.CartaPrepagata;
 import BerBiaNic.homebanking.entity.OperazionePrepagata;
+import BerBiaNic.homebanking.exceptions.EmptyResultSet;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
  * 
@@ -34,11 +37,15 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 			ResultSet rs = null;
 			Connection conn = Database.getConnection();
 			try {
+				if(primaryKey < 0)
+					throw new InputValidationException("Id operazione carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
+
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				rs = ps.executeQuery();
 				rs.next();			
-
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
 				DaoCartaPrepagata daoPrepagata = new DaoCartaPrepagata();
 				CartaPrepagata carta = daoPrepagata.getOne(rs.getString("numero_carta")).get();
 
@@ -51,7 +58,7 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 
 				OperazionePrepagata op = new OperazionePrepagata(id, data, importo, tipologia, destinatario, carta);
 				return op;
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | InputValidationException | EmptyResultSet e) {
 				e.printStackTrace();
 				return null;
 			}finally {
@@ -93,11 +100,13 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 				s = conn.createStatement();
 				rs = s.executeQuery(query);	
 				while(rs.next()) {
+					if(rs == null)
+						throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
 					OperazionePrepagata op = getOne(rs.getInt("id")).get();
 					result.add(op);
 				}		
 				return result;
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | EmptyResultSet e) {
 				e.printStackTrace();
 				return null;
 			}finally {
@@ -136,6 +145,8 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 			PreparedStatement ps = null;
 			Connection conn = Database.getConnection();
 			try {
+				if(element == null)
+					throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, element.getId());
 				ps.setDate(2, element.getData());
@@ -145,7 +156,7 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 				ps.setString(6, element.getCartaPrepagata().getNumero());
 
 				ps.executeUpdate();
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 			}finally {
 				if(conn != null)
@@ -175,10 +186,12 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 			PreparedStatement ps = null;
 			Connection conn = Database.getConnection();
 			try {
+				if(primaryKey < 0)
+					throw new InputValidationException("Id operazione carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				return ps.executeUpdate();
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 				return 0;
 			}finally {
@@ -204,17 +217,25 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 	 */
 	@Override
 	public Future<OperazionePrepagata> update(OperazionePrepagata element) {
-		CompletableFuture<OperazionePrepagata> res = CompletableFuture.supplyAsync(() ->{
-			return delete(element.getId());
-		}).thenApply(value ->{
-			try {
-				return insert(element).get();
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-				return null;
-			}
-		});
+		try {
+			if(element == null)
+				throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
+			CompletableFuture<OperazionePrepagata> res = CompletableFuture.supplyAsync(() ->{
+				return delete(element.getId());
+			}).thenApply(value ->{
+				try {
+					return insert(element).get();
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+					return null;
+				}
+			});
 
-		return res;
+			return res;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
+
 }

@@ -11,14 +11,19 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.ws.rs.core.Response;
+
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.ContoCorrente;
+import BerBiaNic.homebanking.exceptions.EmptyResultSet;
+import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
  * 
  * @authors Antonino Bertuccio, Giuseppe Bianchino, Giovanni Nicotera
  *
  */
+
 public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 	
 	/**
@@ -32,10 +37,18 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			try {
+				if (primaryKey == null || primaryKey.isBlank())
+					throw new InputValidationException("IBAN conto corrente", Response.Status.METHOD_NOT_ALLOWED);
+				if(primaryKey.length() != 31)
+					throw new InputValidationException("IBAN conto corrente non valido. Caratteri richiesti 27, inseriti: " + primaryKey.length(), Response.Status.METHOD_NOT_ALLOWED);
+				if(!primaryKey.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
+					throw new InputValidationException("Formato IBAN conto corrente (esempio inserimento IT28W8000000292100645211151)", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				rs = ps.executeQuery();
 				rs.next();
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
 				int numero = rs.getInt("numero"); 
 				String iban =  rs.getString("iban");
 				double saldoD = rs.getDouble("saldo_disponibile"); 
@@ -44,7 +57,7 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 				DaoAccount daoAccount = new DaoAccount();
 				Account a = daoAccount.getOne(rs.getInt("id_account")).get();
 				return new ContoCorrente(numero, iban, saldoD, saldoC, a);
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | InputValidationException | EmptyResultSet e) {
 				e.printStackTrace();
 				return null;
 			}finally {
@@ -89,11 +102,13 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 				ResultSet rs = s.executeQuery(query);
 
 				while(rs.next()) {
+					if(rs == null)
+						throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
 					ContoCorrente a = getOne(rs.getString("iban")).get();
 					result.add(a);
 				}
 				return result;
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | EmptyResultSet e) {
 				e.printStackTrace();
 				return null;
 			}finally {
@@ -128,7 +143,8 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 			PreparedStatement ps = null;
 			try {
 				ps = conn.prepareStatement(query);
-
+				if(element == null)
+					throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 				int numero = element.getNumero(); 
 				String iban = element.getIban();
 				double saldoD = element.getSaldo_disponibile(); 
@@ -142,7 +158,7 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 				ps.setInt(5, idA);
 				ps.executeUpdate();
 
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 			}finally {
 				if( conn != null ) {
@@ -175,10 +191,16 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 			Connection conn = Database.getConnection();
 			PreparedStatement ps = null;
 			try {
+				if (primaryKey == null || primaryKey.isBlank())
+					throw new InputValidationException("IBAN conto corrente", Response.Status.METHOD_NOT_ALLOWED);
+				if(primaryKey.length() != 31)
+					throw new InputValidationException("IBAN conto corrente non valido. Caratteri richiesti 27, inseriti: " + primaryKey.length(), Response.Status.METHOD_NOT_ALLOWED);
+				if(!primaryKey.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
+					throw new InputValidationException("Formato IBAN conto corrente (esempio inserimento IT28W8000000292100645211151)", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				return ps.executeUpdate();
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 				return 0;
 			}finally {
@@ -207,6 +229,8 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 	@Override
 	public Future<ContoCorrente> update(ContoCorrente element) {
 		try {
+			if(element == null)
+				throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 			CompletableFuture<ContoCorrente> res = CompletableFuture.supplyAsync(() -> {
 				return delete(element.getIban());
 
