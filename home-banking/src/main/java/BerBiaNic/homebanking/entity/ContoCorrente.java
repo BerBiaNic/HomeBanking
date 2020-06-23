@@ -32,7 +32,7 @@ public class ContoCorrente{
 	 * @param iban							, codice per l'identificazione del conto corrente, necessario per eseguire tutte le operazioni;
 	 * 
 	 * @param saldo_disponibile				, Somma algebrica tra le entrate e le uscite registrate sull’estratto conto in una data specifica. 
-	 * 										  Si utilizza il termine “contabile” per specificare che le operazioni effettuate sono state contabilizzate 
+	 * 										  Si utilizza il termine contabile per specificare che le operazioni effettuate sono state contabilizzate 
 	 * 										  sul conto corrente ma non sono ancora effettive per il correntista.
 	 * 
 	 * @param saldo_contabile				, somma effettivamente a disposizione del correntista;
@@ -61,11 +61,11 @@ public class ContoCorrente{
 		return iban;
 	}
 
-	public double getSaldo_disponibile() {
+	public double getSaldoDisponibile() {
 		return saldo_disponibile;
 	}
 
-	public double getSaldo_contabile() {
+	public double getSaldoContabile() {
 		return saldo_contabile;
 	}
 
@@ -81,12 +81,12 @@ public class ContoCorrente{
 		this.iban = iban;
 	}
 
-	public void setSaldo_disponibile(double saldo_disponibile) {
-		this.saldo_disponibile = saldo_disponibile;
+	public void setSaldoDisponibile(double saldoDisponibile) {
+		this.saldo_disponibile = saldoDisponibile;
 	}
 
-	public void setSaldo_contabile(double saldo_contabile) {
-		this.saldo_contabile = saldo_contabile;
+	public void setSaldoContabile(double saldoContabile) {
+		this.saldo_contabile = saldoContabile;
 	}
 
 	public void setAccount(Account account) {

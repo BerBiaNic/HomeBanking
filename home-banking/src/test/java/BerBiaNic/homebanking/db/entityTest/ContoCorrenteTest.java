@@ -80,7 +80,7 @@ public class ContoCorrenteTest {
 		} catch (InputValidationException e) {
 			System.out.println(e);
 		}
-		double saldo_disponibileResult = contoCorrenteTest.getSaldo_disponibile();
+		double saldo_disponibileResult = contoCorrenteTest.getSaldoDisponibile();
 		assertEquals(saldo_disponibile, saldo_disponibileResult, "I saldi disponibili devono essere uguali");
 	}
 
@@ -98,7 +98,7 @@ public class ContoCorrenteTest {
 		} catch (InputValidationException e) {
 			System.out.println(e);
 		}
-		double saldo_contabileResult = contoCorrenteTest.getSaldo_contabile();
+		double saldo_contabileResult = contoCorrenteTest.getSaldoContabile();
 		assertEquals(saldo_contabile, saldo_contabileResult, "I saldi contabili devono essere uguali");
 	}
 

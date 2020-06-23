@@ -26,10 +26,10 @@ tags:
       description: Find out more
       url: 'http://swagger.io'
 paths:
-  /homeBanking/cliente/signup:
+  "/homeBanking/cliente/signup":
     post:
       tags:
-        - cliente
+        - "Cliente"
       summary: Aggiunta di un nuovo cliente
       operationId: creazione account
       requestBody:
@@ -47,7 +47,7 @@ paths:
           content: {}
         '403':
           description: utente già esistente
-  /homeBanking/account/signup:
+  "/homeBanking/account/signup":
     post:
       tags:
         - Account
@@ -70,7 +70,7 @@ paths:
           content: {}
         '403':
           description: account già esistente
-  /homeBanking/account/login/userpass:
+  "/homeBanking/account/login/userpass":
     post:
       tags:
         - Account
@@ -92,10 +92,10 @@ paths:
         '404':
           description: user not found
           content: {}
-  /homeBanking/account/login/fingerprint:
+  "/homeBanking/account/login/fingerprint":
     post:
       tags:
-        - Account
+        - "Account"
       summary: Accedi all'account tramite username e password
       operationId: loginAccountF
       requestBody:
@@ -114,10 +114,11 @@ paths:
         '404':
           description: user not found
           content: {}
+          
   "/homeBanking/account/cartaprepagata":
     post:
       tags:
-        - Carta Prepagata
+        - "Carta Prepagata"
       summary: Aggiungi una nuova carta prepagata
       operationId: newCartaPre
       requestBody:
@@ -132,29 +133,24 @@ paths:
           description: Carta associata con successo
         '400':
           description: Errore
-    get:
+  "/homeBanking/account/cartaprepagata/one":   
+    post:
       tags:
         - "Carta Prepagata"
-      summary: "Cerca una carta prepagata"
-      description: "Ricerca di una carta prepagata a partire dal suo numero"
-      operationId: "srchCartaPre"
-      parameters:
-        - name: "numero"
-          in: "header"
-          description: "Il numero della carta da cercare"
-          schema:
-            type: "string"
-          required: true
+      summary: "Visualizza la carta prepagata"
+      operationId: "srchOneCartaPre"
+      requestBody:
+        description: "Restituisce la carta prepagata a partire dal numero fornito"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumeroCarta'
+        required: true
       responses:
         '200':
-          description: "Ricerca eseguita correttamente"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CartaPrepagata'
+          description: "Carta trovato con successo"
         '400':
-          description: "Carta non trovata"
-  "/homeBanking/account/cartaprepagata/all":
+          description: "Errore"
     get:
       tags: 
       - "Carta Prepagata"
@@ -170,28 +166,339 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CartaPrepagata'
-                
+    put:
+      tags: 
+      - "Carta Prepagata"
+      summary: "Effettua un bonifico"
+      description: "Effettua un bonifico su una carta"
+      operationId: "doBonif"
+      requestBody:
+        description: "I dati per il bonifico: la carta del proprietario e del destinatario e l'importo"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatiBonificoCP'
+        required: true
+      responses:
+        '200':
+          description: "Bonifico effettuato con successo!"
+          
+  "homeBanking/account/opcartaprepagata":
+    post:
+      tags:
+      - "Operazione Prepagata"
+      summary: "Visualizza l'operazione carta prepagata"
+      operationId: "srchOneOpPre"
+      parameters:
+      - id: query
+        name: "id"
+        schema:
+          type: "integer"
+        description: "Il numero identificativo associato all'operazione carta prepagata"
+        required: true
+      responses:
+        '200':
+          description: "Operazione trovata con successo"
+        '400':
+          description: "Errore"
+    get:
+      tags: 
+      - "Operazione Prepagata"
+      summary: "Visualizza tutte le operazioni di carte prepagate"
+      description: "Restituisce tutte le operazioni di carte prepagate contenute all'interno del database"
+      operationId: "srchAllOpPre"
+      responses:
+        '200':
+          description: "Operazione corretta"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperazionePrepagata'
+  
+  
+  "homeBanking/account/contocorrente":    
+    post:
+      tags:
+        - "Conto Corrente"
+      summary: "Aggiungi un nuovo conto corrente"
+      description: "Aggiungi un nuovo conto corrente associato all'account"
+      operationId: "addCC"
+      requestBody:
+        description: "Il conto corrente da aggiungere"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContoCorrente'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: user not found
+          content: {}
+          
+  "homeBanking/account/contocorrente/one":    
+    post:
+      tags:
+        - "Conto Corrente"
+      summary: "Cerca un conto corrente"
+      description: "Effettua la ricerca di un conto corrente e ritorna il conto corrente trovato."
+      operationId: "srchCC"
+      requestBody:
+        description: "Il conto corrente da ricercare"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IbanContoCorrente'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            type: array
+            
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: user not found
+          content: {} 
+          
+    get:
+      tags:
+        - "Conto Corrente"
+      summary: "Insieme di conto correnti"
+      description: "Restituisce l'insieme di tutti i conti correnti salvati nel database."
+      operationId: "srchAllCC"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContoCorrente'
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: user not found
+          content: {}    
+                    
+    put:
+      tags:
+        - "Conto Corrente"
+      summary: "Nuovo bonifico"
+      description: "Definisce un nuovo bonifico tra due conti correnti."
+      operationId: "newBonCC"
+      requestBody:
+        description: "I dati del bonifico: iban del proprietario e del destinatario e l'importo"
+        content:
+          application/json:
+            content:
+              schema:
+                $ref: '#/components/schemas/DatiBonificoCC'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content: {}
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: user not found
+          content: {}    
+  
+  "homeBanking/account/contocorrente/giroconto":      
+    put:
+      tags:
+        - "Conto Corrente"
+      summary: "Nuovo giroconto"
+      description: "Definisce un nuovo giroconto tra un conto corrente ed una carta di debito associata al conto corrente."
+      operationId: "newGiroCC"
+      requestBody:
+        description: "I dati del giroconto: iban del proprietario e della carta di debito e l'importo"
+        content:
+          application/json:
+            content:
+              schema:
+                $ref: '#/components/schemas/DatiGirocontoCC'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content: {}
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: user not found
+          content: {}     
+          
+  "homeBanking/account/opcontocorrente":
+    post:
+      tags:
+      - "Operazione Conto Corrente"
+      summary: "Visualizza l'operazione carta conto corrente"
+      operationId: "srchOneOpCC"
+      parameters:
+      - id: query
+        name: "id"
+        schema:
+          type: "integer"
+        description: "Il numero identificativo associato all'operazione conto corrente"
+        required: true
+      responses:
+        '200':
+          description: "Operazione trovata con successo"
+        '400':
+          description: "Errore"
+    get:
+      tags: 
+      - "Operazione Conto Corrente"
+      summary: "Visualizza tutte le operazioni di operazione conto corrente"
+      description: "Restituisce tutte le operazioni di conto corrente contenute all'interno del database"
+      operationId: "srchAllOpCC"
+      responses:
+        '200':
+          description: "Operazione corretta"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperazioneContoCorrente'
+                  
+  "homeBanking/account/cartadidebito":
+    post:
+      tags:
+        - "Carta Di Debito"
+      summary: "Aggiungi una nuova carta di debito"
+      operationId: "newCartaDeb"
+      requestBody:
+        description: "Associa una nuova carta di debito all'account"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartaDiDebito'
+        required: true
+      responses:
+        '200':
+          description: "Carta associata con successo"
+        '400':
+          description: Errore
+  "/homeBanking/account/cartadidebito/one":   
+    post:
+      tags:
+        - "Carta Di Debito"
+      summary: "Visualizza la carta di debito"
+      operationId: "srchOneCartaDeb"
+      requestBody:
+        description: "Restituisce la carta di debito a partire dal numero fornito"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumeroCarta'
+        required: true
+      responses:
+        '200':
+          description: "Carta trovato con successo"
+        '400':
+          description: "Errore"
+    get:
+      tags: 
+      - "Carta Di Debito"
+      summary: "Visualizza tutte le carte di debito"
+      description: "Restituisce tutte le carte di debito associate all'account"
+      operationId: "srchAllCarteDeb"
+      responses:
+        '200':
+          description: "Operazione corretta"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CartaDiDebito'
+    put:
+      tags: 
+      - "Carta Di Debito"
+      summary: "Effettua un bonifico"
+      description: "Effettua un bonifico su un'altra carta di debito"
+      operationId: "doBonifDeb"
+      requestBody:
+        description: "I dati per il bonifico: la carta del proprietario e del destinatario e l'importo"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatiBonificoCD'
+        required: true
+      responses:
+        '200':
+          description: "Bonifico effettuato con successo!"
+          
+  "homeBanking/account/opcartadebito":
+    post:
+      tags:
+      - "Operazione Carta Di Debito"
+      summary: "Visualizza l'operazione carta di debito"
+      operationId: "srchOneOpDeb"
+      parameters:
+      - id: query
+        name: "id"
+        schema:
+          type: "integer"
+        description: "Il numero identificativo associato all'operazione carta di debito"
+        required: true
+      responses:
+        '200':
+          description: "Operazione trovata con successo"
+        '400':
+          description: "Errore"
+    get:
+      tags: 
+      - "Operazione Carta Di Debito"
+      summary: "Visualizza tutte le operazioni di carte di debito"
+      description: "Restituisce tutte le operazioni di carte di debito contenute all'interno del database"
+      operationId: "srchAllOpDeb"
+      responses:
+        '200':
+          description: "Operazione corretta"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OperazioneCartaDebito'      
+          
 components:
   schemas:
     Cliente:
       type: object
       properties:
-        codice fiscale:
+        codice_fiscale:
           type: string
         nome:
           type: string
         cognome:
           type: string
-        città di nascita:
+        citta_di_nascita:
           type: string
-        data di nascita:
+        data_di_nascita:
           type: string
           format: date
-        numero di telefono:
+        numero_di_telefono:
           type: string
-        indirizzo di resizenza:
+        indirizzo_di_residenza:
           type: string
-        città di residenza:
+        citta_di_residenza:
           type: string
     Account:
       type: object
@@ -204,9 +511,9 @@ components:
           type: string
         email:
           type: string
-        imponta digitale:
+        imponta_digitale:
           type: integer
-        dispositivi associati:
+        dispositivi_associati:
           type: string
         cliente:
           $ref: '#/components/schemas/Cliente'
@@ -216,13 +523,13 @@ components:
         numero:
           type: number
           format: double
-        saldo contabile:
+        saldo_contabile:
           type: number
           format: double
-        saldo disponibile:
+        saldo_disponibile:
           type: number
           format: double
-        data di scadenza:
+        data_di_scadenza:
           type: string
           format: date
         cvv:
@@ -231,7 +538,7 @@ components:
           type: integer
         account:
           $ref: '#/components/schemas/Account'
-    OperazioneCartaPrepagata:
+    OperazionePrepagata:
       type: object
       properties:
         id:
@@ -246,7 +553,7 @@ components:
           type: string
         destinatario:
           type: string
-        carta prepagata:
+        carta_prepagata:
           $ref: '#/components/schemas/CartaPrepagata'
     ContoCorrente:
       type: object
@@ -255,13 +562,13 @@ components:
           type: integer
         iban:
           type: string
-        saldo contabile:
+        saldo_contabile:
           type: number
           format: double
-        saldo disponibile:
+        saldo_disponibile:
           type: number
           format: double
-        id account:
+        id_account:
           $ref: '#/components/schemas/Account'
     OperazioneContoCorrente:
       type: object
@@ -276,9 +583,9 @@ components:
           format: double
         tipologia:
           type: string
-        iban destinatario:
+        iban_destinatario:
           type: string
-        iban conto corrente:
+        iban_conto_corrente:
           $ref: '#/components/schemas/ContoCorrente'
     CartaDiDebito:
       type: object
@@ -287,7 +594,7 @@ components:
           type: string
         iban:
           type: string
-        data di scadenza:
+        data_di_scadenza:
           type: string
           format: date
         cvv:
@@ -309,9 +616,9 @@ components:
           format: double
         tipologia:
           type: string
-        numero carta proprietario:
+        numero_carta_proprietario:
           $ref: '#/components/schemas/CartaDiDebito'
-        numero carta beneficiario:
+        numero_carta_beneficiario:
           type: string
     Impronta:
       type: object
@@ -326,3 +633,51 @@ components:
           type: string
         password:
           type: string
+    NumeroCarta:
+      type: object
+      properties:
+        numero:
+          type: string
+    DatiBonificoCP:
+      properties:
+        carta_proprietario:
+          $ref: '#/components/schemas/CartaPrepagata'
+        carta_destinatario:
+          $ref: '#/components/schemas/CartaPrepagata'
+        importo:
+          type: number
+          format: double
+    DatiBonificoCC:
+      properties:
+        iban_proprietario:
+          type: string
+        iban_destinatario:
+          type: string
+        importo:
+          type: number
+          format: double
+    DatiBonificoCD:
+      properties:
+        carta_proprietario:
+          $ref: '#/components/schemas/CartaDiDebito'
+        carta_destinatario:
+          $ref: '#/components/schemas/CartaDiDebito'
+        importo:
+          type: number
+          format: double      
+    DatiGirocontoCC:
+      properties:
+        iban:
+          type: string
+        carta:
+          $ref: '#/components/schemas/CartaPrepagata'
+        importo:
+          type: number
+          format: double
+    IbanContoCorrente:
+      properties:
+        iban:
+          type: string
+          
+          
+          

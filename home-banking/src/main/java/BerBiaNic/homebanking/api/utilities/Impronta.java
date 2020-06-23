@@ -1,4 +1,4 @@
-package BerBiaNic.homebanking.api;
+package BerBiaNic.homebanking.api.utilities;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

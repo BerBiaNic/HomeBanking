@@ -1,4 +1,4 @@
-package BerBiaNic.homebanking.api;
+package BerBiaNic.homebanking.api.utilities;
 
 
 import javax.ws.rs.*;

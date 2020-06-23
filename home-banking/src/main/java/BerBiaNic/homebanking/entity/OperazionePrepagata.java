@@ -45,8 +45,8 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	 */
 	@JsonbCreator 
 	public OperazionePrepagata(@JsonbProperty("id") int id, @JsonbProperty("data") Date data, @JsonbProperty("importo") double importo, 
-			@JsonbProperty("tipologia") String tipologia, @JsonbProperty("destinatario") String destinatario, 
-			@JsonbProperty("carta_prepagata") CartaPrepagata cartaPrepagata) throws InputValidationException {
+			@JsonbProperty("tipologia") String tipologia, @JsonbProperty("carta_prepagata") CartaPrepagata cartaPrepagata,
+			@JsonbProperty("destinatario") String destinatario) throws InputValidationException {
 		
 		validazioneParametri(id, data, importo, tipologia, destinatario, cartaPrepagata);
 		this.id = id;

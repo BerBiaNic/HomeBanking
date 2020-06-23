@@ -1,4 +1,4 @@
-package BerBiaNic.homebanking.api;
+package BerBiaNic.homebanking.api.response;
 
 
 import javax.ws.rs.Consumes;
@@ -7,11 +7,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import BerBiaNic.homebanking.api.utilities.Credenziali;
+import BerBiaNic.homebanking.api.utilities.Impronta;
 import BerBiaNic.homebanking.dao.*;
 import BerBiaNic.homebanking.entity.Account;
 
 @Path("homeBanking/account")
-public class Accesso {
+public class AccessoAPI {
 	private DaoAccount daoA = new DaoAccount();
 
 	@POST

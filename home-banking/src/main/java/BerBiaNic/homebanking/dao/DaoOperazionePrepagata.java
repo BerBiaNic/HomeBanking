@@ -56,7 +56,7 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 				String destinatario = rs.getString("destinatario");
 
 
-				OperazionePrepagata op = new OperazionePrepagata(id, data, importo, tipologia, destinatario, carta);
+				OperazionePrepagata op = new OperazionePrepagata(id, data, importo, tipologia, carta, destinatario);
 				return op;
 			} catch (SQLException | InterruptedException | ExecutionException | InputValidationException | EmptyResultSet e) {
 				e.printStackTrace();

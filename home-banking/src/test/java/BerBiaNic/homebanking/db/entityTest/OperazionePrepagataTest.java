@@ -30,7 +30,7 @@ public class OperazionePrepagataTest {
 			Cliente cliente = new Cliente("BGGRRT67B18B403U", "Baggio", "Roberto", "Caldogno", new Date(1967-02-18), "3392688412", "Via Pallone d'Oro 1993, Caldogno (VI)", "Caldogno");
 			account = new Account(12345, "divincodino10", "Roby#Baggio10", "roberto_baggio67@brescia.it", 156841324, "SamsungAce2_51686v4s", cliente);
 			cartaPrepagata = new CartaPrepagata("1234569874521456", 26598.69, 26598.69, new Date(2023-05-31), 753, 593742, account);
-			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaDestinatario, cartaPrepagata);
+			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaPrepagata, cartaDestinatario);
 		} catch (InputValidationException e) {
 			System.out.println(e);		
 		}
@@ -52,7 +52,7 @@ public class OperazionePrepagataTest {
 			Cliente cliente = new Cliente("BGGRRT67B18B403U", "Baggio", "Roberto", "Caldogno", new Date(1967-02-18), "3392688412", "Via Pallone d'Oro 1993, Caldogno (VI)", "Caldogno");
 			account = new Account(12345, "divincodino10", "Roby#Baggio10", "roberto_baggio67@brescia.it", 156841324, "SamsungAce2_51686v4s", cliente);
 			cartaPrepagata = new CartaPrepagata("1234569874521456", 26598.69, 26598.69, new Date(2023-05-31), 753, 593742, account);
-			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaDestinatario, cartaPrepagata);
+			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaPrepagata, cartaDestinatario);
 		} catch (InputValidationException e) {
 			System.out.println(e);		
 		}
@@ -75,7 +75,7 @@ public class OperazionePrepagataTest {
 			Cliente cliente = new Cliente("BGGRRT67B18B403U", "Baggio", "Roberto", "Caldogno", new Date(1967-02-18), "3392688412", "Via Pallone d'Oro 1993, Caldogno (VI)", "Caldogno");
 			account = new Account(12345, "divincodino10", "Roby#Baggio10", "roberto_baggio67@brescia.it", 156841324, "SamsungAce2_51686v4s", cliente);
 			cartaPrepagata = new CartaPrepagata("1234569874521456", 26598.69, 26598.69, new Date(2023-05-31), 753, 593742, account);
-			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaDestinatario, cartaPrepagata);
+			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaPrepagata, cartaDestinatario);
 		} catch (InputValidationException e) {
 			System.out.println(e);		
 		}
@@ -98,7 +98,7 @@ public class OperazionePrepagataTest {
 			Cliente cliente = new Cliente("BGGRRT67B18B403U", "Baggio", "Roberto", "Caldogno", new Date(1967-02-18), "3392688412", "Via Pallone d'Oro 1993, Caldogno (VI)", "Caldogno");
 			account = new Account(12345, "divincodino10", "Roby#Baggio10", "roberto_baggio67@brescia.it", 156841324, "SamsungAce2_51686v4s", cliente);
 			cartaPrepagata = new CartaPrepagata("1234569874521456", 26598.69, 26598.69, new Date(2023-05-31), 753, 593742, account);
-			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaDestinatario, cartaPrepagata);
+			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaPrepagata, cartaDestinatario);
 		} catch (InputValidationException e) {
 			System.out.println(e);		
 		}
@@ -121,7 +121,7 @@ public class OperazionePrepagataTest {
 			Cliente cliente = new Cliente("BGGRRT67B18B403U", "Baggio", "Roberto", "Caldogno", new Date(1967-02-18), "3392688412", "Via Pallone d'Oro 1993, Caldogno (VI)", "Caldogno");
 			account = new Account(12345, "divincodino10", "Roby#Baggio10", "roberto_baggio67@brescia.it", 156841324, "SamsungAce2_51686v4s", cliente);
 			cartaPrepagata = new CartaPrepagata("1234569874521456", 26598.69, 26598.69, new Date(2023-05-31), 753, 593742, account);
-			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaDestinatario, cartaPrepagata);
+			operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaPrepagata, cartaDestinatario);
 		} catch (InputValidationException e) {
 			System.out.println(e);		
 		}
@@ -145,8 +145,8 @@ public class OperazionePrepagataTest {
 				Cliente cliente = new Cliente("BGGRRT67B18B403U", "Baggio", "Roberto", "Caldogno", new Date(1967-02-18), "3392688412", "Via Pallone d'Oro 1993, Caldogno (VI)", "Caldogno");
 				account = new Account(12345, "divincodino10", "Roby#Baggio10", "roberto_baggio67@brescia.it", 156841324, "SamsungAce2_51686v4s", cliente);
 				cartaPrepagata = new CartaPrepagata("1234569874521456", 26598.69, 26598.69, new Date(2023-05-31), 753, 593742, account);
-				operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaDestinatario, cartaPrepagata);
-				operazionePrepagataTestEquals = new OperazionePrepagata(id, data, importo, tipologia, cartaDestinatario, cartaPrepagata);
+				operazionePrepagataTest = new OperazionePrepagata(id, data, importo, tipologia, cartaPrepagata, cartaDestinatario);
+				operazionePrepagataTestEquals = new OperazionePrepagata(id, data, importo, tipologia, cartaPrepagata, cartaDestinatario);
 			} catch (InputValidationException e) {
 				System.out.println(e);		
 			}

@@ -147,8 +147,8 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 					throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 				int numero = element.getNumero(); 
 				String iban = element.getIban();
-				double saldoD = element.getSaldo_disponibile(); 
-				double saldoC = element.getSaldo_contabile();
+				double saldoD = element.getSaldoDisponibile(); 
+				double saldoC = element.getSaldoContabile();
 				int idA = element.getAccount().getId();
 
 				ps.setInt(1, numero);
