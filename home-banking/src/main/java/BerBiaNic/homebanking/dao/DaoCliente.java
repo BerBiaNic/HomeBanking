@@ -11,8 +11,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.ws.rs.core.Response;
+
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Cliente;
+import BerBiaNic.homebanking.exceptions.EmptyResultSet;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
  * 
@@ -26,6 +29,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 	 */
 	@Override
 	public Future<Cliente> getOne(String primaryKey) {
+		
 		String query = "SELECT * FROM cliente WHERE codice_fiscale = ?";
 		CompletableFuture<Cliente> cliente = CompletableFuture.supplyAsync(() -> {
 			Connection conn = Database.getConnection();
@@ -33,11 +37,22 @@ public class DaoCliente implements Dao <Cliente,String> {
 			ResultSet rs = null;
 
 			try {
+				
+				//Controllo primaryKey (Codice fiscale cliente)
+				if(primaryKey == null || primaryKey.isBlank())
+					throw new InputValidationException("Codice fiscale", Response.Status.METHOD_NOT_ALLOWED);
+				if(primaryKey.length() != 16)
+					throw new InputValidationException("Codice fiscale non valido. Caratteri richiesti 16, inseriti: " + primaryKey.length(), Response.Status.METHOD_NOT_ALLOWED);
+				if(!primaryKey.matches("[a-zA-Z]{6}\\d{2}[a-zA-Z]\\d{2}[a-zA-Z]\\d{3}[a-zA-Z]"))  
+					throw new InputValidationException("Formato codice fiscale (esempio inserimento CTTLMN86B09T0659X)", Response.Status.METHOD_NOT_ALLOWED);
+				
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				rs = ps.executeQuery();
 				rs.next();
 				
+				if(rs == null)
+					throw new EmptyResultSet("Nessun cliente trovato con questo codice fiscale", Response.Status.METHOD_NOT_ALLOWED);
 				String codiceF = rs.getString("codice_fiscale"); 
 				String cognome =  rs.getString("cognome");
 				String nome = rs.getString("nome"); 
@@ -49,10 +64,10 @@ public class DaoCliente implements Dao <Cliente,String> {
 				
 				Cliente c = new Cliente(codiceF, cognome, nome, cittaN, dataN, numeroT, indirizzoR, cittaR);
 				return c;
-			} catch (SQLException | InputValidationException e) {
+			} catch (SQLException | InputValidationException | EmptyResultSet e) {
 				e.printStackTrace();
 				return null;
-			} 			finally {
+			} finally {
 				try {
 					if(conn!=null)
 						conn.close();
@@ -94,12 +109,16 @@ public class DaoCliente implements Dao <Cliente,String> {
 			try {
 				s = conn.createStatement();
 				rs = s.executeQuery(query);
+				
 				while( rs.next() ) {
+					if(rs == null) {
+						throw new EmptyResultSet("Nessun cliente trovato", Response.Status.METHOD_NOT_ALLOWED);
+					}
 					Cliente c = getOne(rs.getString("codice_fiscale")).get();
 					result.add(c);
 				}
 				return result;
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | EmptyResultSet e) {
 				e.printStackTrace();
 				return null;
 			} finally {
@@ -133,12 +152,16 @@ public class DaoCliente implements Dao <Cliente,String> {
 	 */
 	@Override
 	public Future<Cliente> insert(Cliente element) {
+
 		String query = "insert into cliente(codice_fiscale, cognome, nome, citta_di_nascita, data_di_nascita, numero_di_telefono, indirizzo_di_residenza, citta_di_residenza)" + 
 				"values (?,?,?,?,?,?,?,?)";
 		Connection conn = Database.getConnection();
 		CompletableFuture.runAsync(() -> {
 			PreparedStatement ps = null;
 			try {
+				
+				if(element == null)
+					throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
 				
 				String codiceF = element.getCodiceFiscale(); 
@@ -161,7 +184,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 				
 				ps.executeUpdate();
 				System.out.println("Registrato");
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 			} finally {
 				try {
@@ -194,10 +217,17 @@ public class DaoCliente implements Dao <Cliente,String> {
 			PreparedStatement ps = null;
 			
 			try {
+				//Controllo primaryKey (Codice fiscale cliente)
+				if(primaryKey == null || primaryKey.isBlank())
+					throw new InputValidationException("Codice fiscale", Response.Status.METHOD_NOT_ALLOWED);
+				if(primaryKey.length() != 16)
+					throw new InputValidationException("Codice fiscale non valido. Caratteri richiesti 16, inseriti: " + primaryKey.length(), Response.Status.METHOD_NOT_ALLOWED);
+				if(!primaryKey.matches("[a-zA-Z]{6}\\d{2}[a-zA-Z]\\d{2}[a-zA-Z]\\d{3}[a-zA-Z]"))  
+					throw new InputValidationException("Formato codice fiscale (esempio inserimento CTTLMN86B09T0659X)", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				return ps.executeUpdate();
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 				return 0;
 				
@@ -226,6 +256,8 @@ public class DaoCliente implements Dao <Cliente,String> {
 	@Override
 	public Future<Cliente> update(Cliente element) {
 		try {
+			if(element == null)
+				throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 			CompletableFuture<Cliente> res = CompletableFuture.supplyAsync(() -> {
 				return delete(element.getCodiceFiscale());
 

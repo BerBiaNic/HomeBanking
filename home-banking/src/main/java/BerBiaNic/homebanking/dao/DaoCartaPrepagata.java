@@ -12,9 +12,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.ws.rs.core.Response;
+
 import BerBiaNic.homebanking.db.Database;
 import BerBiaNic.homebanking.entity.Account;
 import BerBiaNic.homebanking.entity.CartaPrepagata;
+import BerBiaNic.homebanking.exceptions.EmptyResultSet;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
  * 
@@ -34,12 +37,20 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			try {
+				if(primaryKey == null || primaryKey.isBlank())
+					throw new InputValidationException("Numero carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
+				if(primaryKey.length() != 16)
+					throw new InputValidationException("Numero carta prepagata. Caratteri richiesti 16, inseriti: " + primaryKey.length(), Response.Status.METHOD_NOT_ALLOWED);
+				if(!primaryKey.matches("[\\d]{16}"))  
+					throw new InputValidationException("Formato numero carta prepagata (esempio inserimento 1234569874521456).", Response.Status.METHOD_NOT_ALLOWED);
 
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				rs = ps.executeQuery();
 				rs.next();
 
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna carta prepagata con questo numero", Response.Status.METHOD_NOT_ALLOWED);
 				DaoAccount daoAccount = new DaoAccount();
 
 				Account a = daoAccount.getOne(rs.getInt("id_account")).get();
@@ -53,7 +64,7 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 
 				CartaPrepagata c = new CartaPrepagata(numero,saldoContabile,saldoDisponibile,dataScadenza,cvv,pin,a);
 				return c;
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | InputValidationException | EmptyResultSet e) {
 				e.printStackTrace();
 				return null;
 			} finally {
@@ -95,11 +106,13 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 				s = conn.createStatement();
 				rs = s.executeQuery(query);	
 				while(rs.next()) {
+					if(rs == null)
+						throw new EmptyResultSet("Nessuna carta prepagata con questo numero", Response.Status.METHOD_NOT_ALLOWED);
 					CartaPrepagata carta = getOne(rs.getString("numero")).get();
 					result.add(carta);
 				}		
 				return result;
-			} catch (SQLException | InterruptedException | ExecutionException e) {
+			} catch (SQLException | InterruptedException | ExecutionException | EmptyResultSet e) {
 				e.printStackTrace();
 				return null;
 			}finally {
@@ -138,6 +151,8 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 			Connection conn = Database.getConnection();
 			PreparedStatement ps = null;
 			try {
+				if(element == null)
+					throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
 				ps.setString(1, element.getNumero());
 				ps.setDouble(2, element.getSaldoContabile());
@@ -147,7 +162,7 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 				ps.setInt(6, element.getPin());
 				ps.setInt(7, element.getAccount().getId());
 				ps.executeUpdate();
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 			}finally {
 				if(conn != null)
@@ -177,10 +192,17 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 			Connection conn = Database.getConnection();
 			PreparedStatement ps = null;
 			try {
+				if(primaryKey == null || primaryKey.isBlank())
+					throw new InputValidationException("Numero carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
+				if(primaryKey.length() != 16)
+					throw new InputValidationException("Numero carta prepagata. Caratteri richiesti 16, inseriti: " + primaryKey.length(), Response.Status.METHOD_NOT_ALLOWED);
+				if(!primaryKey.matches("[\\d]{16}"))  
+					throw new InputValidationException("Formato numero carta prepagata (esempio inserimento 1234569874521456).", Response.Status.METHOD_NOT_ALLOWED);
+
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				return ps.executeUpdate();
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 				return 0;
 			}finally {
@@ -206,18 +228,22 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 	 */
 	@Override
 	public Future<CartaPrepagata> update(CartaPrepagata element) {
-		CompletableFuture<CartaPrepagata> res = CompletableFuture.supplyAsync(() ->{
-			return delete(element.getNumero());
-		}).thenApply(value ->{
-			try {
-				return insert(element).get();
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-				return null;
-			}
-		});
-		return res;
+		try {
+			CompletableFuture<CartaPrepagata> res = CompletableFuture.supplyAsync(() ->{
+				return delete(element.getNumero());
+			}).thenApply(value ->{
+				try {
+					return insert(element).get();
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+					return null;
+				}
+			});
+			return res;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
-
 
 }
