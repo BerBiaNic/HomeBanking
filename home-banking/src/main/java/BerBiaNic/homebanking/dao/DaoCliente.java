@@ -49,7 +49,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 				
 				Cliente c = new Cliente(codiceF, cognome, nome, cittaN, dataN, numeroT, indirizzoR, cittaR);
 				return c;
-			} catch (SQLException e) {
+			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 				return null;
 			} 			finally {

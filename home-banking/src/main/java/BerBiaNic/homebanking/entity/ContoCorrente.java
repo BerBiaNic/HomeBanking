@@ -8,6 +8,7 @@ import javax.json.bind.JsonbConfig;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
+import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
@@ -94,23 +95,23 @@ public class ContoCorrente{
 	
 	private void validazioneParametri(int numero, String iban, double saldo_disponibile, double saldo_contabile, Account account) throws InputValidationException {
 		if(numero < 100000)
-			throw new InputValidationException("Numero conto corrente");
+			throw new InputValidationException("Numero conto corrente", Response.Status.METHOD_NOT_ALLOWED);
 
 		if (iban == null || iban.isBlank())
-			throw new InputValidationException("IBAN conto corrente");
+			throw new InputValidationException("IBAN conto corrente", Response.Status.METHOD_NOT_ALLOWED);
 		if(iban.length() != 31)
-			throw new InputValidationException("IBAN conto corrente non valido. Caratteri richiesti 27, inseriti: ", iban.length());
+			throw new InputValidationException("IBAN conto corrente non valido. Caratteri richiesti 27, inseriti: " + iban.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!iban.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
-			throw new InputValidationException("Formato IBAN conto corrente (esempio inserimento IT28W8000000292100645211151)");
+			throw new InputValidationException("Formato IBAN conto corrente (esempio inserimento IT28W8000000292100645211151)", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(saldo_contabile < 0)
-			throw new InputValidationException("Saldo contabile");
+			throw new InputValidationException("Saldo contabile", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(saldo_disponibile < 0)
-			throw new InputValidationException("Saldo disponibile");
+			throw new InputValidationException("Saldo disponibile", Response.Status.METHOD_NOT_ALLOWED);
 
 		if (account == null)
-			throw new InputValidationException("Account associato al conto corrente");
+			throw new InputValidationException("Account associato al conto corrente", Response.Status.METHOD_NOT_ALLOWED);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import javax.json.bind.JsonbConfig;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
+import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
@@ -106,30 +107,30 @@ public class OperazioneContoCorrente implements Comparable<OperazioneContoCorren
 
 	private void validazioneParametri(int id, Date data, double importo, String tipologia, ContoCorrente conto_corrente_proprietario, String conto_corrente_destinatario) throws InputValidationException {
 		if(id < 0)
-			throw new InputValidationException("Id operazione conto corrente");
+			throw new InputValidationException("Id operazione conto corrente", Response.Status.METHOD_NOT_ALLOWED);
 
 		if (data == null)
-			throw new InputValidationException("Data operazione conto corrente");
+			throw new InputValidationException("Data operazione conto corrente", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(importo < 0)
-			throw new InputValidationException("Importo operazione conto corrente");
+			throw new InputValidationException("Importo operazione conto corrente", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(tipologia == null || tipologia.isBlank())
-			throw new InputValidationException("Tipologia conto corrente");
+			throw new InputValidationException("Tipologia conto corrente", Response.Status.METHOD_NOT_ALLOWED);
 		if(tipologia.length() > 45)
-			throw new InputValidationException("Tipologia conto corrente non valida. Numero massimi caratteri consentiti 45, inseriti: ", tipologia.length());
+			throw new InputValidationException("Tipologia conto corrente non valida. Numero massimi caratteri consentiti 45, inseriti: " + tipologia.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!tipologia.matches("[\\w,: ]{2,45}")) 
-			throw new InputValidationException("Tipologia conto corrente. Caratteri speciali consentiti (,:)");
+			throw new InputValidationException("Tipologia conto corrente. Caratteri speciali consentiti (,:)", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(conto_corrente_proprietario == null)
-			throw new InputValidationException("Conto corrente proprietario");
+			throw new InputValidationException("Conto corrente proprietario", Response.Status.METHOD_NOT_ALLOWED);
 
 		if (conto_corrente_destinatario == null || conto_corrente_destinatario.isBlank())
-			throw new InputValidationException("Conto corrente destinatario");
+			throw new InputValidationException("Conto corrente destinatario", Response.Status.METHOD_NOT_ALLOWED);
 		if(conto_corrente_destinatario.length() != 27)
-			throw new InputValidationException("Conto corrente destinatario non valido. Caratteri richiesti 27, inseriti: ", conto_corrente_destinatario.length());
+			throw new InputValidationException("Conto corrente destinatario non valido. Caratteri richiesti 27, inseriti: " + conto_corrente_destinatario.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!conto_corrente_destinatario.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
-			throw new InputValidationException("Formato conto corrente destinatario (esempio inserimento  IT28W8000000292100645211151)");
+			throw new InputValidationException("Formato conto corrente destinatario (esempio inserimento  IT28W8000000292100645211151)", Response.Status.METHOD_NOT_ALLOWED);
 	}
 
 	@Override

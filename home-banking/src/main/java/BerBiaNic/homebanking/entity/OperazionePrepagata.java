@@ -9,6 +9,7 @@ import javax.json.bind.JsonbConfig;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
+import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
@@ -98,23 +99,23 @@ public class OperazionePrepagata implements Comparable<OperazionePrepagata>{
 	private void validazioneParametri(int id, Date data, double importo, String tipologia, String destinatario, CartaPrepagata cartaPrepagata) throws InputValidationException {
 		
 		if(id < 0)
-			throw new InputValidationException("Id operazione carta prepagata");
+			throw new InputValidationException("Id operazione carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if (data == null)
-			throw new InputValidationException("Data operazione carta prepagata");
+			throw new InputValidationException("Data operazione carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(importo < 0)
-			throw new InputValidationException("Importo operazione carta prepagata");
+			throw new InputValidationException("Importo operazione carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(tipologia == null || tipologia.isBlank())
-			throw new InputValidationException("Tipologia operazione carta prepagata");
+			throw new InputValidationException("Tipologia operazione carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 		if(tipologia.length() > 45)
-			throw new InputValidationException("Tipologia operazione carta prepagata non valida. Numero massimO caratteri consentiti 45, inseriti: ", tipologia.length());
+			throw new InputValidationException("Tipologia operazione carta prepagata non valida. Numero massimO caratteri consentiti 45, inseriti: " + tipologia.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!tipologia.matches("[\\w,: ]{2,45}")) 
-			throw new InputValidationException("Tipologia operazione carta prepagata. Caratteri speciali consentiti (,:)");
+			throw new InputValidationException("Tipologia operazione carta prepagata. Caratteri speciali consentiti (,:)", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(cartaPrepagata == null)
-			throw new InputValidationException("Carta prepagata associata all'operazione");
+			throw new InputValidationException("Carta prepagata associata all'operazione", Response.Status.METHOD_NOT_ALLOWED);
 	}
 	
 	@Override

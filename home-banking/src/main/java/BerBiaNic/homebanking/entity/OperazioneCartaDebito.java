@@ -9,6 +9,7 @@ import javax.json.bind.JsonbConfig;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
+import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
@@ -107,30 +108,30 @@ public class OperazioneCartaDebito implements Comparable<OperazioneCartaDebito> 
 	
 	private void validazioneParametri(int id, Date data, double importo, String tipologia, CartaDiDebito carta_proprietario, String carta_beneficiario) throws InputValidationException {
 		if(id < 0)
-			throw new InputValidationException("Id Operazione carta di debito");
+			throw new InputValidationException("Id Operazione carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(data == null)
-			throw new InputValidationException("Data operazione carta di debito");
+			throw new InputValidationException("Data operazione carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(importo < 0)
-			throw new InputValidationException("Importo operazione carta di debito");
+			throw new InputValidationException("Importo operazione carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(tipologia == null || tipologia.isBlank())
-			throw new InputValidationException("Tipologia operazione carta di debito");
+			throw new InputValidationException("Tipologia operazione carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 		if(tipologia.length() > 45)
-			throw new InputValidationException("Tipologia carta di debito non valida. Numero massimo caratteri consentiti 45, inseriti: ", tipologia.length());
+			throw new InputValidationException("Tipologia carta di debito non valida. Numero massimo caratteri consentiti 45, inseriti: " + tipologia.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!tipologia.matches("[\\w,: ]{2,45}")) 
-			throw new InputValidationException("Tipologia carta di debito. Caratteri speciali consentiti (,:)");
+			throw new InputValidationException("Tipologia carta di debito. Caratteri speciali consentiti (,:)", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(carta_proprietario == null)
-			throw new InputValidationException("Carta di debito proprietario");
+			throw new InputValidationException("Carta di debito proprietario", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if (carta_beneficiario == null || carta_beneficiario.isBlank())
-			throw new InputValidationException("Carta di debito beneficiario");
+			throw new InputValidationException("Carta di debito beneficiario", Response.Status.METHOD_NOT_ALLOWED);
 		if(carta_beneficiario.length() != 27)
-			throw new InputValidationException("Carta di debito beneficiario non valida. Caratteri richiesti 27, inseriti: ", carta_beneficiario.length());
+			throw new InputValidationException("Carta di debito beneficiario non valida. Caratteri richiesti 27, inseriti: " + carta_beneficiario.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!carta_beneficiario.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
-			throw new InputValidationException("Formato carta di debito beneficiario non valido (esempio inserimento  IT28W8000000292100645211151)");
+			throw new InputValidationException("Formato carta di debito beneficiario non valido (esempio inserimento  IT28W8000000292100645211151)", Response.Status.METHOD_NOT_ALLOWED);
 	}
 	
 	@Override

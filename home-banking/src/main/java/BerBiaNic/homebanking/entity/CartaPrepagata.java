@@ -9,6 +9,7 @@ import javax.json.bind.JsonbConfig;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
+import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
@@ -121,29 +122,29 @@ public class CartaPrepagata {
 	private void validazioneParametri(String numero, double saldoContabile, double saldoDisponibile, 
 			Date dataDiScadenza, int cvv, int pin, Account account) throws InputValidationException {
 		if(numero == null || numero.isBlank())
-			throw new InputValidationException("Numero carta prepagata");
+			throw new InputValidationException("Numero carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 		if(numero.length() != 16)
-			throw new InputValidationException("Numero carta prepagata. Caratteri richiesti 16, inseriti: ", numero.length());
+			throw new InputValidationException("Numero carta prepagata. Caratteri richiesti 16, inseriti: " + numero.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!numero.matches("[\\d]{16}"))  
-			throw new InputValidationException("Formato numero carta prepagata (esempio inserimento 1234569874521456).");
+			throw new InputValidationException("Formato numero carta prepagata (esempio inserimento 1234569874521456).", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(saldoContabile < 0)
-			throw new InputValidationException("Saldo contabile carta prepagata");
+			throw new InputValidationException("Saldo contabile carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(saldoDisponibile < 0)
-			throw new InputValidationException("Saldo disponibile carta prepagata");
+			throw new InputValidationException("Saldo disponibile carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(dataDiScadenza == null)
-			throw new InputValidationException("Data di scadenza carta prepagata");
+			throw new InputValidationException("Data di scadenza carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(cvv < 100 || cvv > 999)
-			throw new InputValidationException("Codice cvv carta prepagata");
+			throw new InputValidationException("Codice cvv carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(pin < 100000 || pin > 999999)
-			throw new InputValidationException("Codice PIN carta prepagata");
+			throw new InputValidationException("Codice PIN carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 			
 		if(account == null)
-			throw new InputValidationException("Account associato alla carta prepagata");
+			throw new InputValidationException("Account associato alla carta prepagata", Response.Status.METHOD_NOT_ALLOWED);
 	}
 
 	@Override

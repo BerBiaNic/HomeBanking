@@ -9,6 +9,7 @@ import javax.json.bind.JsonbConfig;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
+import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
@@ -105,30 +106,30 @@ public class CartaDiDebito {
 	
 	private void validazioneParametri(String numero, String iban, Date data_di_scadenza, int cvv, int pin, ContoCorrente conto_corrente) throws InputValidationException {
 		if(numero == null || numero.isBlank())
-			throw new InputValidationException("Numero carta di debito");
+			throw new InputValidationException("Numero carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 		if(numero.length() != 16)
-			throw new InputValidationException("Numero carta di debito non valido. Caratteri richiesti 16, inseriti: ", numero.length());
+			throw new InputValidationException("Numero carta di debito non valido. Caratteri richiesti 16, inseriti: " + numero.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!numero.matches("[\\d]*")) 
-			throw new InputValidationException("Formato numero carta di debito errato.");
+			throw new InputValidationException("Formato numero carta di debito errato.", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if (iban == null || iban.isBlank())
-			throw new InputValidationException("IBAN carta di debito");
+			throw new InputValidationException("IBAN carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 		if(iban.length() != 31)
-			throw new InputValidationException("IBAN carta di debito non valido. Caratteri richiesti 27, inseriti: ", iban.length());
+			throw new InputValidationException("IBAN carta di debito non valido. Caratteri richiesti 27, inseriti: " + iban.length(), Response.Status.METHOD_NOT_ALLOWED);
 		if(!iban.matches("IT+\\d{2}+[a-zA-Z]+\\d{22}"))
-			throw new InputValidationException("Formato IBAN carta di debito (esempio inserimento IT28W8000000292100645211151) .");
+			throw new InputValidationException("Formato IBAN carta di debito (esempio inserimento IT28W8000000292100645211151) .", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(data_di_scadenza == null)
-			throw new InputValidationException("Data di scadenza carta di debito");
+			throw new InputValidationException("Data di scadenza carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(cvv < 100 || cvv > 999)
-			throw new InputValidationException("Codice cvv carta di debito");
+			throw new InputValidationException("Codice cvv carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(pin < 100000 || pin > 999999)
-			throw new InputValidationException("Codice PIN carta di debito");
+			throw new InputValidationException("Codice PIN carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(conto_corrente == null)
-			throw new InputValidationException("Conto corrente associato alla carta di debito");
+			throw new InputValidationException("Conto corrente associato alla carta di debito", Response.Status.METHOD_NOT_ALLOWED);
 	}
 
 	@Override

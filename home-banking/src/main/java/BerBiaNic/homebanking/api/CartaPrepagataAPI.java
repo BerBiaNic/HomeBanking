@@ -57,37 +57,37 @@ public class CartaPrepagataAPI {
 		return Response.ok(lista).build();
 	}
 	
-	@PUT
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response bonifico(NumeroCarta ncProprietario, NumeroCarta ncDestinatario, double importo) throws Exception {
-		if( ncProprietario == null ) {
-			Response.status(403);
-			return Response.ok("Numero carta proprietario non valido!").build();
-		}
-		if( ncDestinatario == null ) {
-			throw new Exception("Parametro carta destinatario non valido!");
-		}
-		if( importo < 0.0 ) {
-			throw new Exception("Importo minore di zero!");
-		}
-		CartaPrepagata cpPro = null, cpDest = null;
-		try {
-			cpPro = daoCP.getOne(ncProprietario.getNumero()).get();
-			cpDest = daoCP.getOne(ncDestinatario.getNumero()).get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
-		double saldoPro = cpPro.getSaldoDisponibile();
-		double saldoDest = cpDest.getSaldoDisponibile();
-		if( saldoPro - importo < 0 ) {
-			throw new Exception("Mancanza di fondi!");
-		}
-		cpPro.setSaldoDisponibile(saldoPro - importo);
-		cpPro.setSaldoContabile(saldoPro - importo);
-		cpDest.setSaldoDisponibile(saldoDest + importo);
-		cpDest.setSaldoContabile(saldoDest + importo);
-		daoCP.update(cpPro);
-		return Response.ok(cpPro).build();	
-	}
+//	@PUT
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response bonifico(NumeroCarta ncProprietario, NumeroCarta ncDestinatario, double importo){
+//		if( ncProprietario == null ) {
+//			Response.status(403);
+//			return Response.ok("Numero carta proprietario non valido!").build();
+//		}
+////		if( ncDestinatario == null ) {
+////			throw new Exception("Parametro carta destinatario non valido!");
+////		}
+////		if( importo < 0.0 ) {
+////			throw new Exception("Importo minore di zero!");
+////		}
+//		CartaPrepagata cpPro = null, cpDest = null;
+//		try {
+//			cpPro = daoCP.getOne(ncProprietario.getNumero()).get();
+//			cpDest = daoCP.getOne(ncDestinatario.getNumero()).get();
+//		} catch (InterruptedException | ExecutionException e) {
+//			e.printStackTrace();
+//		}
+//		double saldoPro = cpPro.getSaldoDisponibile();
+//		double saldoDest = cpDest.getSaldoDisponibile();
+//		if( saldoPro - importo < 0 ) {
+////			throw new Exception("Mancanza di fondi!");
+//		}
+//		cpPro.setSaldoDisponibile(saldoPro - importo);
+//		cpPro.setSaldoContabile(saldoPro - importo);
+//		cpDest.setSaldoDisponibile(saldoDest + importo);
+//		cpDest.setSaldoContabile(saldoDest + importo);
+//		daoCP.update(cpPro);
+//		return Response.ok(cpPro).build();	
+//	}
 
 }

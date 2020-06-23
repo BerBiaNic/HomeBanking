@@ -8,6 +8,7 @@ import javax.json.bind.JsonbConfig;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.config.PropertyVisibilityStrategy;
+import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 /**
@@ -124,34 +125,34 @@ public class Account {
 	
 	private void validazioneParametri(int id, String username, String password, String email, long improntaDigitale, String dispositiviAssociati, Cliente cliente) throws InputValidationException {
 		if(id <= 0)
-			throw new InputValidationException("Id account");
+			throw new InputValidationException("Id account", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(username == null || username.isBlank())
-			throw new InputValidationException("Username");
+			throw new InputValidationException("Username", Response.Status.METHOD_NOT_ALLOWED);
 		if (!username.matches("[\\w_-]{3,45}"))
-			throw new InputValidationException("Formato username (caratteri speciali consentiti _-)");
+			throw new InputValidationException("Formato username (caratteri speciali consentiti _-)", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(password == null || password.isBlank())
-			throw new InputValidationException("Password");
+			throw new InputValidationException("Password", Response.Status.METHOD_NOT_ALLOWED);
 		if(!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}")) 
 			throw new InputValidationException("La password deve contenere un numero, un carattere minuscolo, "
-					+ "uno maiuscolo, un carattere speciale tra @#$% e deve avere lunghezza min 8 e max 20");
+					+ "uno maiuscolo, un carattere speciale tra @#$% e deve avere lunghezza min 8 e max 20", Response.Status.METHOD_NOT_ALLOWED);
 
 		if(email == null || email.isBlank())
-			throw new InputValidationException("Email account");
+			throw new InputValidationException("Email account", Response.Status.METHOD_NOT_ALLOWED);
 		if(!email.matches("[\\w_-]{5,35}+@[\\w]{2,11}+\\.[\\w]{2,4}"))
-			throw new InputValidationException("Formato email account (caratteri speciali consentiti _-)");
+			throw new InputValidationException("Formato email account (caratteri speciali consentiti _-)", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(improntaDigitale <= 0)
-			throw new InputValidationException("Impronta digitale");
+			throw new InputValidationException("Impronta digitale", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(dispositiviAssociati == null || dispositiviAssociati.isBlank())
-			throw new InputValidationException("Dispositivi associati");
+			throw new InputValidationException("Dispositivi associati", Response.Status.METHOD_NOT_ALLOWED);
 		if(!dispositiviAssociati.matches("[\\w_-]{3,100}"))
-			throw new InputValidationException("Formato dispositivi associati (caratteri speciali consentiti _-)");
+			throw new InputValidationException("Formato dispositivi associati (caratteri speciali consentiti _-)", Response.Status.METHOD_NOT_ALLOWED);
 		
 		if(cliente == null)
-			throw new InputValidationException("Cliente");		
+			throw new InputValidationException("Cliente", Response.Status.METHOD_NOT_ALLOWED);		
 	}
 
 	@Override
