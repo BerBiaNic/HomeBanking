@@ -46,9 +46,10 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				rs = ps.executeQuery();
-				rs.next();
 				if(rs == null)
 					throw new EmptyResultSet("Nessuna carta di debito con questo numero", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
 				String numero = rs.getString("numero"); 
 				String iban =  rs.getString("iban");
 				Date dataS = rs.getDate("data_di_scadenza"); 
@@ -100,9 +101,10 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 			try {
 				s = conn.createStatement();
 				rs = s.executeQuery(query);
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna carta di debito con questo numero", Response.Status.METHOD_NOT_ALLOWED);
 				while( rs.next() ) {
-					if(rs == null)
-						throw new EmptyResultSet("Nessuna carta di debito con questo numero", Response.Status.METHOD_NOT_ALLOWED);
+
 					CartaDiDebito c = getOne(rs.getString("numero")).get();
 					result.add(c);
 				}
@@ -151,10 +153,11 @@ public class DaoCartaDiDebito implements Dao<CartaDiDebito, String> {
 					throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
 				rs = ps.executeQuery();
-				rs.next();
-
 				if(rs == null)
 					throw new EmptyResultSet("Nessuna carta di debito trovata", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
+
 
 				String numero = rs.getString("numero"); 
 				String iban =  rs.getString("iban");

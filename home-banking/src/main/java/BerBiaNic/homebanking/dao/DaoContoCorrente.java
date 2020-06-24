@@ -25,7 +25,7 @@ import BerBiaNic.homebanking.exceptions.InputValidationException;
  */
 
 public class DaoContoCorrente implements Dao<ContoCorrente, String> {
-	
+
 	/**
 	 * Cerca tramite iban un conto corrente presente all'interno del database. Ritorna un oggetto di tipo Future<ContoCorrente>. 
 	 */
@@ -46,9 +46,10 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				rs = ps.executeQuery();
-				rs.next();
 				if(rs == null)
 					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
 				int numero = rs.getInt("numero"); 
 				String iban =  rs.getString("iban");
 				double saldoD = rs.getDouble("saldo_disponibile"); 
@@ -86,7 +87,7 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 		});
 		return futureContoCorrente;
 	}
-	
+
 	/**
 	 * Ritorna un oggetto di tipo Future<List<ContoCorrente>> contenente tutti i conti correnti presenti nel database.
 	 */
@@ -101,9 +102,10 @@ public class DaoContoCorrente implements Dao<ContoCorrente, String> {
 				s = conn.createStatement();
 				ResultSet rs = s.executeQuery(query);
 
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
 				while(rs.next()) {
-					if(rs == null)
-						throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
+
 					ContoCorrente a = getOne(rs.getString("iban")).get();
 					result.add(a);
 				}

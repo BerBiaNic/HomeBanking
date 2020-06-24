@@ -47,10 +47,11 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				rs = ps.executeQuery();
-				rs.next();
-
 				if(rs == null)
 					throw new EmptyResultSet("Nessuna carta prepagata con questo numero", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
+
 				DaoAccount daoAccount = new DaoAccount();
 
 				Account a = daoAccount.getOne(rs.getInt("id_account")).get();
@@ -105,9 +106,10 @@ public class DaoCartaPrepagata implements Dao<CartaPrepagata,String>{
 			try {
 				s = conn.createStatement();
 				rs = s.executeQuery(query);	
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna carta prepagata con questo numero", Response.Status.METHOD_NOT_ALLOWED);
 				while(rs.next()) {
-					if(rs == null)
-						throw new EmptyResultSet("Nessuna carta prepagata con questo numero", Response.Status.METHOD_NOT_ALLOWED);
+
 					CartaPrepagata carta = getOne(rs.getString("numero")).get();
 					result.add(carta);
 				}		

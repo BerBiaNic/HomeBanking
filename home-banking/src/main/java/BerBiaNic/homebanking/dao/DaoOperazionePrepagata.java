@@ -43,9 +43,10 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				rs = ps.executeQuery();
-				rs.next();			
 				if(rs == null)
 					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();			
+
 				DaoCartaPrepagata daoPrepagata = new DaoCartaPrepagata();
 				CartaPrepagata carta = daoPrepagata.getOne(rs.getString("numero_carta")).get();
 
@@ -99,9 +100,10 @@ public class DaoOperazionePrepagata implements Dao<OperazionePrepagata,Integer> 
 			try {
 				s = conn.createStatement();
 				rs = s.executeQuery(query);	
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
 				while(rs.next()) {
-					if(rs == null)
-						throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
+
 					OperazionePrepagata op = getOne(rs.getInt("id")).get();
 					result.add(op);
 				}		

@@ -29,7 +29,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 	 */
 	@Override
 	public Future<Cliente> getOne(String primaryKey) {
-		
+
 		String query = "SELECT * FROM cliente WHERE codice_fiscale = ?";
 		CompletableFuture<Cliente> cliente = CompletableFuture.supplyAsync(() -> {
 			Connection conn = Database.getConnection();
@@ -37,7 +37,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 			ResultSet rs = null;
 
 			try {
-				
+
 				//Controllo primaryKey (Codice fiscale cliente)
 				if(primaryKey == null || primaryKey.isBlank())
 					throw new InputValidationException("Codice fiscale", Response.Status.METHOD_NOT_ALLOWED);
@@ -45,14 +45,15 @@ public class DaoCliente implements Dao <Cliente,String> {
 					throw new InputValidationException("Codice fiscale non valido. Caratteri richiesti 16, inseriti: " + primaryKey.length(), Response.Status.METHOD_NOT_ALLOWED);
 				if(!primaryKey.matches("[a-zA-Z]{6}\\d{2}[a-zA-Z]\\d{2}[a-zA-Z]\\d{3}[a-zA-Z]"))  
 					throw new InputValidationException("Formato codice fiscale (esempio inserimento CTTLMN86B09T0659X)", Response.Status.METHOD_NOT_ALLOWED);
-				
+
 				ps = conn.prepareStatement(query);
 				ps.setString(1, primaryKey);
 				rs = ps.executeQuery();
-				rs.next();
-				
 				if(rs == null)
 					throw new EmptyResultSet("Nessun cliente trovato con questo codice fiscale", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
+
 				String codiceF = rs.getString("codice_fiscale"); 
 				String cognome =  rs.getString("cognome");
 				String nome = rs.getString("nome"); 
@@ -61,7 +62,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 				String numeroT = rs.getString("numero_di_telefono");
 				String indirizzoR =  rs.getString("indirizzo_di_residenza");
 				String cittaR = rs.getString("citta_di_residenza");
-				
+
 				Cliente c = new Cliente(codiceF, cognome, nome, cittaN, dataN, numeroT, indirizzoR, cittaR);
 				return c;
 			} catch (SQLException | InputValidationException | EmptyResultSet e) {
@@ -101,19 +102,19 @@ public class DaoCliente implements Dao <Cliente,String> {
 		String query = "SELECT * FROM cliente";
 		CompletableFuture<List<Cliente>> clients = CompletableFuture.supplyAsync(() -> {
 			List<Cliente> result = new ArrayList<Cliente>();
-			
+
 			Connection conn = Database.getConnection();
 			Statement s = null;
 			ResultSet rs = null;
-			
+
 			try {
 				s = conn.createStatement();
 				rs = s.executeQuery(query);
-				
+				if(rs == null) {
+					throw new EmptyResultSet("Nessun cliente trovato", Response.Status.METHOD_NOT_ALLOWED);
+				}
 				while( rs.next() ) {
-					if(rs == null) {
-						throw new EmptyResultSet("Nessun cliente trovato", Response.Status.METHOD_NOT_ALLOWED);
-					}
+
 					Cliente c = getOne(rs.getString("codice_fiscale")).get();
 					result.add(c);
 				}
@@ -159,11 +160,11 @@ public class DaoCliente implements Dao <Cliente,String> {
 		CompletableFuture.runAsync(() -> {
 			PreparedStatement ps = null;
 			try {
-				
+
 				if(element == null)
 					throw new InputValidationException("", Response.Status.METHOD_NOT_ALLOWED);
 				ps = conn.prepareStatement(query);
-				
+
 				String codiceF = element.getCodiceFiscale(); 
 				String cognome = element.getCognome();
 				String nome = element.getNome(); 
@@ -172,7 +173,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 				String numeroT = element.getNumeroDiTelefono();
 				String indirizzoR = element.getIndirizzoDiResidenza();
 				String cittaR = element.getCittaDiResidenza();
-				
+
 				ps.setString(1, codiceF);
 				ps.setString(2, cognome);
 				ps.setString(3, nome);
@@ -181,7 +182,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 				ps.setString(6, numeroT);
 				ps.setString(7, indirizzoR);
 				ps.setString(8, cittaR);
-				
+
 				ps.executeUpdate();
 				System.out.println("Registrato");
 			} catch (SQLException | InputValidationException e) {
@@ -211,11 +212,11 @@ public class DaoCliente implements Dao <Cliente,String> {
 	@Override
 	public Future<Integer> delete(String primaryKey) {
 		String query = "DELETE FROM cliente WHERE codice_fiscale = ?";
-		
+
 		CompletableFuture<Integer> del= CompletableFuture.supplyAsync(() -> {
 			Connection conn = Database.getConnection();
 			PreparedStatement ps = null;
-			
+
 			try {
 				//Controllo primaryKey (Codice fiscale cliente)
 				if(primaryKey == null || primaryKey.isBlank())
@@ -230,7 +231,7 @@ public class DaoCliente implements Dao <Cliente,String> {
 			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 				return 0;
-				
+
 			} finally {
 				try {
 					if(conn!=null)

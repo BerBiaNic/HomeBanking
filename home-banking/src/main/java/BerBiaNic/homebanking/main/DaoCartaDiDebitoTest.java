@@ -21,6 +21,5 @@ public class DaoCartaDiDebitoTest {
 		} catch (InterruptedException | ExecutionException | InputValidationException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }

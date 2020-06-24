@@ -42,11 +42,12 @@ public class DaoAccount implements Dao<Account,Integer > {
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				rs = ps.executeQuery();
-				rs.next();
-				
 				if(rs == null)
 					throw new EmptyResultSet("Nessun Account trovato con questo id", Response.Status.METHOD_NOT_ALLOWED);
-				
+				rs.next();
+
+
+
 				DaoCliente cliente = new DaoCliente();
 				Cliente c = cliente.getOne(rs.getString("codice_fiscale_cliente")).get();
 
@@ -93,7 +94,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 		});
 		return account;
 	}
-	
+
 	/**
 	 * Cerca tramite username e password un account presente all'interno del database. Ritorna un oggetto di tipo Future<Account>. 
 	 */
@@ -105,7 +106,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 			ResultSet rs = null;
 
 			try {
-				
+
 				if(username == null || username.isBlank())
 					throw new InputValidationException("Username", Response.Status.METHOD_NOT_ALLOWED);
 				if (!username.matches("[\\w_-]{3,45}"))
@@ -116,16 +117,17 @@ public class DaoAccount implements Dao<Account,Integer > {
 				if(!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}")) 
 					throw new InputValidationException("La password deve contenere un numero, un carattere minuscolo, "
 							+ "uno maiuscolo, un carattere speciale tra @#$% e deve avere lunghezza min 8 e max 20", Response.Status.METHOD_NOT_ALLOWED);
-				
+
 				ps = conn.prepareStatement(query);
 				ps.setString(1, username);
 				ps.setString(2, password);
-				
+
 				rs = ps.executeQuery();
-				rs.next();
-				
 				if(rs == null)
 					throw new EmptyResultSet("Username o Password errate", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
+
 
 				DaoCliente cliente = new DaoCliente();
 				Cliente c = cliente.getOne(rs.getString("codice_fiscale_cliente")).get();
@@ -167,7 +169,7 @@ public class DaoAccount implements Dao<Account,Integer > {
 		});
 		return account;
 	}
-	
+
 	/**
 	 * Cerca tramite impronta digitale un account presente all'interno del database. Ritorna un oggetto di tipo Future<Account>. 
 	 */
@@ -179,18 +181,19 @@ public class DaoAccount implements Dao<Account,Integer > {
 			ResultSet rs = null;
 
 			try {
-				
+
 				if(improntaDigitale <= 0)
 					throw new InputValidationException("Impronta digitale", Response.Status.METHOD_NOT_ALLOWED);
-				
+
 				ps = conn.prepareStatement(query);
 				ps.setLong(1, improntaDigitale);
-				
-				rs = ps.executeQuery();
-				rs.next();
 
+				rs = ps.executeQuery();
 				if(rs == null)
 					throw new EmptyResultSet("Username o Password errate", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
+
 				DaoCliente cliente = new DaoCliente();
 				Cliente c = cliente.getOne(rs.getString("codice_fiscale_cliente")).get();
 
@@ -248,10 +251,10 @@ public class DaoAccount implements Dao<Account,Integer > {
 			try {
 				s = conn.createStatement();
 				rs = s.executeQuery(query);
-
+				if(rs == null)
+					throw new EmptyResultSet("Username o Password errate", Response.Status.METHOD_NOT_ALLOWED);
 				while(rs.next()) {
-					if(rs == null)
-						throw new EmptyResultSet("Username o Password errate", Response.Status.METHOD_NOT_ALLOWED);
+
 					Account a = getOne(rs.getInt("id")).get();
 					result.add(a);
 				}
@@ -354,14 +357,14 @@ public class DaoAccount implements Dao<Account,Integer > {
 			try {
 				if(primaryKey <= 0)
 					throw new InputValidationException("Id account", Response.Status.METHOD_NOT_ALLOWED);
-				
+
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				return ps.executeUpdate();
 			} catch (SQLException | InputValidationException e) {
 				e.printStackTrace();
 				return 0;
-				
+
 			} finally {
 				try {
 					if(conn!=null)

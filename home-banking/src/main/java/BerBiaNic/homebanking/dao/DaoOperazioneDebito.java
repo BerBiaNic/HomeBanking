@@ -42,9 +42,10 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				rs = ps.executeQuery();
-				rs.next();
 				if(rs == null)
 					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
 				DaoCartaDiDebito daoCarta = new DaoCartaDiDebito();
 				CartaDiDebito carta = daoCarta.getOne(rs.getString("numero_carta_proprietario")).get();
 
@@ -97,9 +98,10 @@ public class DaoOperazioneDebito implements Dao<OperazioneCartaDebito,Integer>{
 			try {
 				s = conn.createStatement();
 				rs = s.executeQuery(query);	
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
 				while(rs.next()) {
-					if(rs == null)
-						throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
+
 					OperazioneCartaDebito op = getOne(rs.getInt("id")).get();
 					result.add(op);
 				}		

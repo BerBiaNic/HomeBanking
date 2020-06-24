@@ -15,9 +15,7 @@ import java.util.concurrent.Future;
 import javax.ws.rs.core.Response;
 
 import BerBiaNic.homebanking.db.Database;
-import BerBiaNic.homebanking.entity.CartaDiDebito;
 import BerBiaNic.homebanking.entity.ContoCorrente;
-import BerBiaNic.homebanking.entity.OperazioneCartaDebito;
 import BerBiaNic.homebanking.entity.OperazioneContoCorrente;
 import BerBiaNic.homebanking.exceptions.EmptyResultSet;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
@@ -37,9 +35,10 @@ public class DaoOperazioneContoCorrente implements Dao<OperazioneContoCorrente,I
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, primaryKey);
 				rs = ps.executeQuery();
-				rs.next();
 				if(rs == null)
 					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
+				rs.next();
+
 				DaoContoCorrente daoContoCorrente = new DaoContoCorrente();
 				ContoCorrente conto = daoContoCorrente.getOne(rs.getString("iban_proprietario")).get();
 
@@ -89,9 +88,10 @@ public class DaoOperazioneContoCorrente implements Dao<OperazioneContoCorrente,I
 			try {
 				s = conn.createStatement();
 				rs = s.executeQuery(query);	
+				if(rs == null)
+					throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
 				while(rs.next()) {
-					if(rs == null)
-						throw new EmptyResultSet("Nessuna operazione trovata con questo id", Response.Status.METHOD_NOT_ALLOWED);
+
 					OperazioneContoCorrente op = getOne(rs.getInt("id")).get();
 					result.add(op);
 				}		
