@@ -1,4 +1,4 @@
-package BerBiaNic.homebanking.api.utilities;
+package BerBiaNic.homebanking.api.response;
 
 
 import javax.ws.rs.*;
@@ -13,7 +13,7 @@ import BerBiaNic.homebanking.entity.*;
 import BerBiaNic.homebanking.exceptions.InputValidationException;
 
 @Path("homeBanking/cliente/signup")
-public class Registrazione {
+public class RegistrazioneAPI {
 	private DaoCliente daoC = new DaoCliente();
 
 	@POST
