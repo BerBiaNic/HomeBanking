@@ -12,127 +12,145 @@ info:
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 1.0.0
+  version: 3.0.0
 externalDocs:
   description: Find out more about Swagger
   url: 'http://swagger.io'
 servers:
   - url: 'https://admin.swagger.io/v2'
   - url: 'http://admin.swagger.io/v2'
-tags:
-  - name: user
-    description: Everything about your users
-    externalDocs:
-      description: Find out more
-      url: 'http://swagger.io'
 paths:
   "/homeBanking/cliente/signup":
     post:
       tags:
         - "Cliente"
-      summary: Aggiunta di un nuovo cliente
-      operationId: creazione account
+      summary: "Aggiunta di un nuovo cliente"
+      operationId: "addClient"
       requestBody:
-        description: cliente che vuole registrarsi alla piattaforma
+        description: "Il nuovo cliente che vuole registrarsi alla piattaforma"
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Cliente'
         required: true
       responses:
-        '200':
-          description: registrazione effettuata
-        '400':
-          description: dati non validi
-          content: {}
+        '200': 
+          description: "Registrazione effettuata correttamente"
+          content:
+            'application/json': {}
+        '405':
+          description: "dati non validi"
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/InputInvalidException'
         '403':
-          description: utente già esistente
+          description: "utente già esistente"
+       
   "/homeBanking/account/signup":
     post:
       tags:
-        - Account
-      summary: account da registrare
-      operationId: registra account
+        - "Account"
+      summary: "Account da registrare"
+      operationId: "addAccount"
       requestBody:
-        description: >-
-          dati dell account da registrare, che fa riferimento ai dati di un
-          cliente precedentemente
+        description: "Dati dell'account da registrare, che fa riferimento ai dati di un cliente precedentemente registrato sul sistema"
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Account'
         required: true
       responses:
-        '200':
-          description: registrazione account effettuata
-        '400':
-          description: dati non validi
-          content: {}
+        '200': 
+          description: "Registrazione effettuata correttamente"
+          content:
+            'application/json': {}
+        '405':
+          description: "dati non validi"
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/InputInvalidException'
         '403':
-          description: account già esistente
+          description: "Account già esistente"
   "/homeBanking/account/login/userpass":
     post:
       tags:
-        - Account
-      summary: Accedi all'account tramite username e password
-      operationId: loginAccountUP
+        - "Account"
+      summary: "Accedi all'account tramite username e password"
+      operationId: "loginAccountUP"
       requestBody:
-        description: 'Credenziali per l''accesso: username e password'
+        description: "Credenziali per l'accesso: username e password"
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Credenziali'
         required: true
       responses:
-        '200':
-          description: successful operation
-        '400':
-          description: Invalid ID supplied
-          content: {}
-        '404':
-          description: user not found
-          content: {}
+        '200': 
+          description: "Accesso completato con successo"
+          content:
+            'application/json': {}
+        '405':
+          description: "dati non validi"
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/InputInvalidException'
+        '403':
+          description: "Account non trovato"
   "/homeBanking/account/login/fingerprint":
     post:
       tags:
         - "Account"
-      summary: Accedi all'account tramite username e password
-      operationId: loginAccountF
+      summary: "Accesso con impronta digitale"
+      operationId: "loginAccountF"
       requestBody:
-        description: Accesso tramite impronta digitale
+        description: "Dati per l'accesso: impronta digitale"
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Impronta'
         required: true
       responses:
-        '200':
-          description: successful operation
-        '400':
-          description: Invalid ID supplied
-          content: {}
-        '404':
-          description: user not found
-          content: {}
-          
+        '200': 
+          description: "Accesso completato con successo"
+          content:
+            'application/json': {}
+        '405':
+          description: "dati non validi"
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/InputInvalidException'
+        '403':
+          description: "Account non trovato"
   "/homeBanking/account/cartaprepagata":
     post:
       tags:
         - "Carta Prepagata"
-      summary: Aggiungi una nuova carta prepagata
-      operationId: newCartaPre
+      summary: "Nuova carta prepagata"
+      operationId: "newCartaPre"
       requestBody:
-        description: Associa una nuova carta prepagata all'account
+        description: "Associa una nuova carta prepagata all'account"
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CartaPrepagata'
         required: true
       responses:
-        '200':
-          description: Carta associata con successo
-        '400':
-          description: Errore
+        '200': 
+          description: "Aggiunta completata con successo"
+          content:
+            'application/json': {}
+        '405':
+          description: "dati non validi"
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/InputInvalidException'
+        '403':
+          description: "Data prepagata non trovata"
   "/homeBanking/account/cartaprepagata/one":   
     post:
       tags:
@@ -182,15 +200,15 @@ paths:
       responses:
         '200':
           description: "Bonifico effettuato con successo!"
-          
-  "homeBanking/account/opcartaprepagata":
+  
+  "/homeBanking/account/opcartaprepagata":
     post:
       tags:
       - "Operazione Prepagata"
       summary: "Visualizza l'operazione carta prepagata"
       operationId: "srchOneOpPre"
       parameters:
-      - id: query
+      - in: "query"
         name: "id"
         schema:
           type: "integer"
@@ -216,9 +234,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OperazionePrepagata'
-  
-  
-  "homeBanking/account/contocorrente":    
+  "/homeBanking/account/contocorrente":    
     post:
       tags:
         - "Conto Corrente"
@@ -241,8 +257,7 @@ paths:
         '404':
           description: user not found
           content: {}
-          
-  "homeBanking/account/contocorrente/one":    
+  "/homeBanking/account/contocorrente/one":    
     post:
       tags:
         - "Conto Corrente"
@@ -259,16 +274,13 @@ paths:
       responses:
         '200':
           description: successful operation
-          content:
-            type: array
-            
+          content: {}
         '400':
           description: Invalid ID supplied
           content: {}
         '404':
           description: user not found
           content: {} 
-          
     get:
       tags:
         - "Conto Corrente"
@@ -289,8 +301,7 @@ paths:
           content: {}
         '404':
           description: user not found
-          content: {}    
-                    
+          content: {}
     put:
       tags:
         - "Conto Corrente"
@@ -301,9 +312,8 @@ paths:
         description: "I dati del bonifico: iban del proprietario e del destinatario e l'importo"
         content:
           application/json:
-            content:
-              schema:
-                $ref: '#/components/schemas/DatiBonificoCC'
+            schema:
+              $ref: '#/components/schemas/DatiBonificoCC'
         required: true
       responses:
         '200':
@@ -314,9 +324,8 @@ paths:
           content: {}
         '404':
           description: user not found
-          content: {}    
-  
-  "homeBanking/account/contocorrente/giroconto":      
+          content: {}
+  "/homeBanking/account/contocorrente/giroconto":      
     put:
       tags:
         - "Conto Corrente"
@@ -327,9 +336,8 @@ paths:
         description: "I dati del giroconto: iban del proprietario e della carta di debito e l'importo"
         content:
           application/json:
-            content:
-              schema:
-                $ref: '#/components/schemas/DatiGirocontoCC'
+            schema:
+              $ref: '#/components/schemas/DatiGirocontoCC'
         required: true
       responses:
         '200':
@@ -340,16 +348,15 @@ paths:
           content: {}
         '404':
           description: user not found
-          content: {}     
-          
-  "homeBanking/account/opcontocorrente":
+          content: {} 
+  "/homeBanking/account/opcontocorrente":
     post:
       tags:
       - "Operazione Conto Corrente"
       summary: "Visualizza l'operazione carta conto corrente"
       operationId: "srchOneOpCC"
       parameters:
-      - id: query
+      - in: query
         name: "id"
         schema:
           type: "integer"
@@ -359,7 +366,7 @@ paths:
         '200':
           description: "Operazione trovata con successo"
         '400':
-          description: "Errore"
+          description: "Errore"     
     get:
       tags: 
       - "Operazione Conto Corrente"
@@ -375,8 +382,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OperazioneContoCorrente'
-                  
-  "homeBanking/account/cartadidebito":
+  
+  "/homeBanking/account/cartadidebito":
     post:
       tags:
         - "Carta Di Debito"
@@ -412,6 +419,7 @@ paths:
           description: "Carta trovato con successo"
         '400':
           description: "Errore"
+
     get:
       tags: 
       - "Carta Di Debito"
@@ -444,14 +452,14 @@ paths:
         '200':
           description: "Bonifico effettuato con successo!"
           
-  "homeBanking/account/opcartadebito":
+  "/homeBanking/account/opcartadebito":
     post:
       tags:
       - "Operazione Carta Di Debito"
       summary: "Visualizza l'operazione carta di debito"
       operationId: "srchOneOpDeb"
       parameters:
-      - id: query
+      - in: query
         name: "id"
         schema:
           type: "integer"
@@ -476,8 +484,8 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OperazioneCartaDebito'      
-          
+                  $ref: '#/components/schemas/OperazioneCartaDebito'  
+
 components:
   schemas:
     Cliente:
@@ -485,21 +493,29 @@ components:
       properties:
         codice_fiscale:
           type: string
+          example: "SSSDRA50A13C842B"
         nome:
           type: string
+          example: "Dario"
         cognome:
           type: string
+          example: "Sossini"
         citta_di_nascita:
           type: string
+          example: "Collalto"
         data_di_nascita:
           type: string
           format: date
+          example: "1950-01-13"
         numero_di_telefono:
           type: string
+          example: "393778254710"
         indirizzo_di_residenza:
           type: string
+          example: "Via Salita Truglio, 9"
         citta_di_residenza:
           type: string
+          example: "Salerno"
     Account:
       type: object
       properties:
@@ -678,6 +694,16 @@ components:
       properties:
         iban:
           type: string
+    InputInvalidException:
+      properties:
+        message:
+          type: string
+          example: "Parametro inserito non valido: ContoCorrente"
+        status:
+          type: object
+          example: "METHOD_NOT_ALLOWED"
+        
+        
           
           
           
