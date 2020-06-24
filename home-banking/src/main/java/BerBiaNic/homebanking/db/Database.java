@@ -41,8 +41,8 @@ public class Database {
 			DB_HOST = p.getProperty("db.host");
 			DB_USER = p.getProperty("db.user");
 			DB_PASS = p.getProperty("db.password");
-			//			conn = DriverManager.getConnection("jdbc:mysql://" + Database.DB_HOST + ":3306/sql7347775", Database.DB_USER, Database.DB_PASS);
-			conn = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7347775?user=sql7347775&password=Pp6ZDM3sQi");
+			conn = DriverManager.getConnection("jdbc:mysql://" + Database.DB_HOST + ":3306/sql7347775", Database.DB_USER, Database.DB_PASS);
+//			conn = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7347775?user=sql7347775&password=Pp6ZDM3sQi");
 			return conn;
 		}catch (SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
